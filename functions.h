@@ -3,3 +3,6 @@
 #include <fstream>
 #include <cstring>
 #include <string>
+
+struct student {};
+struct course {};
