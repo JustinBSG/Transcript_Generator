@@ -18,11 +18,11 @@ This generator uses the grading system that is used at the HKUST.
 
 ## Target
 - [ ] Having a standard README file. 
-- [ ] It displays all informations correctly.  
-      - Students' personal information  
-        - Name, SID, Year of Study, Admit Date, etc.  
-      - Information of each semester  
-      - Calculation of TGA and CGA and Cumulative Credits Earned  
+- [ ] It displays all informations correctly.
+      - Students' personal information
+        - Name, SID, Year of Study, Admit Date, etc.
+      - Information of each semester
+      - Calculation of TGA and CGA and Cumulative Credits Earned
 - [ ] It can generate the formatted output on terminal.
 - [ ] It can read the record that saved in txt or excel.
 - [ ] It can save the record that saved in txt or excel. 
