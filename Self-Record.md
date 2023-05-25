@@ -17,8 +17,7 @@ This generator uses the grading system that is used at the HKUST.
 | F | 0 |
 
 ## Target
-- [ ] Learn how to build a standard README file.
-- [ ] Use Class  
+- [ ] Learn how to build a standard README file. 
 - [ ] It displays all informations correctly.  
     - Students' personal information  
         - Name, SID, Year of Study, Admit Date, etc.  
@@ -29,6 +28,7 @@ This generator uses the grading system that is used at the HKUST.
 - [ ] It can save the record that saved in txt or excel. 
 
 ## Advanced Target
+- [ ] Use Class instead of struct
 - [ ] It can generate pdf file of the output.
 - [ ] It can generate a TGA and CGA graphs on the last page of that pdf file.
 
