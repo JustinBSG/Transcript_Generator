@@ -37,4 +37,6 @@ struct Semester {
     int cce;
 };
 
+// semester->courses->different informations of the courses at specific semester
+
 int menu();

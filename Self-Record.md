@@ -24,8 +24,8 @@ This generator uses the grading system that is used at the HKUST.
     - Information of each semester  
     - Calculation of TGA and CGA and Cumulative Credits Earned  
 - [ ] It can generate the formatted output on terminal.
-- [ ] It can read the record that saved in txt or excel.
-- [ ] It can save the record that saved in txt or excel. 
+- [ ] It can read the record that saved in txt or csv.
+- [ ] It can save the record that saved in txt or csv. 
 
 ## Advanced Target
 - [ ] Use Class instead of struct
