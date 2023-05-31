@@ -40,3 +40,5 @@ struct Semester {
 // semester->courses->different informations of the courses at specific semester
 
 int menu();
+void readcsv();
+void modifycsv();

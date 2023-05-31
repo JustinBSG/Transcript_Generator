@@ -1,6 +1,6 @@
 #include "functions.h"
 
-int menu () {
+int menu() {
     int option;
     std::cout << "************************* Transcript Generator ************************" << std::endl;
     std::cout << "=======================================================================" << std::endl;
@@ -17,4 +17,12 @@ int menu () {
         std::cin >> option;
     }
     return option;
+}
+
+void readcsv() {
+
+}
+
+void modifycsv() {
+    
 }
