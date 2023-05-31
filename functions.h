@@ -4,6 +4,7 @@
 #include <cstring>
 #include <string>
 
+// Personal Information of student
 struct Student {
     char *student_name;
     char *advisor_name;
@@ -11,6 +12,7 @@ struct Student {
     int year;
 };
 
+// Information that is about the program
 struct Program {
     char *program;
     char *change_date;
@@ -18,6 +20,7 @@ struct Program {
     Program *next;
 };
 
+// all courses
 struct Course {
     char *code;
     char *title;
@@ -33,3 +36,5 @@ struct Semester {
     int cga;
     int cce;
 };
+
+int menu();
