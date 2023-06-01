@@ -33,7 +33,7 @@ void readcsv() {
     }
 
     string line;
-    string fields[6];
+    string fields[5];
     while (getline(fin, line)) {
         int i = 0;
         size_t pos = 0;
@@ -44,6 +44,7 @@ void readcsv() {
         fields[i] = line;
         for (int i = 0; i < 6; i++)
             cout << fields[i] << " ";
+        cout << endl;
     }
 }
 
