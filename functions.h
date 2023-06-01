@@ -4,29 +4,33 @@
 #include <cstring>
 #include <string>
 
+// semester->courses->different informations of the courses at specific semester
+// csv file can be out of order
+// all data that is inputted should be ordered by semesters->acrobatic order in course code
+
 // Personal Information of student
 struct Student {
-    char *student_name;
-    char *advisor_name;
+    std::string student_name;
+    std::string advisor_name;
     int sid;
     int year;
 };
 
 // Information that is about the program
 struct Program {
-    char *program;
-    char *change_date;
-    char *major;
+    std::string program;
+    std::string change_date;
+    std::string major;
     Program *next;
 };
 
 // all courses
 struct Course {
-    char *code;
-    char *title;
+    std::string code;
+    std::string title;
     int credit;
-    char *grade;
-    char *enrolled_semester;
+    std::string grade;
+    std::string enrolled_semester;
 };
 
 // array of semesters
@@ -36,8 +40,6 @@ struct Semester {
     int cga;
     int cce;
 };
-
-// semester->courses->different informations of the courses at specific semester
 
 int menu();
 void readcsv();
