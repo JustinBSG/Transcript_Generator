@@ -14,6 +14,7 @@ struct Student {
     char *advisor_name;
     int sid;
     int year;
+    char *admit_date;
 };
 
 // Information that is about the program
@@ -43,6 +44,14 @@ struct Semester {
     Semester *next;
 };
 
+enum Semester_name {Fall, Winter, Spring, Summer, END};
+
+const int MAX_NUM_COURSE_SEMESTER = 10;
+
+int find_index_year(const char*);
+void generate_semester_period(Semester*&, const Student*, char [], const int, const int);
+
 int menu();
-void readcsv(Student*, Program*, Course*, Semester*);
-void modifycsv();
+void read_csv(Student*&, Program*&, Course*&, Semester*&);
+void modify_csv();
+void calculate_gpa(Semester*);

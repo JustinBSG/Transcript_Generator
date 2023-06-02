@@ -1,6 +1,47 @@
 #include "functions.h"
 using namespace std;
 
+int find_index_year(const char *str) {
+    int count_white_space = 0;
+    for (int i = 0; i < strlen(str); i++) 
+        if (str[i] == ' ') {
+            count_white_space++;
+            if (count_white_space == 2)
+                return i+1;
+        }
+}
+
+void generate_semester_period(Semester *&semester, const Student *student, char start_year[], const int i, const int j) {
+    char sem[7] = "";
+    switch(j) {
+        case 0:
+            strcpy(sem, "Fall");
+            break;
+        case 1:
+            strcpy(sem, "Winter");
+            break;
+        case 2:
+            strcpy(sem, "Spring");
+            break;
+        case 3:
+            strcpy(sem, "Summer");
+            break;
+        default:
+            break;
+    }
+    char temp_start[5];
+    strcpy(temp_start, start_year);
+    temp_start[3] = temp_start[3]+i;
+    strcpy(semester->period, temp_start);
+    strcat(semester->period, "-");
+    char temp[3];
+    strcpy(temp, (student->admit_date+(find_index_year(student->admit_date))));
+    temp[1] = temp_start[3]+1;
+    strcat(semester->period, temp);
+    strcat(semester->period, " ");
+    strcat(semester->period, sem);
+}
+
 int menu() {
     int option;
     cout << "************************* Transcript Generator ************************" << endl;
@@ -20,7 +61,7 @@ int menu() {
     return option;
 }
 
-void readcsv(Student *&student, Program *&program, Course *&course, Semester *&semester) {
+void read_csv(Student *&student, Program *&program, Course *&course, Semester *&semester) {
     string input_path;
     cout << "The path for the CSV file (e.g. ./files/student1.csv): ";
     cin >> input_path;
@@ -34,8 +75,8 @@ void readcsv(Student *&student, Program *&program, Course *&course, Semester *&s
 
     string line;
     string fields[5];
+    char *semester_period = nullptr;
     int count = 0, count_semester = 0;
-    Program *program_ptr = nullptr;
     while (getline(fin, line)) {
         int i = 0;
         size_t pos = 0;
@@ -52,6 +93,7 @@ void readcsv(Student *&student, Program *&program, Course *&course, Semester *&s
                 strcpy(student->advisor_name, fields[2].c_str());
                 student->sid = stoi(fields[3]);
                 student->year = stoi(fields[4]);
+                strcpy(student->admit_date, fields[5].c_str());
             } else if (fields[0].compare("program") == 0) {
                 // fields[1]: string, fields[2]: string, fields[3]: string
                 if (strcmp(fields[3].c_str(), "NA") == 0) {
@@ -60,17 +102,38 @@ void readcsv(Student *&student, Program *&program, Course *&course, Semester *&s
                     strcpy(program->major, fields[2].c_str());
                     strcpy(program->change_date, fields[3].c_str());
                     program->next = nullptr;
-                    program_ptr = program->next;
                 } else {
                     Program *temp = new Program;
+                    Program *p = program;
                     strcpy(temp->program, fields[1].c_str());
                     strcpy(temp->major, fields[2].c_str());
                     strcpy(temp->change_date, fields[3].c_str());
                     temp->next = nullptr;
-                    program_ptr = temp;
-                    program_ptr = temp->next;
+                    while (p != nullptr)
+                        p = p->next;
+                    p = temp;
                 }
             } else if (fields[0].compare("course") == 0) {
+                if (count_semester == 0) {
+                    char start_year[5] = "";
+                    strcpy(start_year, (student->admit_date+(find_index_year(student->admit_date))));
+                    // input the name of semester (semester->period)
+                    for (int i = 0; i < student->year; i++)
+                        for (int j = 0; j < 4; j++) 
+                            if (i == 0 && j == 0) {
+                                semester = new Semester;
+                                semester->next = nullptr;
+                                generate_semester_period(semester, student, start_year, i, j);
+                            } else {
+                                Semester *temp = new Semester;
+                                temp->next = nullptr;
+                                generate_semester_period(temp, student, start_year, i, j);
+                                Semester *p = semester;
+                                while (p != nullptr)
+                                    p = p->next;
+                                p = temp;
+                            }
+                }
                 // fields[1]: string, fields[2]: string, fields[3]: int, fields[4]: string, fields[5]: string 
                 // course = new Course;
                 // strcpy(course->code, fields[1].c_str());
@@ -82,6 +145,10 @@ void readcsv(Student *&student, Program *&program, Course *&course, Semester *&s
     }
 }
 
-void modifycsv() {
+void modify_csv() {
     
+}
+
+void calculate_gpa(Semester *&semester) {
+
 }
