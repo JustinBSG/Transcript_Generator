@@ -10,27 +10,27 @@
 
 // Personal Information of student
 struct Student {
-    std::string student_name;
-    std::string advisor_name;
+    char *student_name;
+    char *advisor_name;
     int sid;
     int year;
 };
 
 // Information that is about the program
 struct Program {
-    std::string program;
-    std::string change_date;
-    std::string major;
+    char *program;
+    char *change_date;
+    char *major;
     Program *next;
 };
 
 // all courses
 struct Course {
-    std::string code;
-    std::string title;
+    char *code;
+    char *title;
     int credit;
-    std::string grade;
-    std::string enrolled_semester;
+    char *grade;
+    char *enrolled_semester;
 };
 
 // array of semesters
@@ -39,8 +39,9 @@ struct Semester {
     int tga;
     int cga;
     int cce;
+    Semester *next;
 };
 
 int menu();
-void readcsv();
+void readcsv(Student*, Program*, Course*, Semester*);
 void modifycsv();

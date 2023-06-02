@@ -1,6 +1,10 @@
 #include "functions.h"
 
 int main() {
+    Student *student = nullptr;
+    Program *program = nullptr;
+    Course *course = nullptr;
+    Semester *semester = nullptr;
     while (1) {
         int option = menu();
         switch (option) {
@@ -8,7 +12,7 @@ int main() {
                 
                 break;
             case 2:
-                readcsv();
+                readcsv(student, program, course, semester);
                 break;
             case 3:
                 break;
