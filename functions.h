@@ -36,6 +36,7 @@ struct Course {
 // array of semesters
 struct Semester {
     Course **courses;
+    char *period;
     int tga;
     int cga;
     int cce;
