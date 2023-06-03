@@ -19,6 +19,7 @@ int main() {
             case 4:
                 break;
             case 5:
+                delete_all_dynamic(student, program, course, semester);
                 std::cout << "Bye!!" << std::endl;
                 return 0;
         }

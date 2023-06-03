@@ -85,7 +85,7 @@ void read_csv(Student *&student, Program *&program, Course *&course, Semester *&
             line.erase(0, pos+1);
         }
         fields[i] = line;
-        if (count++ != 0)
+        if (count++ != 0) // To prevent read the first line of csv file
             if (fields[0].compare("student") == 0) {
                 // fields[1]: string, fields[2]: string, fields[3]: int, fields[4]: int
                 student = new Student;
@@ -114,7 +114,7 @@ void read_csv(Student *&student, Program *&program, Course *&course, Semester *&
                     p = temp;
                 }
             } else if (fields[0].compare("course") == 0) {
-                if (count_semester == 0) {
+                if (count_semester++ == 0) { // To initalize the struct semester
                     char start_year[5] = "";
                     strcpy(start_year, (student->admit_date+(find_index_year(student->admit_date))));
                     // input the name of semester (semester->period)
@@ -133,22 +133,33 @@ void read_csv(Student *&student, Program *&program, Course *&course, Semester *&
                                     p = p->next;
                                 p = temp;
                             }
+                    // initialize other informations in struct semester without inputting informations into courses
+                    Semester *p = semester;
+                    while (p != nullptr) {
+                        p->courses = new Course* [MAX_NUM_COURSE_SEMESTER];
+                        p->cce = p->cga = p->tga = 0;
+                        p = p->next;
+                    }
                 }
+                // Input course information into semester
+                
                 // fields[1]: string, fields[2]: string, fields[3]: int, fields[4]: string, fields[5]: string 
                 // course = new Course;
                 // strcpy(course->code, fields[1].c_str());
                 // strcpy(course->title, fields[2].c_str());
                 // course->credit = stoi(fields[3]);
                 // strcpy(course->grade, fields[4].c_str());
-                // strcpy(course->enrolled_semester, fields[5].c_str());    
+                // strcpy(course->enrolled_semester, fields[5].c_str());
             }
     }
+    //sorting course inside semester
+    // calculate tga, cga, cce from semester
 }
 
 void modify_csv() {
     
 }
 
-void calculate_gpa(Semester *&semester) {
+void delete_all_dynamic(Student *&student, Program *&program, Course *&course, Semester *&semester) {
 
 }

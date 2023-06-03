@@ -38,9 +38,9 @@ struct Course {
 struct Semester {
     Course **courses;
     char *period;
-    int tga;
-    int cga;
-    int cce;
+    float tga;
+    float cga;
+    float cce;
     Semester *next;
 };
 
@@ -54,4 +54,4 @@ void generate_semester_period(Semester*&, const Student*, char [], const int, co
 int menu();
 void read_csv(Student*&, Program*&, Course*&, Semester*&);
 void modify_csv();
-void calculate_gpa(Semester*);
+void delete_all_dynamic(Student*&, Program*&, Course*&, Semester*&);
