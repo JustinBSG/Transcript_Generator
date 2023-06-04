@@ -268,6 +268,7 @@ void read_csv(Student *&student, Program *&program, Semester *&semester) {
 }
 
 void print_all(Student *&student, Program *&program, Semester *&semester) {
+    cout << "Here is the transcript." << endl << endl;
     cout << "                    Unofficial Transcript of Academic Record" << endl;
     cout << "---------------------------------------------------------------------------------" << endl << endl;
     cout << "Personal Information" << endl << endl;
@@ -289,11 +290,27 @@ void print_all(Student *&student, Program *&program, Semester *&semester) {
     cout << "---------------------------------------------------------------------------------" << endl << endl;
     Semester *ptr = semester;
     do {
-        cout << "Academic Records" << endl << endl;
-        cout << semester->period << endl;
-        printf("%-15s%-38s%-13s%-10s%-10s\n","", "", "Credit", "Credit","");
-        printf("%-15s%-38s%-13s%-10s%-10s\n","Course Code", "Course Title", "Attempted", "Earned", "Grade");
-        cout << "---------------------------------------------------------------------------------" << endl << endl;
+        if (ptr->courses != nullptr) {
+            cout << "Academic Records" << endl << endl;
+            cout << ptr->period << endl;
+            printf("%-15s%-38s%-13s%-10s%-10s\n", "", "", "Credit", "Credit","");
+            printf("%-15s%-38s%-13s%-10s%-10s\n", "Course Code", "Course Title", "Attempted", "Earned", "Grade");
+            Course *course = ptr->courses;
+            while (course != nullptr) {
+                printf("%-15s%-38s%-13d", course->code, course->title, course->credit);
+                if (course->credit == 0)
+                    printf("%-10c", '-');
+                else
+                    printf("%-10d", course->credit);
+                printf("%-10s\n", course->grade);
+                course = course->next;
+            }
+            cout << endl << endl;
+            cout << "TGA:\t" << ptr->tga << endl;
+            cout << "CGA:\t" << ptr->cga << endl << endl;
+            cout << "Cumulative Credits Earned:\t" << ptr->cce << endl << endl;
+            cout << "---------------------------------------------------------------------------------" << endl << endl;
+        }
         ptr = ptr->next;
     } while (ptr != nullptr);
 }
