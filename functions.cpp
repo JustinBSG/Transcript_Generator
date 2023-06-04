@@ -68,6 +68,58 @@ void insert_course(Semester *&semester, Course *&course) {
     }
 }
 
+float obtain_grade(const char grade[]) {
+    float grade_float = 0;
+    for (int i = 0; i < 2; i++) 
+            switch(grade[i]) {
+                case 'A':
+                    grade_float += 4;
+                    break;
+                case 'B':
+                    grade_float += 3;
+                    break;
+                case 'C':
+                    grade_float += 2;
+                    break;
+                case 'D':
+                    grade_float += 1;
+                    break;
+                case '+':
+                    grade_float += 0.3;
+                    break;
+                case '-':
+                    grade_float -= 0.3;
+                    break;
+                default:
+                    break;
+            }
+    return grade_float;
+}
+
+// Calcalate tga, cga, cce in specific semester
+void calculate_gpa(const Student *&student, Semester *&semester) {
+    int total_credit = 0;
+    Course *p = semester->courses;
+    while (p != nullptr) {
+        if (strcmp(semester->courses->grade, "**") != 0)
+            total_credit += semester->courses->credit;
+        p = p->next;
+    }
+    // calculate tga
+    p = semester->courses;
+    while (p != nullptr) {
+        if (strcmp(semester->courses->grade, "**") != 0)
+            semester->tga += obtain_grade(semester->courses->grade);
+        p = p->next;
+    }
+    semester->tga /= total_credit;
+
+    // calculate cga
+    
+    // calculate cce
+
+}
+
 int menu() {
     int option;
     cout << "************************* Transcript Generator ************************" << endl;
@@ -101,7 +153,6 @@ void read_csv(Student *&student, Program *&program, Semester *&semester) {
 
     string line;
     string fields[5];
-    char *semester_period = nullptr;
     int count = 0, count_semester = 0;
     while (getline(fin, line)) {
         int i = 0;
@@ -179,7 +230,11 @@ void read_csv(Student *&student, Program *&program, Semester *&semester) {
                 insert_course(semester, temp);
             }
     }
-    // calculate tga, cga, cce from semester
+    Semester *p = semester;
+    while (p != nullptr) {
+        calculate_gpa(p);
+        p = p->next;
+    }
 }
 
 void modify_csv() {
