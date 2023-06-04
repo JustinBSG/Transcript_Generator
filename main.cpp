@@ -5,6 +5,7 @@ int main() {
     Program *program = nullptr;
     Course *course = nullptr;
     Semester *semester = nullptr;
+    
     while (1) {
         int option = menu();
         switch (option) {
@@ -17,6 +18,7 @@ int main() {
             case 3:
                 break;
             case 4:
+                print_all(student, program, semester);
                 break;
             case 5:
                 delete_all_dynamic(student, program, course, semester);

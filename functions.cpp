@@ -35,7 +35,7 @@ void generate_semester_period(Semester *&semester, const Student *student, char 
     strcpy(semester->period, temp_start);
     strcat(semester->period, "-");
     char temp[3];
-    strcpy(temp, (student->admit_date+(find_index_year(student->admit_date))));
+    strcpy(temp, (student->admit_date+(find_index_year(student->admit_date))+2));
     temp[1] = temp_start[3]+1;
     strcat(semester->period, temp);
     strcat(semester->period, " ");
@@ -73,23 +73,25 @@ float obtain_grade(const char grade[]) {
     for (int i = 0; i < 2; i++) 
             switch(grade[i]) {
                 case 'A':
-                    grade_float += 4;
+                    grade_float = 4.0;
                     break;
                 case 'B':
-                    grade_float += 3;
+                    grade_float = 3.0;
                     break;
                 case 'C':
-                    grade_float += 2;
+                    grade_float = 2.0;
                     break;
                 case 'D':
-                    grade_float += 1;
+                    grade_float = 1.0;
                     break;
                 case '+':
-                    grade_float += 0.3;
+                    grade_float = 0.3;
                     break;
                 case '-':
-                    grade_float -= 0.3;
+                    grade_float = -0.3;
                     break;
+                case 'P':
+                    return 0;
                 default:
                     break;
             }
@@ -97,7 +99,7 @@ float obtain_grade(const char grade[]) {
 }
 
 // Calcalate tga, cga, cce in specific semester
-void calculate_gpa(Student *&student, Semester *&semester) {
+void calculate_gpa(Student *&student, Semester *&semester, Semester *&semester_head) {
     int total_credit = 0;
     Course *p = semester->courses;
     while (p != nullptr) {
@@ -108,22 +110,52 @@ void calculate_gpa(Student *&student, Semester *&semester) {
     // calculate tga
     p = semester->courses;
     while (p != nullptr) {
-        if (strcmp(semester->courses->grade, "**") != 0)
-            semester->tga += obtain_grade(semester->courses->grade);
+        if (strcmp(p->grade, "**") != 0)
+            semester->tga += obtain_grade(p->grade)*p->credit;
         p = p->next;
     }
     semester->tga /= total_credit;
-
-    // calculate cga
-    
     // calculate cce
-
+    Semester *ptr = semester_head;
+    while (ptr != semester) {
+        p = ptr->courses;
+        while (p != nullptr) {
+            if (strcmp(p->grade, "**") != 0)
+                semester->cce += p->credit;
+            p = p->next;
+        }
+        ptr = ptr->next;
+    }
+    p = ptr->courses;
+    while (p != nullptr) {
+        if (strcmp(p->grade, "**") != 0) 
+            semester->cce += p->credit;
+        p = p->next;
+    }
+    // calculate cga
+    ptr = semester_head;
+    while (ptr != semester) {
+        p = ptr->courses;
+        while (p != nullptr) {
+            if (strcmp(p->grade, "**") != 0)
+                semester->cga += obtain_grade(p->grade)*p->credit;
+            p = p->next;
+        }
+        ptr = ptr->next;
+    }
+    p = ptr->courses;
+    while (p != nullptr) {
+        if (strcmp(p->grade, "**") != 0)
+            semester->cga += obtain_grade(p->grade)*p->credit;
+        p = p->next;
+    }
+    semester->cga /= semester->cce;
 }
 
 int menu() {
     int option;
-    cout << "************************* Transcript Generator ************************" << endl;
-    cout << "=======================================================================" << endl;
+    cout << "****************************** Transcript Generator *****************************" << endl;
+    cout << "=================================================================================" << endl;
     cout << "Here are operations that you can choose:" << endl;
     cout << "1: Input data by yourself and form a CSV file." << endl;
     cout << "2: Input data from CSV file." << endl;
@@ -164,7 +196,6 @@ void read_csv(Student *&student, Program *&program, Semester *&semester) {
         fields[i] = line;
         if (count++ != 0) // To prevent read the first line of csv file
             if (fields[0].compare("student") == 0) {
-                // fields[1]: string, fields[2]: string, fields[3]: int, fields[4]: int
                 student = new Student;
                 strcpy(student->student_name, fields[1].c_str());
                 strcpy(student->advisor_name, fields[2].c_str());
@@ -172,7 +203,6 @@ void read_csv(Student *&student, Program *&program, Semester *&semester) {
                 student->year = stoi(fields[4]);
                 strcpy(student->admit_date, fields[5].c_str());
             } else if (fields[0].compare("program") == 0) {
-                // fields[1]: string, fields[2]: string, fields[3]: string
                 if (strcmp(fields[3].c_str(), "NA") == 0) {
                     program = new Program;
                     strcpy(program->program, fields[1].c_str());
@@ -181,14 +211,14 @@ void read_csv(Student *&student, Program *&program, Semester *&semester) {
                     program->next = nullptr;
                 } else {
                     Program *temp = new Program;
-                    Program *p = program;
+                    Program *ptr = program;
                     strcpy(temp->program, fields[1].c_str());
                     strcpy(temp->major, fields[2].c_str());
                     strcpy(temp->change_date, fields[3].c_str());
                     temp->next = nullptr;
-                    while (p != nullptr)
-                        p = p->next;
-                    p = temp;
+                    while (ptr->next != nullptr) 
+                        ptr = ptr->next;
+                    ptr->next = temp;
                 }
             } else if (fields[0].compare("course") == 0) {
                 if (count_semester++ == 0) { // To initalize the struct semester
@@ -203,12 +233,12 @@ void read_csv(Student *&student, Program *&program, Semester *&semester) {
                                 generate_semester_period(semester, student, start_year, i, j);
                             } else {
                                 Semester *temp = new Semester;
+                                Semester *p = semester;
                                 temp->next = nullptr;
                                 generate_semester_period(temp, student, start_year, i, j);
-                                Semester *p = semester;
-                                while (p != nullptr)
+                                while (p->next != nullptr)
                                     p = p->next;
-                                p = temp;
+                                p->next = temp;
                             }
                     // initialize other informations in struct semester without inputting informations into courses
                     Semester *p = semester;
@@ -232,9 +262,40 @@ void read_csv(Student *&student, Program *&program, Semester *&semester) {
     }
     Semester *p = semester;
     while (p != nullptr) {
-        calculate_gpa(student, p);
+        calculate_gpa(student, p, semester);
         p = p->next;
     }
+}
+
+void print_all(Student *&student, Program *&program, Semester *&semester) {
+    cout << "                    Unofficial Transcript of Academic Record" << endl;
+    cout << "---------------------------------------------------------------------------------" << endl << endl;
+    cout << "Personal Information" << endl << endl;
+    cout << "Name:\t\t" << student->student_name << endl;
+    cout << "Student ID:\t" << student->sid << endl;
+    cout << "Year of Study:\t" << student->year << endl;
+    cout << "Advisor:\t" << student->advisor_name << endl << endl;
+    cout << "---------------------------------------------------------------------------------" << endl << endl;
+    cout << "Academic Program" << endl << endl;
+    cout << "Admit Date:\t" << student->admit_date << endl;
+    cout << "Program:\t" << program->program << endl << endl;
+    Program *p = program;
+    while (p->next != nullptr) {
+        cout << "Program Change:\t" << p->next->change_date << endl;
+        cout << "Program:\t" << p->next->program << endl;
+        cout << "Major:\t\t" << p->next->major << endl << endl;
+        p = p->next;
+    }
+    cout << "---------------------------------------------------------------------------------" << endl << endl;
+    Semester *ptr = semester;
+    do {
+        cout << "Academic Records" << endl << endl;
+        cout << semester->period << endl;
+        printf("%-15s%-38s%-13s%-10s%-10s\n","", "", "Credit", "Credit","");
+        printf("%-15s%-38s%-13s%-10s%-10s\n","Course Code", "Course Title", "Attempted", "Earned", "Grade");
+        cout << "---------------------------------------------------------------------------------" << endl << endl;
+        ptr = ptr->next;
+    } while (ptr != nullptr);
 }
 
 void modify_csv() {
