@@ -97,7 +97,7 @@ float obtain_grade(const char grade[]) {
 }
 
 // Calcalate tga, cga, cce in specific semester
-void calculate_gpa(const Student *&student, Semester *&semester) {
+void calculate_gpa(Student *&student, Semester *&semester) {
     int total_credit = 0;
     Course *p = semester->courses;
     while (p != nullptr) {
@@ -232,7 +232,7 @@ void read_csv(Student *&student, Program *&program, Semester *&semester) {
     }
     Semester *p = semester;
     while (p != nullptr) {
-        calculate_gpa(p);
+        calculate_gpa(student, p);
         p = p->next;
     }
 }

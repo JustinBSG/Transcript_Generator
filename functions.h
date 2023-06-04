@@ -52,7 +52,7 @@ const int MAX_NUM_COURSE_SEMESTER = 10;
 int find_index_year(const char*);
 void generate_semester_period(Semester*&, const Student*, char [], const int, const int);
 void insert_course(Semester*&, Course*&);
-void calculate_gpa(const Student *&, Semester*&);
+void calculate_gpa(Student *&, Semester*&);
 float obtain_grade(const char []);
 
 int menu();
