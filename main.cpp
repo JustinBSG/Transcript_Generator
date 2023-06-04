@@ -12,7 +12,7 @@ int main() {
                 
                 break;
             case 2:
-                read_csv(student, program, course, semester);
+                read_csv(student, program, semester);
                 break;
             case 3:
                 break;

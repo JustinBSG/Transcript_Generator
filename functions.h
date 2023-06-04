@@ -32,11 +32,12 @@ struct Course {
     int credit;
     char *grade;
     char *enrolled_semester;
+    Course *next;
 };
 
 // array of semesters
 struct Semester {
-    Course **courses;
+    Course *courses;
     char *period;
     float tga;
     float cga;
@@ -50,8 +51,9 @@ const int MAX_NUM_COURSE_SEMESTER = 10;
 
 int find_index_year(const char*);
 void generate_semester_period(Semester*&, const Student*, char [], const int, const int);
+void insert_course(Semester*&, Course*&);
 
 int menu();
-void read_csv(Student*&, Program*&, Course*&, Semester*&);
+void read_csv(Student*&, Program*&, Semester*&);
 void modify_csv();
 void delete_all_dynamic(Student*&, Program*&, Course*&, Semester*&);

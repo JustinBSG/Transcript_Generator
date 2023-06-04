@@ -42,6 +42,32 @@ void generate_semester_period(Semester *&semester, const Student *student, char 
     strcat(semester->period, sem);
 }
 
+void insert_course(Semester *&semester, Course *&course) {
+    if (semester->courses == nullptr) // if it is empty
+        semester->courses = course;
+    else {
+        if (strcmp(semester->courses->code, course->code) > 0) { // Be the first element
+            course->next = semester->courses;
+            semester->courses = course;
+        } else {
+            // Be the last element
+            Course *p = semester->courses;
+            while (p->next != nullptr) {
+                p = p->next;
+            }
+            if (strcmp(semester->courses->code, course->code) < 0) 
+                p->next = course;
+            else { // Be the middle element
+                p = semester->courses;
+                while (p->next != nullptr && !(strcmp(p->code, course->code) < 0 && strcmp(p->next->code, course->code) > 0)) 
+                    p = p->next;
+                course->next = p->next;
+                p->next = course;
+            }
+        }
+    }
+}
+
 int menu() {
     int option;
     cout << "************************* Transcript Generator ************************" << endl;
@@ -61,7 +87,7 @@ int menu() {
     return option;
 }
 
-void read_csv(Student *&student, Program *&program, Course *&course, Semester *&semester) {
+void read_csv(Student *&student, Program *&program, Semester *&semester) {
     string input_path;
     cout << "The path for the CSV file (e.g. ./files/student1.csv): ";
     cin >> input_path;
@@ -136,23 +162,23 @@ void read_csv(Student *&student, Program *&program, Course *&course, Semester *&
                     // initialize other informations in struct semester without inputting informations into courses
                     Semester *p = semester;
                     while (p != nullptr) {
-                        p->courses = new Course* [MAX_NUM_COURSE_SEMESTER];
+                        p->courses = nullptr;
                         p->cce = p->cga = p->tga = 0;
                         p = p->next;
                     }
                 }
                 // Input course information into semester
-                
                 // fields[1]: string, fields[2]: string, fields[3]: int, fields[4]: string, fields[5]: string 
-                // course = new Course;
-                // strcpy(course->code, fields[1].c_str());
-                // strcpy(course->title, fields[2].c_str());
-                // course->credit = stoi(fields[3]);
-                // strcpy(course->grade, fields[4].c_str());
-                // strcpy(course->enrolled_semester, fields[5].c_str());
+                Course *temp = new Course;
+                strcpy(temp->code, fields[1].c_str());
+                strcpy(temp->title, fields[2].c_str());
+                temp->credit = stoi(fields[3]);
+                strcpy(temp->grade, fields[4].c_str());
+                strcpy(temp->enrolled_semester, fields[5].c_str());
+                temp->next = nullptr;
+                insert_course(semester, temp);
             }
     }
-    //sorting course inside semester
     // calculate tga, cga, cce from semester
 }
 
