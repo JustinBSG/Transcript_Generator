@@ -61,3 +61,4 @@ void read_csv(Student*&, Program*&, Semester*&);
 void print_all(Student*&, Program*&, Semester*&);
 void modify_csv();
 void delete_all_dynamic(Student*&, Program*&, Course*&, Semester*&);
+void testing(Student*&, Program*&, Course*&, Semester*&);

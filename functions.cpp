@@ -173,7 +173,7 @@ int menu() {
     cout << "5: Leave." << endl;
     cout << "What operation that you want to choose(1-5): ";
     cin >> option;
-    while (option > 5 || option < 1) {
+    while (option > 6 || option < 1) {
         cout << "Please input valid choice: ";
         cin >> option;
     }
@@ -325,7 +325,6 @@ void print_all(Student *&student, Program *&program, Semester *&semester) {
                     printf("%-10s\n", course->grade);
                     printf("%-15s%-40s\n", "", second);
                 }
-                
                 course = course->next;
             }
             cout << endl << endl;
@@ -344,4 +343,25 @@ void modify_csv() {
 
 void delete_all_dynamic(Student *&student, Program *&program, Course *&course, Semester *&semester) {
 
+}
+
+void testing(Student *&student, Program *&program, Course *&course, Semester *&semester) {
+    Semester *p = semester;
+    cout << "TGA:" << endl;
+    while (p != nullptr) {
+        cout << p->period << "\t" << p->tga << endl;
+        p = p->next;
+    }
+    p = semester;
+    cout << "CGA:" << endl;
+    while (p != nullptr) {
+        cout << p->period << "\t" << p->cga << endl;
+        p = p->next;
+    }
+    p = semester;
+    cout << "CCE:" << endl;
+    while (p != nullptr) {
+        cout << p->period << "\t" << p->cce << endl;
+        p = p->next;
+    }
 }

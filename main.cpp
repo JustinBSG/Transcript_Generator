@@ -24,6 +24,9 @@ int main() {
                 delete_all_dynamic(student, program, course, semester);
                 std::cout << "Bye!!" << std::endl;
                 return 0;
+            case 6:
+                testing(student, program, course, semester);
+                return 0;
         }
     }
 }
