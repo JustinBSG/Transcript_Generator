@@ -43,22 +43,29 @@ void generate_semester_period(Semester *&semester, const Student *student, char 
 }
 
 void insert_course(Semester *&semester, Course *&course) {
-    if (semester->courses == nullptr) // if it is empty
-        semester->courses = course;
+    Semester *ptr = semester;
+    while (ptr != nullptr) {
+        if (strcmp(ptr->period, course->enrolled_semester) == 0)
+            break;
+        ptr = ptr->next;
+    }
+
+    if (ptr->courses == nullptr) // if it is empty
+        ptr->courses = course;
     else {
-        if (strcmp(semester->courses->code, course->code) > 0) { // Be the first element
-            course->next = semester->courses;
-            semester->courses = course;
+        if (strcmp(ptr->courses->code, course->code) > 0) { // Be the first element
+            course->next = ptr->courses;
+            ptr->courses = course;
         } else {
             // Be the last element
-            Course *p = semester->courses;
+            Course *p = ptr->courses;
             while (p->next != nullptr) {
                 p = p->next;
             }
-            if (strcmp(semester->courses->code, course->code) < 0) 
+            if (strcmp(p->code, course->code) < 0) 
                 p->next = course;
             else { // Be the middle element
-                p = semester->courses;
+                p = ptr->courses;
                 while (p->next != nullptr && !(strcmp(p->code, course->code) < 0 && strcmp(p->next->code, course->code) > 0)) 
                     p = p->next;
                 course->next = p->next;
@@ -90,21 +97,20 @@ float obtain_grade(const char grade[]) {
                 case '-':
                     grade_float = -0.3;
                     break;
-                case 'P':
-                    return 0;
                 default:
-                    break;
+                    return 0;
             }
     return grade_float;
 }
 
-// Calcalate tga, cga, cce in specific semester
 void calculate_gpa(Student *&student, Semester *&semester, Semester *&semester_head) {
     int total_credit = 0;
     Course *p = semester->courses;
     while (p != nullptr) {
-        if (strcmp(semester->courses->grade, "**") != 0)
-            total_credit += semester->courses->credit;
+        if (strcmp(p->grade, "**") != 0) {
+            total_credit += p->credit;
+            // cout << total_credit << " " << p->title << endl;
+        }
         p = p->next;
     }
     // calculate tga
@@ -259,7 +265,6 @@ void read_csv(Student *&student, Program *&program, Semester *&semester) {
                     }
                 }
                 // Input course information into semester
-                // fields[1]: string, fields[2]: string, fields[3]: int, fields[4]: string, fields[5]: string 
                 Course *temp = new Course;
                 strcpy(temp->code, fields[1].c_str());
                 strcpy(temp->title, fields[2].c_str());
@@ -364,4 +369,15 @@ void testing(Student *&student, Program *&program, Course *&course, Semester *&s
         cout << p->period << "\t" << p->cce << endl;
         p = p->next;
     }
+    // Semester *p = semester;
+    // while (p != nullptr) {
+    //     Course *ptr = p->courses;
+    //     cout << p->period << ":" << endl;
+    //     while (ptr != nullptr) {
+    //         cout << ptr->code << endl;
+    //         ptr = ptr->next;
+    //     }
+    //     cout << endl;
+    //     p = p->next;
+    // }
 }
