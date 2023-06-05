@@ -152,10 +152,19 @@ void calculate_gpa(Student *&student, Semester *&semester, Semester *&semester_h
     semester->cga /= semester->cce;
 }
 
+void separate_long_into_two(const char original[], char first[], char second[]) {
+    int index = 0;
+    for (int i = 0; i < 40; i++)
+        if (original[i] == ' ')
+            index = i;
+    strncpy(first, original, index);
+    strcpy(second, original+index+1);
+}
+
 int menu() {
     int option;
-    cout << "****************************** Transcript Generator *****************************" << endl;
-    cout << "=================================================================================" << endl;
+    cout << "******************************* Transcript Generator ******************************" << endl;
+    cout << "===================================================================================" << endl;
     cout << "Here are operations that you can choose:" << endl;
     cout << "1: Input data by yourself and form a CSV file." << endl;
     cout << "2: Input data from CSV file." << endl;
@@ -177,6 +186,7 @@ void read_csv(Student *&student, Program *&program, Semester *&semester) {
     cin >> input_path;
     ifstream fin(input_path);
     while (!fin) {
+        input_path = "";
         cout << "Cannot open " << input_path << endl;
         cout << "Please input a valid path." << endl;
         cout << "The path for the CSV file (e.g. ./files/student1.csv): ";
@@ -270,13 +280,13 @@ void read_csv(Student *&student, Program *&program, Semester *&semester) {
 void print_all(Student *&student, Program *&program, Semester *&semester) {
     cout << "Here is the transcript." << endl << endl;
     cout << "                    Unofficial Transcript of Academic Record" << endl;
-    cout << "---------------------------------------------------------------------------------" << endl << endl;
+    cout << "-----------------------------------------------------------------------------------" << endl << endl;
     cout << "Personal Information" << endl << endl;
     cout << "Name:\t\t" << student->student_name << endl;
     cout << "Student ID:\t" << student->sid << endl;
     cout << "Year of Study:\t" << student->year << endl;
     cout << "Advisor:\t" << student->advisor_name << endl << endl;
-    cout << "---------------------------------------------------------------------------------" << endl << endl;
+    cout << "-----------------------------------------------------------------------------------" << endl << endl;
     cout << "Academic Program" << endl << endl;
     cout << "Admit Date:\t" << student->admit_date << endl;
     cout << "Program:\t" << program->program << endl << endl;
@@ -287,29 +297,42 @@ void print_all(Student *&student, Program *&program, Semester *&semester) {
         cout << "Major:\t\t" << p->next->major << endl << endl;
         p = p->next;
     }
-    cout << "---------------------------------------------------------------------------------" << endl << endl;
+    cout << "-----------------------------------------------------------------------------------" << endl << endl;
     Semester *ptr = semester;
     do {
         if (ptr->courses != nullptr) {
             cout << "Academic Records" << endl << endl;
             cout << ptr->period << endl;
-            printf("%-15s%-38s%-13s%-10s%-10s\n", "", "", "Credit", "Credit","");
-            printf("%-15s%-38s%-13s%-10s%-10s\n", "Course Code", "Course Title", "Attempted", "Earned", "Grade");
+            printf("%-15s%-40s%-13s%-10s%-10s\n", "", "", "Credit", "Credit","");
+            printf("%-15s%-40s%-13s%-10s%-10s\n", "Course Code", "Course Title", "Attempted", "Earned", "Grade");
             Course *course = ptr->courses;
             while (course != nullptr) {
-                printf("%-15s%-38s%-13d", course->code, course->title, course->credit);
-                if (course->credit == 0)
-                    printf("%-10c", '-');
-                else
-                    printf("%-10d", course->credit);
-                printf("%-10s\n", course->grade);
+                if (strlen(course->title) <= 40) {
+                    printf("%-15s%-40s%-13d", course->code, course->title, course->credit);
+                    if (course->credit == 0)
+                        printf("%-10c", '-');
+                    else
+                        printf("%-10d", course->credit);
+                    printf("%-10s\n", course->grade);
+                } else {
+                    char first[38] = "", second[40] = "";
+                    separate_long_into_two(course->title, first, second);
+                    printf("%-15s%-40s%-13d",course->code, first, course->credit);
+                    if (course->credit == 0)
+                        printf("%-10c", '-');
+                    else
+                        printf("%-10d", course->credit);
+                    printf("%-10s\n", course->grade);
+                    printf("%-15s%-40s\n", "", second);
+                }
+                
                 course = course->next;
             }
             cout << endl << endl;
             cout << "TGA:\t" << ptr->tga << endl;
             cout << "CGA:\t" << ptr->cga << endl << endl;
             cout << "Cumulative Credits Earned:\t" << ptr->cce << endl << endl;
-            cout << "---------------------------------------------------------------------------------" << endl << endl;
+            cout << "-----------------------------------------------------------------------------------" << endl << endl;
         }
         ptr = ptr->next;
     } while (ptr != nullptr);

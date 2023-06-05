@@ -29,7 +29,7 @@ struct Program {
 
 // all courses
 struct Course {
-    char code[9] = "";
+    char code[10] = "";
     char title[100] = "";
     int credit;
     char grade[3] = "";
@@ -54,6 +54,7 @@ void generate_semester_period(Semester*&, const Student*, char [], const int, co
 void insert_course(Semester*&, Course*&);
 void calculate_gpa(Student *&, Semester*&, Semester*&);
 float obtain_grade(const char []);
+void separate_long_into_two(const char [], char [], char []);
 
 int menu();
 void read_csv(Student*&, Program*&, Semester*&);
