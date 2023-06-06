@@ -55,6 +55,9 @@ void insert_course(Semester*&, Course*&);
 void calculate_gpa(Student *&, Semester*&, Semester*&);
 float obtain_grade(const char []);
 void separate_long_into_two(const char [], char [], char []);
+void delete_program(Program *&);
+void delete_course(Course *&);
+void delete_semester(Semester *&);
 
 int menu();
 void read_csv(Student*&, Program*&, Semester*&);
