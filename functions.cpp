@@ -107,22 +107,17 @@ void calculate_gpa(Student *&student, Semester *&semester, Semester *&semester_h
     int total_credit = 0;
     Course *p = semester->courses;
     while (p != nullptr) {
-        if (strcmp(p->grade, "**") != 0) {
+        if (strcmp(p->grade, "**") != 0) 
             total_credit += p->credit;
-            // cout << total_credit << " " << p->title << endl;
-        }
         p = p->next;
     }
     // calculate tga
     p = semester->courses;
     while (p != nullptr) {
-        if (strcmp(p->grade, "**") != 0) {
+        if (strcmp(p->grade, "**") != 0) 
             semester->tga += obtain_grade(p->grade)*p->credit;
-            cout << p->grade << " " << obtain_grade(p->grade) << endl;
-        }
         p = p->next;
     }
-    cout << endl;
     semester->tga /= total_credit;
     // calculate cce
     Semester *ptr = semester_head;
@@ -336,8 +331,18 @@ void print_all(Student *&student, Program *&program, Semester *&semester) {
                 course = course->next;
             }
             cout << endl << endl;
-            cout << "TGA:\t" << ptr->tga << endl;
-            cout << "CGA:\t" << ptr->cga << endl << endl;
+            int flag = 0;
+            Course *temp = ptr->courses;
+            while (temp != nullptr) {
+                if (temp->credit != 0)
+                    flag = 1;
+                temp = temp->next;
+            }
+            if (flag != 1) 
+                printf("%-4s\t%s\n", "TGA:", "**");
+            else
+                printf("%-4s\t%0.3f\n", "TGA:", ptr->tga);
+            printf("%-4s\t%0.3f\n", "CGA:", ptr->cga);
             cout << "Cumulative Credits Earned:\t" << ptr->cce << endl << endl;
             cout << "-----------------------------------------------------------------------------------" << endl << endl;
         }
