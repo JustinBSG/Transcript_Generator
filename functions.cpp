@@ -80,25 +80,25 @@ float obtain_grade(const char grade[]) {
     for (int i = 0; i < 2; i++) 
             switch(grade[i]) {
                 case 'A':
-                    grade_float = 4.0;
+                    grade_float += 4.0;
                     break;
                 case 'B':
-                    grade_float = 3.0;
+                    grade_float += 3.0;
                     break;
                 case 'C':
-                    grade_float = 2.0;
+                    grade_float += 2.0;
                     break;
                 case 'D':
-                    grade_float = 1.0;
+                    grade_float += 1.0;
                     break;
                 case '+':
-                    grade_float = 0.3;
+                    grade_float += 0.3;
                     break;
                 case '-':
-                    grade_float = -0.3;
+                    grade_float += -0.3;
                     break;
                 default:
-                    return 0;
+                    return grade_float;
             }
     return grade_float;
 }
@@ -116,10 +116,13 @@ void calculate_gpa(Student *&student, Semester *&semester, Semester *&semester_h
     // calculate tga
     p = semester->courses;
     while (p != nullptr) {
-        if (strcmp(p->grade, "**") != 0)
+        if (strcmp(p->grade, "**") != 0) {
             semester->tga += obtain_grade(p->grade)*p->credit;
+            cout << p->grade << " " << obtain_grade(p->grade) << endl;
+        }
         p = p->next;
     }
+    cout << endl;
     semester->tga /= total_credit;
     // calculate cce
     Semester *ptr = semester_head;
@@ -369,6 +372,8 @@ void testing(Student *&student, Program *&program, Course *&course, Semester *&s
         cout << p->period << "\t" << p->cce << endl;
         p = p->next;
     }
+    cout << "Obtain grade:" << endl;
+
     // Semester *p = semester;
     // while (p != nullptr) {
     //     Course *ptr = p->courses;
