@@ -16,12 +16,13 @@ int main() {
                 read_csv(student, program, semester);
                 break;
             case 3:
+                modify_csv(student, program, semester);
                 break;
             case 4:
                 print_all(student, program, semester);
                 break;
             case 5:
-                delete_all_dynamic(student, program, course, semester);
+                delete_all_dynamic(student, program, semester);
                 std::cout << "Bye!!" << std::endl;
                 return 0;
             case 6:

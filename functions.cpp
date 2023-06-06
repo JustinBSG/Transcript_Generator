@@ -165,6 +165,41 @@ void separate_long_into_two(const char original[], char first[], char second[]) 
     strcpy(second, original+index+1);
 }
 
+void delete_program(Program *&program) {
+    if (program->next == nullptr) {
+        delete program;
+        program = nullptr;
+    } else {
+        delete_program(program->next);
+        delete program;
+        program = nullptr;
+    }
+}
+
+void delete_course(Course *&course) {
+    if (course->next == nullptr) {
+        delete course;
+        course = nullptr;
+    } else {
+        delete_course(course->next);
+        delete course;
+        course = nullptr;
+    }
+}
+
+void delete_semester(Semester *&semester) {
+    if (semester->next == nullptr) {
+        delete_course(semester->courses);
+        delete semester;
+        semester = nullptr;
+    } else {
+        delete_semester(semester->next);
+        delete_course(semester->courses);
+        delete semester;
+        semester = nullptr;
+    }
+}
+
 int menu() {
     int option;
     cout << "******************************* Transcript Generator ******************************" << endl;
@@ -350,46 +385,11 @@ void print_all(Student *&student, Program *&program, Semester *&semester) {
     } while (ptr != nullptr);
 }
 
-void modify_csv() {
+void modify_csv(Student *&student, Program *&program, Semester *&semester) {
     
 }
 
-void delete_program(Program *&program) {
-    if (program->next == nullptr) {
-        delete program;
-        program = nullptr;
-    } else {
-        delete_program(program->next);
-        delete program;
-        program = nullptr;
-    }
-}
-
-void delete_course(Course *&course) {
-    if (course->next == nullptr) {
-        delete course;
-        course = nullptr;
-    } else {
-        delete_course(course->next);
-        delete course;
-        course = nullptr;
-    }
-}
-
-void delete_semester(Semester *&semester) {
-    if (semester->next == nullptr) {
-        delete_course(semester->courses);
-        delete semester;
-        semester = nullptr;
-    } else {
-        delete_semester(semester->next);
-        delete_course(semester->courses);
-        delete semester;
-        semester = nullptr;
-    }
-}
-
-void delete_all_dynamic(Student *&student, Program *&program, Course *&course, Semester *&semester) {
+void delete_all_dynamic(Student *&student, Program *&program, Semester *&semester) {
     delete student;
     student = nullptr;
     delete_program(program);
