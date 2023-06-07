@@ -3,14 +3,13 @@
 int main() {
     Student *student = nullptr;
     Program *program = nullptr;
-    Course *course = nullptr;
     Semester *semester = nullptr;
     
     while (1) {
         int option = menu();
         switch (option) {
             case 1:
-                
+                insert_csv(student, program, semester);
                 break;
             case 2:
                 read_csv(student, program, semester);
@@ -26,7 +25,7 @@ int main() {
                 std::cout << "Bye!!" << std::endl;
                 return 0;
             case 6:
-                testing(student, program, course, semester);
+                testing(student, program, semester);
                 return 0;
         }
     }

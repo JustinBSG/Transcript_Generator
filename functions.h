@@ -55,13 +55,17 @@ void insert_course(Semester*&, Course*&);
 void calculate_gpa(Student *&, Semester*&, Semester*&);
 float obtain_grade(const char []);
 void separate_long_into_two(const char [], char [], char []);
+void insert_data(const int, Student*, Program*, Semester*);
+void change_data(const int, Student*, Program*, Semester*);
+void delete_data(const int, Student*, Program*, Semester*);
 void delete_program(Program *&);
 void delete_course(Course *&);
 void delete_semester(Semester *&);
 
 int menu();
+void insert_csv(Student*&, Program*&, Semester*&);
 void read_csv(Student*&, Program*&, Semester*&);
 void print_all(Student*&, Program*&, Semester*&);
 void modify_csv(Student*&, Program*&, Semester*&);
 void delete_all_dynamic(Student*&, Program*&, Semester*&);
-void testing(Student*&, Program*&, Course*&, Semester*&);
+void testing(Student*&, Program*&, Semester*&);

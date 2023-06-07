@@ -165,36 +165,75 @@ void separate_long_into_two(const char original[], char first[], char second[]) 
     strcpy(second, original+index+1);
 }
 
-void delete_program(Program *&program) {
+void insert_data(const int option, Student *student, Program *program, Semester *semester) {
+    switch (option) {
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+    }
+}
+
+void change_data(const int option, Student *student, Program *program, Semester *semester) {
+    switch (option) {
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+    }
+}
+
+void delete_data(const int option, Student *student, Program *program, Semester *semester) {
+    switch (option) {
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+    }
+}
+
+void delete_whole_program(Program *&program) {
     if (program->next == nullptr) {
         delete program;
         program = nullptr;
     } else {
-        delete_program(program->next);
+        delete_whole_program(program->next);
         delete program;
         program = nullptr;
     }
 }
 
-void delete_course(Course *&course) {
+void delete_whole_course(Course *&course) {
     if (course->next == nullptr) {
         delete course;
         course = nullptr;
     } else {
-        delete_course(course->next);
+        delete_whole_course(course->next);
         delete course;
         course = nullptr;
     }
 }
 
-void delete_semester(Semester *&semester) {
+void delete_whole_semester(Semester *&semester) {
     if (semester->next == nullptr) {
-        delete_course(semester->courses);
+        delete_whole_course(semester->courses);
         delete semester;
         semester = nullptr;
     } else {
-        delete_semester(semester->next);
-        delete_course(semester->courses);
+        delete_whole_semester(semester->next);
+        delete_whole_course(semester->courses);
         delete semester;
         semester = nullptr;
     }
@@ -217,6 +256,10 @@ int menu() {
         cin >> option;
     }
     return option;
+}
+
+void insert_csv(Student *&student, Program *&program, Semester *&semester) {
+
 }
 
 void read_csv(Student *&student, Program *&program, Semester *&semester) {
@@ -386,17 +429,51 @@ void print_all(Student *&student, Program *&program, Semester *&semester) {
 }
 
 void modify_csv(Student *&student, Program *&program, Semester *&semester) {
-    
+    int option_data, option_modify;
+    cout << endl << "Here are four types of data that you can modify:" << endl;
+    cout << "1: Personal Information of Student." << endl;
+    cout << "2: Information about Program." << endl;
+    cout << "3: Semester." << endl;
+    cout << "4: Course." << endl;
+    cout << "What type of data that you want to modify:";
+    cin >> option_data;
+    while (option_data > 4 || option_data < 1) {
+        cout << "Please input valid choice: ";
+        cin >> option_data;
+    }
+    cout << endl << "Here are three operations to the data:" << endl;
+    cout << "1: Insert new data." << endl;
+    cout << "2: Change value of existing data" << endl;
+    cout << "3: Delete exisitng data." << endl;
+    cin >> option_modify;
+    while (option_modify > 3|| option_modify < 1) {
+        cout << "Please input valid choice:";
+        cin >> option_modify;
+    }
+
+    switch (option_modify) {
+        case 1:
+            insert_data(option_data, student, program, semester);
+            break;
+        case 2:
+            change_data(option_data, student, program, semester);
+            break;
+        case 3:
+            delete_data(option_data, student, program, semester);
+            break;
+    }
+
+    // change data in csv file
 }
 
 void delete_all_dynamic(Student *&student, Program *&program, Semester *&semester) {
     delete student;
     student = nullptr;
-    delete_program(program);
-    delete_semester(semester);
+    delete_whole_program(program);
+    delete_whole_semester(semester);
 }
 
-void testing(Student *&student, Program *&program, Course *&course, Semester *&semester) {
+void testing(Student *&student, Program *&program, Semester *&semester) {
     Semester *p = semester;
     cout << "TGA:" << endl;
     while (p != nullptr) {
