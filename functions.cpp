@@ -278,7 +278,7 @@ void insert_data(const int option,Student *&student, Program *&program, Semester
             if (semester == nullptr) {
                 semester = temp;
             } else {
-                char years1[8] = "", char years2[8] = "";
+                char years1[8] = "", years2[8] = "";
                 int season1, season2;
                 generate_compare_period(temp->period, years1, season1);
                 generate_compare_period(semester->period, years2, season2);
