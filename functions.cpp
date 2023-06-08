@@ -21,9 +21,9 @@ int find_index_month(const char *str) {
         }
 }
 
-void generate_compare_period(Program *&temp, char years[], int &season) {
+void generate_compare_period(char temp[], char years[], int &season) {
     char season_char[10] = "";
-    strcpy(season_char, temp->change_date+find_index_month(temp->change_date));
+    strcpy(season_char, temp+find_index_month(temp));
     if (strcmp(season_char, "Fall") == 0)
         season = 1;
     else if (strcmp(season_char, "Winter") == 0)
@@ -32,7 +32,7 @@ void generate_compare_period(Program *&temp, char years[], int &season) {
         season = 3;
     else 
         season = 4;
-    strncpy(years, temp->change_date, find_index_month(temp->change_date));
+    strncpy(years, temp, find_index_month(temp));
 }
 
 void generate_semester_period(Semester *&semester, const Student *student, char start_year[], const int i, const int j) {
@@ -189,7 +189,7 @@ void separate_long_into_two(const char original[], char first[], char second[]) 
     strcpy(second, original+index+1);
 }
 
-void insert_data(const int option, Program *program, Semester *semester) {
+void insert_data(const int option,Student *&student, Program *&program, Semester *&semester) {
     switch (option) {
         case 2: {
             cin.clear();
@@ -204,15 +204,15 @@ void insert_data(const int option, Program *program, Semester *semester) {
             temp->next = nullptr;
 
             char years1[8] = "";
-            int season1, year1_int;
-            generate_compare_period(temp, years1, season1);
+            int season1;
+            generate_compare_period(temp->change_date, years1, season1);
             if (program == nullptr) 
                 program = temp;
             else {
                 Program *p = program->next;
                 char years2[8] = "";
                 int season2;
-                generate_compare_period(p, years2, season2);
+                generate_compare_period(p->change_date, years2, season2);
                 if (strcmp(years1, years2) < 0 || strcmp(years1, years2) == 0 && season1 < season2) { // Be the first
                     temp->next = p;
                     program->next = temp;
@@ -220,7 +220,7 @@ void insert_data(const int option, Program *program, Semester *semester) {
                     p = program;
                     while (p->next != nullptr)
                         p = p->next;
-                    generate_compare_period(p, years2, season2);
+                    generate_compare_period(p->change_date, years2, season2);
                     if (strcmp(years1, years2) > 0 || strcmp(years1, years2) == 0 && season1 > season2) // Be the last
                         p->next = temp;
                     else if (strcmp(years1, years2) == 0 && season1 == season2) {
@@ -233,14 +233,14 @@ void insert_data(const int option, Program *program, Semester *semester) {
                         while (p->next != nullptr) {
                             char years3[8] = "";
                             int season3;
-                            generate_compare_period(p, years2, season2);
-                            generate_compare_period(p->next, years3, season3);
+                            generate_compare_period(p->change_date, years2, season2);
+                            generate_compare_period(p->next->change_date, years3, season3);
                             if (strcmp(years1, years2) > 0 && strcmp(years1, years3) < 0 || // Be the middle
-                                (strcmp(years1, years2) == 0 && strcmp(years2, years3) < 0 && season1 < season2 && season2 < season3) ||
-                                (strcmp(years1, years2) < 0 && strcmp(years2, years3) == 0 && season1 < season2 && season2 < season3)) {
-                                    Program *ptr = p->next;
+                                (strcmp(years1, years2) == 0 && strcmp(years1, years3) < 0 && season1 > season2) ||
+                                (strcmp(years1, years2) > 0 && strcmp(years1, years3) == 0 && season1 < season3) ||
+                                (strcmp(years1, years2) == 0 && strcmp(years1, years3) == 0 && season1 > season2 && season1 < season3)) {
+                                    temp->next = p->next;
                                     p->next = temp;
-                                    temp->next = ptr;
                                     return;
                                 }
                             p = p->next;
@@ -250,12 +250,116 @@ void insert_data(const int option, Program *program, Semester *semester) {
             }
             break;
         }
-        case 3:
+        case 3: {
+            cin.clear();
+            cin.sync();
+            Semester *temp = new Semester;
+            cout << "Please input period of the semester(e.g. 2022-23 Fall): ";
+            cin.getline(temp->period, 20);
+            Semester *p = semester;
+            while (p != nullptr) {
+                if (strcmp(p->period, temp->period) == 0) {
+                    cout << "It has already existed." << endl;
+                    cout << "Therefore, this input is invalid." << endl;
+                    delete temp;
+                    temp = nullptr;
+                    return;
+                }
+                p = p->next;
+            }
+            p = semester;
+            while (p->next != nullptr)
+                p = p->next;
+            temp->cce = p->cce;
+            temp->tga = 0;
+            temp->cga = p->cga;
+            temp->next = nullptr;
+            temp->courses = nullptr;
+            if (semester == nullptr) {
+                semester = temp;
+            } else {
+                char years1[8] = "", char years2[8] = "";
+                int season1, season2;
+                generate_compare_period(temp->period, years1, season1);
+                generate_compare_period(semester->period, years2, season2);
+                if (strcmp(years1, years2) < 0 || strcmp(years1, years2) == 0 && season1 < season2) { // Be the first
+                    temp->next = semester;
+                    semester = temp;
+                } else {
+                    p = semester;
+                    while (p->next != nullptr)
+                        p = p->next;
+                    generate_compare_period(p->period, years2, season2);
+                    if (strcmp(years1, years2) < 0 || strcmp(years1, years2) == 0 && season1 < season2) // Be the last
+                        p->next = temp;
+                    else {
+                        p = semester;
+                        while (p->next != nullptr) {
+                            char years3[8] = "";
+                            int season3;
+                            generate_compare_period(p->period, years2, season2);
+                            generate_compare_period(p->next->period, years3, season3);
+                            if (strcmp(years1, years2) > 0 && strcmp(years1, years3) < 0 || // Be the middle
+                                (strcmp(years1, years2) == 0 && strcmp(years1, years3) < 0 && season1 > season2) ||
+                                (strcmp(years1, years2) > 0 && strcmp(years1, years3) == 0 && season1 < season3) ||
+                                (strcmp(years1, years2) == 0 && strcmp(years1, years3) == 0 && season1 > season2 && season1 < season3)) {
+                                    temp->next = p->next;
+                                    p->next = temp;
+                                    cout << "Reminder: It is a normal situation that the latest inserted semester is hidden after generating transcipt." << endl;
+                                    cout << "It is because there is no any course in that semester." << endl;
+                                    cout << "That semester will be shown after you insert a course into that semester." << endl;
+                                    return;
+                                }
+                            p = p->next;
+                        }
+                    }
+                }
+            }
             break;
+        }
+        case 4: {
+            cin.clear();
+            cin.sync();
+            Course *temp = new Course;
+            char credit;
+            cout << "Please input the course code(e.g. COMP1021): ";
+            cin.getline(temp->code, 9);
+            cout << "Please input the course title(e.g. Introduction to Computer Science): ";
+            cin.getline(temp->title, 99);
+            cin.clear();
+            cin.sync();
+            cout << "Please input the credit of this course: ";
+            cin >> credit;
+            while (!isdigit(credit)) {
+                cout << "Please input number: ";
+                cin >> credit;
+            }
+            temp->credit = credit-48;
+            cout << "Please input the enrolled semester(e.g. 2021-22 Fall): ";
+            cin.getline(temp->enrolled_semester, 19);
+            cout << "Please input the grade in capital letter(if it has not released yet, just input **): ";
+            cin.getline(temp->grade, 2);
+            Semester *p = semester;
+            while (p != nullptr && strcmp(p->period, temp->enrolled_semester) != 0) 
+                p = p->next;
+            if (p == nullptr) {
+                cout << "Please insert the semester before inserting course to that semester.";
+                delete temp;
+                temp = nullptr;
+            } else {
+                insert_course(p, temp);
+                p = semester;
+                while (p != nullptr && strcmp(p->period, temp->enrolled_semester) != 0) {
+                    p = p->next;
+                }
+                calculate_gpa(student, p, semester);
+            }
+            break;
+        }
     }
 }
 
-void change_data(const int option, Student *student, Program *program, Semester *semester) {
+void change_data(const int option, Student *&student, Program *&program, Semester *&semester) {
     switch (option) {
         case 1:
             break;
@@ -266,13 +370,13 @@ void change_data(const int option, Student *student, Program *program, Semester 
     }
 }
 
-void delete_data(const int option, Program *program, Semester *semester) {
+void delete_data(const int option, Program *&program, Semester *&semester) {
     switch (option) {
         case 2:
             break;
         case 3:
             break;
-    }\
+    }
 }
 
 void delete_whole_program(Program *&program) {
@@ -527,7 +631,7 @@ void modify_csv(Student *&student, Program *&program, Semester *&semester) {
     switch (option_modify) {
         case 1:
             if (option_data != 1)
-                insert_data(option_data, program, semester);
+                insert_data(option_data, student, program, semester);
             else {
                 cout << "There is no missing field of student's personal information." << endl;
                 cout << "You can only change students's personal information." << endl;
