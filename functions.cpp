@@ -11,6 +11,30 @@ int find_index_year(const char *str) {
         }
 }
 
+int find_index_month(const char *str) {
+    int count_white_space = 0;
+    for (int i = 0; i < strlen(str); i++) 
+        if (str[i] == ' ') {
+            count_white_space++;
+            if (count_white_space == 1)
+                return i+1;
+        }
+}
+
+void generate_compare_period(Program *&temp, char years[], int &season) {
+    char season_char[10] = "";
+    strcpy(season_char, temp->change_date+find_index_month(temp->change_date));
+    if (strcmp(season_char, "Fall") == 0)
+        season = 1;
+    else if (strcmp(season_char, "Winter") == 0)
+        season = 2;
+    else if (strcmp(season_char, "Spring") == 0)
+        season = 3;
+    else 
+        season = 4;
+    strncpy(years, temp->change_date, find_index_month(temp->change_date));
+}
+
 void generate_semester_period(Semester *&semester, const Student *student, char start_year[], const int i, const int j) {
     char sem[7] = "";
     switch(j) {
@@ -165,15 +189,68 @@ void separate_long_into_two(const char original[], char first[], char second[]) 
     strcpy(second, original+index+1);
 }
 
-void insert_data(const int option, Student *student, Program *program, Semester *semester) {
+void insert_data(const int option, Program *program, Semester *semester) {
     switch (option) {
-        case 1:
+        case 2: {
+            cin.clear();
+            cin.sync();
+            Program *temp = new Program;
+            cout << "Please input the name of the program: ";
+            cin.getline(temp->program, 50);
+            cout << "Please input the period of changing program (e.g. 2020-21 Fall)(Input NA if it is the first program): ";
+            cin.getline(temp->change_date, 100);
+            cout << "Please input the name of the major (Input NA if it is board-based program): ";
+            cin.getline(temp->major, 40);
+            temp->next = nullptr;
+
+            char years1[8] = "";
+            int season1, year1_int;
+            generate_compare_period(temp, years1, season1);
+            if (program == nullptr) 
+                program = temp;
+            else {
+                Program *p = program->next;
+                char years2[8] = "";
+                int season2;
+                generate_compare_period(p, years2, season2);
+                if (strcmp(years1, years2) < 0 || strcmp(years1, years2) == 0 && season1 < season2) { // Be the first
+                    temp->next = p;
+                    program->next = temp;
+                } else {
+                    p = program;
+                    while (p->next != nullptr)
+                        p = p->next;
+                    generate_compare_period(p, years2, season2);
+                    if (strcmp(years1, years2) > 0 || strcmp(years1, years2) == 0 && season1 > season2) // Be the last
+                        p->next = temp;
+                    else if (strcmp(years1, years2) == 0 && season1 == season2) {
+                        cout << "You cannot change the program twice in the same semester." << endl;
+                        cout << "Therefore, this input is invalid." << endl;
+                        delete temp;
+                        temp = nullptr;
+                    } else {
+                        p = program;
+                        while (p->next != nullptr) {
+                            char years3[8] = "";
+                            int season3;
+                            generate_compare_period(p, years2, season2);
+                            generate_compare_period(p->next, years3, season3);
+                            if (strcmp(years1, years2) > 0 && strcmp(years1, years3) < 0 || // Be the middle
+                                (strcmp(years1, years2) == 0 && strcmp(years2, years3) < 0 && season1 < season2 && season2 < season3) ||
+                                (strcmp(years1, years2) < 0 && strcmp(years2, years3) == 0 && season1 < season2 && season2 < season3)) {
+                                    Program *ptr = p->next;
+                                    p->next = temp;
+                                    temp->next = ptr;
+                                    return;
+                                }
+                            p = p->next;
+                        }
+                    }
+                }
+            }
             break;
-        case 2:
-            break;
+        }
         case 3:
-            break;
-        case 4:
             break;
     }
 }
@@ -186,22 +263,16 @@ void change_data(const int option, Student *student, Program *program, Semester 
             break;
         case 3:
             break;
-        case 4:
-            break;
     }
 }
 
-void delete_data(const int option, Student *student, Program *program, Semester *semester) {
+void delete_data(const int option, Program *program, Semester *semester) {
     switch (option) {
-        case 1:
-            break;
         case 2:
             break;
         case 3:
             break;
-        case 4:
-            break;
-    }
+    }\
 }
 
 void delete_whole_program(Program *&program) {
@@ -274,6 +345,7 @@ void read_csv(Student *&student, Program *&program, Semester *&semester) {
         cout << "The path for the CSV file (e.g. ./files/student1.csv): ";
         cin >> input_path;
     }
+    cout << endl;
 
     string line;
     string fields[5];
@@ -435,7 +507,7 @@ void modify_csv(Student *&student, Program *&program, Semester *&semester) {
     cout << "2: Information about Program." << endl;
     cout << "3: Semester." << endl;
     cout << "4: Course." << endl;
-    cout << "What type of data that you want to modify:";
+    cout << "What type of data that you want to modify(1-4): ";
     cin >> option_data;
     while (option_data > 4 || option_data < 1) {
         cout << "Please input valid choice: ";
@@ -445,21 +517,32 @@ void modify_csv(Student *&student, Program *&program, Semester *&semester) {
     cout << "1: Insert new data." << endl;
     cout << "2: Change value of existing data" << endl;
     cout << "3: Delete exisitng data." << endl;
+    cout << "What operation do you to want to perform(1-3): ";
     cin >> option_modify;
     while (option_modify > 3|| option_modify < 1) {
-        cout << "Please input valid choice:";
+        cout << "Please input valid choice: ";
         cin >> option_modify;
     }
 
     switch (option_modify) {
         case 1:
-            insert_data(option_data, student, program, semester);
+            if (option_data != 1)
+                insert_data(option_data, program, semester);
+            else {
+                cout << "There is no missing field of student's personal information." << endl;
+                cout << "You can only change students's personal information." << endl;
+            } 
             break;
         case 2:
             change_data(option_data, student, program, semester);
             break;
         case 3:
-            delete_data(option_data, student, program, semester);
+            if (option_data != 1)
+                    delete_data(option_data, program, semester);
+            else {
+                cout << "You cannot delete any student's personal information specificly." << endl;
+                cout << "You can only change students's personal information." << endl;
+            } 
             break;
     }
 
