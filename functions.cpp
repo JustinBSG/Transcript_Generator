@@ -193,7 +193,7 @@ void separate_long_into_two(const char original[], char first[], char second[]) 
     strcpy(second, original+index+1);
 }
 
-void insert_data(const int option,Student *&student, Program *&program, Semester *&semester) {
+void insert_data(const int option, Student *&student, Program *&program, Semester *&semester) {
     switch (option) {
         case 2: {
             cin.clear();
@@ -382,6 +382,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                 cout << "Please input a valid option: ";
                 cin >> option_data;
             }
+            cout << endl;
             switch(option_data) {
                 case 1: {
                     char new_name[30] = "";
@@ -427,15 +428,125 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
             break;
         } 
         case 2: { // program
+            char semester_change[100] = "";
             cout << "Reminder: Please input NA if you want to change content in your first program." << endl;
             cout << "Please input the semester(e.g. 2022-23 Fall): ";
-
-            cout << "There are 3 types of content that you can change about program." << endl;
-            cout << "1: Name of Program" << endl;
-            cout << "2: Date of Changing Program" << endl;
-            cout << "3: Name of Major" << endl;
-            cout << "Which type of content that you want to change: ";
-
+            Program *p = program;
+            while (p != nullptr && strcmp(p->change_date, semester_change) != 0) 
+                p = p->next;
+            if (p == nullptr) {
+                cout << "There is no program with that semester of changing program." << endl;
+                cout << "Therefore, it is an invalid input." << endl;
+            } else {
+                cin.clear();
+                cin.sync();
+                int option_data;
+                cout << endl << "There are 3 types of content that you can change about program." << endl;
+                cout << "1: Name of Program" << endl;
+                cout << "2: Date of Changing Program" << endl;
+                cout << "3: Name of Major" << endl;
+                cout << "Which type of content that you want to change: ";
+                cin >> option_data;
+                switch (option_data) {
+                    case 1: {
+                        char new_name[50] = "";
+                        cout << "The original name of program is " << p->program << "." << endl;
+                        cout << "Please input name of program: ";
+                        cin.getline(new_name, 49);
+                        strcpy(p->program, new_name);
+                        break;
+                    }
+                    case 2:{
+                        char new_date[100] = "", years1[8] = "";
+                        int season1;
+                        cout << "The original date of changing program is " << p->change_date << "." << endl;
+                        cout << "Please input date of changing program: ";
+                        cin.getline(new_date, 99);
+                        Program *test = program;
+                        int flag = 0;
+                        while (test != nullptr && strcmp(test->change_date, new_date) != 0) 
+                            test = test->next;
+                        if (test != nullptr) { // check if it is same with some programs
+                            cout << "You cannot change the program twice in the same semester." << endl;
+                            cout << "Therefore, this input is invalid." << endl;
+                        } else {                     
+                            Program *temp = new Program;
+                            strcpy(temp->change_date, new_date);
+                            strcpy(temp->major, p->major);
+                            strcpy(temp->program, p->program);
+                            temp->next = nullptr;
+                            if (program->next == p) { // delete first
+                                program->next = p->next;
+                                delete p;
+                                p = nullptr;
+                            } else {
+                                if (p->next == nullptr) { // delete last
+                                    delete p;
+                                    p = nullptr;
+                                } else { // delete middle
+                                    Program *ptr = program;
+                                    while (ptr->next == p) {
+                                        ptr = ptr->next;
+                                    }
+                                    ptr->next = p->next;
+                                    delete p;
+                                    p = nullptr;
+                                }
+                            }
+                            // check whether insert_data have bug before un// it 
+                            // char years1[8] = "";
+                            // int season1;
+                            // generate_compare_period(temp->change_date, years1, season1);
+                            // if (program == nullptr) 
+                            //     program = temp;
+                            // else {
+                            //     Program *p = program->next;
+                            //     char years2[8] = "";
+                            //     int season2;
+                            //     generate_compare_period(p->change_date, years2, season2);
+                            //     if (strcmp(years1, years2) < 0 || strcmp(years1, years2) == 0 && season1 < season2) { // Be the first
+                            //         temp->next = p;
+                            //         program->next = temp;
+                            //     } else {
+                            //         p = program;
+                            //         while (p->next != nullptr)
+                            //             p = p->next;
+                            //         generate_compare_period(p->change_date, years2, season2);
+                            //         if (strcmp(years1, years2) > 0 || strcmp(years1, years2) == 0 && season1 > season2) // Be the last
+                            //             p->next = temp;
+                            //         else {
+                            //             p = program;
+                            //             while (p->next != nullptr) {
+                            //                 char years3[8] = "";
+                            //                 int season3;
+                            //                 generate_compare_period(p->change_date, years2, season2);
+                            //                 generate_compare_period(p->next->change_date, years3, season3);
+                            //                 if (strcmp(years1, years2) > 0 && strcmp(years1, years3) < 0 || // Be the middle
+                            //                     (strcmp(years1, years2) == 0 && strcmp(years1, years3) < 0 && season1 > season2) ||
+                            //                     (strcmp(years1, years2) > 0 && strcmp(years1, years3) == 0 && season1 < season3) ||
+                            //                     (strcmp(years1, years2) == 0 && strcmp(years1, years3) == 0 && season1 > season2 && season1 < season3)) {
+                            //                         temp->next = p->next;
+                            //                         p->next = temp;
+                            //                         cout << endl;
+                            //                         return;
+                            //                     }
+                            //                 p = p->next;
+                            //             }
+                            //         }
+                            //     }
+                            // }
+                        }
+                    }
+                    case 3: {
+                        char new_name[40] = "";
+                        cout << "The original name of major is " << p->major << "." << endl;
+                        cout << "Please input name of major: ";
+                        cin.getline(new_name, 39);
+                        strcpy(p->major, new_name);
+                        break;
+                    }
+                }
+            }
             break;
         }
         case 3: { // semester
