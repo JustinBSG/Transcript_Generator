@@ -180,6 +180,10 @@ void calculate_gpa(Student *&student, Semester *&semester, Semester *&semester_h
     semester->cga /= semester->cce;
 }
 
+void update_calculation_data(Student *&student, Semester *&semester) {
+
+}
+
 void separate_long_into_two(const char original[], char first[], char second[]) {
     int index = 0;
     for (int i = 0; i < 40; i++)
@@ -254,7 +258,7 @@ void insert_data(const int option,Student *&student, Program *&program, Semester
             cin.clear();
             cin.sync();
             Semester *temp = new Semester;
-            cout << "Please input period of the semester(e.g. 2022-23 Fall): ";
+            cout << "Please input the semester(e.g. 2022-23 Fall): ";
             cin.getline(temp->period, 20);
             Semester *p = semester;
             while (p != nullptr) {
@@ -360,15 +364,102 @@ void insert_data(const int option,Student *&student, Program *&program, Semester
 }
 
 void change_data(const int option, Student *&student, Program *&program, Semester *&semester) {
+    // show the original one before changing its content
+    cin.clear();
+    cin.sync();
     switch (option) {
-        case 1:
+        case 1: { // students
+            int option_data;
+            cout << "There are 5 types of content that you can change about student's personal information." << endl;
+            cout << "1: Name of Student" << endl;
+            cout << "2: Name of Advisor" << endl;
+            cout << "3: Admit Date" << endl;
+            cout << "4: Student ID" << endl;
+            cout << "5: Year of Study" << endl;
+            cout << "Which type of content that you want to change: ";
+            cin >> option_data;
+            while (option_data > 5 || option_data < 1) {
+                cout << "Please input a valid option: ";
+                cin >> option_data;
+            }
+            switch(option_data) {
+                case 1: {
+                    char new_name[30] = "";
+                    cout << "The original name of student is " << student->student_name << "." << endl;
+                    cout << "Please input the name of student: ";
+                    cin.getline(new_name, 29);
+                    strcpy(student->student_name, new_name);
+                    break;
+                }
+                case 2: {
+                    char new_name[30] = "";
+                    cout << "The original name of advisor is " << student->advisor_name << "." << endl;
+                    cout << "Please input the name of advisor: ";
+                    cin.getline(new_name, 29);
+                    strcpy(student->advisor_name, new_name);
+                    break;
+                }
+                case 3: {
+                    char new_admit_date[30] = "";
+                    cout << "The original admit date is " << student->admit_date << "." << endl;
+                    cout << "Please input admit date: ";
+                    cin.getline(new_admit_date, 29);
+                    strcpy(student->admit_date, new_admit_date);
+                    break;
+                }
+                case 4: {
+                    int new_sid;
+                    cout << "The original student ID is " << student->sid << "." << endl;
+                    cout << "Please input student ID: ";
+                    cin >> new_sid;
+                    student->sid = new_sid;
+                    break;
+                }
+                case 5: {
+                    int new_year;
+                    cout << "The original year of study is " << student->year << "." << endl;
+                    cout << "Please input year of study: ";
+                    cin >> new_year;
+                    student->year = new_year;
+                    break;
+                }
+            }
             break;
-        case 2:
+        } 
+        case 2: { // program
+            cout << "Reminder: Please input NA if you want to change content in your first program." << endl;
+            cout << "Please input the semester(e.g. 2022-23 Fall): ";
+
+            cout << "There are 3 types of content that you can change about program." << endl;
+            cout << "1: Name of Program" << endl;
+            cout << "2: Date of Changing Program" << endl;
+            cout << "3: Name of Major" << endl;
+            cout << "Which type of content that you want to change: ";
+
             break;
-        case 3:
+        }
+        case 3: { // semester
+            cout << "Please input the semester(e.g. 2022-23 Fall): ";
+
+            cout << "There is 1 type of content that you can change about semester which is period of the semester." << endl;
+            cout << "Reminder: Changing the period of semester will affect all courses that are enrolled in that semester, calculation of CGA and CCE." << endl;
+            cout << "Do you still want to continue(yes/no)? ";
+
             break;
-        case 4:
+        }
+        case 4: { // course
+            cout << "Please input the semester(e.g. 2022-23 Fall): ";
+
+            cout << "There are 5 types of content that you can change about course." << endl;
+            cout << "1: Course Code" << endl;
+            cout << "2: Course Title" << endl;
+            cout << "3: Number of Credit" << endl;
+            cout << "4: Grade" << endl;
+            cout << "5: Enrolled Semester" << endl;
+            cout << "Which type of content that you want to change: ";
+
             break;
+        }
     }
 }
 
