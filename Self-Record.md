@@ -33,13 +33,13 @@ This generator uses the grading system that is used at the HKUST.
 - [ ] It can generate a TGA and CGA graphs on the last page of that pdf file.
 
 ## Progress
-Completed:&emsp;read csv file (option 2)<br />
-        &emsp;generate transcript on terminal (option 4)<br />
+Completed:&ensp;read csv file (option 2)<br />
+&emsp;&emsp;&emsp;generate transcript on terminal (option 4)<br />
 
-Working on:&emsp;modify data from csv file (option 3)<br />
+Working on:&nbsp;modify data from csv file (option 3)<br />
 
-Not start:&emsp;input data and create a csv file (option 1)<br />
-        &emsp;delete all dynamic data type (option 5)<br />
+Not start:&ensp;input data and create a csv file (option 1)<br />
+&emsp;&emsp;&emsp;delete all dynamic data type (option 5)<br />
 
 ## Deadline
 17/6
