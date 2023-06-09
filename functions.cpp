@@ -343,7 +343,7 @@ void insert_data(const int option,Student *&student, Program *&program, Semester
             while (p != nullptr && strcmp(p->period, temp->enrolled_semester) != 0) 
                 p = p->next;
             if (p == nullptr) {
-                cout << "Please insert the semester before inserting course to that semester.";
+                cout << "Please insert the semester before inserting course to that semester." << endl;
                 delete temp;
                 temp = nullptr;
             } else {
@@ -367,15 +367,116 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
             break;
         case 3:
             break;
+        case 4:
+            break;
     }
 }
 
 void delete_data(const int option, Program *&program, Semester *&semester) {
+    cin.clear();
+    cin.sync();
     switch (option) {
-        case 2:
+        case 2: {
+            char change_date_delete[100] = "";
+            cout << "Reminder: You cannot delete the first program that you have." << endl;
+            cout << "You can only change its content." << endl;
+            cout << "Please input the semester of changing the program that you want to delete(e.g. 2021-22 Fall): ";
+            cin.getline(change_date_delete, 100);
+            Program *p = program;
+            while (p != nullptr && strcmp(p->change_date, change_date_delete) != 0) 
+                p = p->next;
+            if (p == nullptr) {
+                cout << "There is no program with that semester of changing program." << endl;
+                cout << "Therefore, it is an invalid input." << endl;
+            } else {
+                p = program;
+                while (strcmp(p->next->change_date, change_date_delete) != 0)
+                    p = p->next;
+                if (p->next->next == nullptr) {
+                    delete p->next;
+                    p->next = nullptr;
+                } else {
+                    Program *ptr = p->next;
+                    p->next = p->next->next;
+                    delete ptr;
+                    ptr = nullptr;
+                }
+            }
             break;
-        case 3:
+        }
+        case 3: {
+            char semester_period[20] = "";
+            cout << "Reminder: Deleting the semester will delete all courses that are enrolled in that semester too" << endl;
+            cout << "Please input the semester(e.g. 2021-22 Fall): ";
+            cin.getline(semester_period, 19);
+            Semester *p = semester;
+            while (p != nullptr && strcmp(p->period, semester_period) != 0) 
+                p = p->next;
+            if (p == nullptr) {
+                cout << "There is no such that semester." << endl;
+                cout << "Therefore, it is an invalid input." << endl;
+            } else {
+                delete_whole_course(p->courses);
+                p = semester;
+                while (strcmp(p->next->period, semester_period) != 0)
+                    p = p->next;
+                if (p->next->next == nullptr) {
+                    delete p->next;
+                    p->next = nullptr;
+                } else {
+                    Semester *ptr = p->next;
+                    p->next = p->next->next;
+                    delete ptr;
+                    ptr = nullptr;
+                }
+            }
             break;
+        }
+        case 4: {
+            char semester_period[20] = "";
+            cout << "Please input the semester(e.g. 2021-22 Fall): ";
+            cin.getline(semester_period, 19);
+            Semester *p = semester;
+            while (p != nullptr && strcmp(p->period, semester_period) != 0) 
+                p = p->next;
+            if (p == nullptr) {
+                cout << "There is no such that semester." << endl;
+                cout << "Therefore, it is an invalid input." << endl;
+            } else {
+                char course_code[10] = "";
+                cout << "Please input the course code(e.g. COMP1021): ";
+                cin.clear();
+                cin.sync();
+                cin.getline(course_code, 10);
+                Course *ptr = p->courses;
+                while (ptr != nullptr && strcmp(ptr->code, course_code) != 0) 
+                    ptr = ptr->next;
+                if (ptr == nullptr) {
+                    cout << "There is no such that course." << endl;
+                    cout << "Therefore, it is an invalid input." << endl;
+                } else {
+                    if (ptr == p->courses) { // delete the first one
+                        p->courses = ptr->next;
+                        delete ptr;
+                        ptr = nullptr;
+                    } else {
+                        ptr = p->courses;
+                        while (ptr->next != nullptr) 
+                            p = p->next;
+                        if (ptr->next->next == nullptr) { // delete the last one 
+                            delete ptr->next;
+                            ptr->next = nullptr;
+                        } else { // delete the middle one
+                            Course *temp = ptr->next;
+                            ptr->next = ptr->next->next;
+                            delete temp;
+                            temp = nullptr;
+                        }
+                    }
+                }
+            }
+            break;
+        } 
     }
 }
 
