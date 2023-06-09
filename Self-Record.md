@@ -43,6 +43,7 @@ modify data from csv file (option 3)<br />
 Not start:<br />
 input data and create a csv file (option 1)<br />
 delete all dynamic data type (option 5)<br />
+check memory leakage<br />
 
 ## Deadline
 17/6
