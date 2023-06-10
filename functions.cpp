@@ -129,61 +129,62 @@ float obtain_grade(const char grade[]) {
     return grade_float;
 }
 
-void calculate_gpa(Student *&student, Semester *&semester, Semester *&semester_head) {
-    int total_credit = 0;
-    Course *p = semester->courses;
-    while (p != nullptr) {
-        if (strcmp(p->grade, "**") != 0) 
-            total_credit += p->credit;
-        p = p->next;
-    }
-    // calculate tga
-    p = semester->courses;
-    while (p != nullptr) {
-        if (strcmp(p->grade, "**") != 0) 
-            semester->tga += obtain_grade(p->grade)*p->credit;
-        p = p->next;
-    }
-    semester->tga /= total_credit;
-    // calculate cce
-    Semester *ptr = semester_head;
-    while (ptr != semester) {
+void update_gpa(Student *&student, Semester *&semester) {
+    Semester *p_sem = semester;
+    while (p_sem != nullptr) {
+        p_sem->tga = p_sem->cga = p_sem->cce = 0;
+        int total_credit = 0;
+        Course *p = p_sem->courses;
+        while (p != nullptr) {
+            if (strcmp(p->grade, "**") != 0) 
+                total_credit += p->credit;
+            p = p->next;
+        }
+        // calculate tga
+        p = p_sem->courses;
+        while (p != nullptr) {
+            if (strcmp(p->grade, "**") != 0) 
+                p_sem->tga += obtain_grade(p->grade)*p->credit;
+            p = p->next;
+        }
+        p_sem->tga /= total_credit;
+        // calculate cce
+        Semester *ptr = semester;
+        while (ptr != p_sem) {
+            p = ptr->courses;
+            while (p != nullptr) {
+                if (strcmp(p->grade, "**") != 0)
+                    p_sem->cce += p->credit;
+                p = p->next;
+            }
+            ptr = ptr->next;
+        }
+        p = ptr->courses;
+        while (p != nullptr) {
+            if (strcmp(p->grade, "**") != 0) 
+                p_sem->cce += p->credit;
+            p = p->next;
+        }
+        // calculate cga
+        ptr = semester;
+        while (ptr != p_sem) {
+            p = ptr->courses;
+            while (p != nullptr) {
+                if (strcmp(p->grade, "**") != 0)
+                    p_sem->cga += obtain_grade(p->grade)*p->credit;
+                p = p->next;
+            }
+            ptr = ptr->next;
+        }
         p = ptr->courses;
         while (p != nullptr) {
             if (strcmp(p->grade, "**") != 0)
-                semester->cce += p->credit;
+                p_sem->cga += obtain_grade(p->grade)*p->credit;
             p = p->next;
         }
-        ptr = ptr->next;
+        p_sem->cga /= p_sem->cce;
+        p_sem = p_sem->next;
     }
-    p = ptr->courses;
-    while (p != nullptr) {
-        if (strcmp(p->grade, "**") != 0) 
-            semester->cce += p->credit;
-        p = p->next;
-    }
-    // calculate cga
-    ptr = semester_head;
-    while (ptr != semester) {
-        p = ptr->courses;
-        while (p != nullptr) {
-            if (strcmp(p->grade, "**") != 0)
-                semester->cga += obtain_grade(p->grade)*p->credit;
-            p = p->next;
-        }
-        ptr = ptr->next;
-    }
-    p = ptr->courses;
-    while (p != nullptr) {
-        if (strcmp(p->grade, "**") != 0)
-            semester->cga += obtain_grade(p->grade)*p->credit;
-        p = p->next;
-    }
-    semester->cga /= semester->cce;
-}
-
-void update_calculation_data(Student *&student, Semester *&semester) {
-
 }
 
 void separate_long_into_two(const char original[], char first[], char second[]) {
@@ -277,6 +278,7 @@ void insert_data(const int option, Student *&student, Program *&program, Semeste
             cout << "Please input the semester(e.g. 2022-23 Fall): ";
             cin.getline(temp->period, 20);
             Semester *p = semester;
+
             while (p != nullptr) {
                 if (strcmp(p->period, temp->period) == 0) {
                     cout << "It has already existed." << endl;
@@ -347,8 +349,6 @@ void insert_data(const int option, Student *&student, Program *&program, Semeste
             cin.getline(temp->code, 9);
             cout << "Please input the course title(e.g. Introduction to Computer Science): ";
             cin.getline(temp->title, 99);
-            cin.clear();
-            cin.sync();
             cout << "Please input the credit of this course: ";
             cin >> credit;
             while (!isdigit(credit)) {
@@ -356,24 +356,34 @@ void insert_data(const int option, Student *&student, Program *&program, Semeste
                 cin >> credit;
             }
             temp->credit = credit-48;
+            cin.clear();
+            cin.sync();
             cout << "Please input the enrolled semester(e.g. 2021-22 Fall): ";
             cin.getline(temp->enrolled_semester, 19);
             cout << "Please input the grade in capital letter(if it has not released yet, just input **): ";
-            cin.getline(temp->grade, 2);
+            cin.getline(temp->grade, 3);
             Semester *p = semester;
             while (p != nullptr && strcmp(p->period, temp->enrolled_semester) != 0) 
                 p = p->next;
+
             if (p == nullptr) {
                 cout << "Please insert the semester before inserting course to that semester." << endl;
                 delete temp;
                 temp = nullptr;
             } else {
-                insert_course(p, temp);
-                p = semester;
-                while (p != nullptr && strcmp(p->period, temp->enrolled_semester) != 0) {
-                    p = p->next;
+                Course *ptr = p->courses;
+                while (ptr != nullptr) {
+                    if (strcmp(ptr->code, temp->code) == 0) {
+                        cout << "There is a course that have the same code with the the latest input course." << endl;
+                        cout << "Therefore, it is an invalid input." << endl << endl;
+                        delete temp;
+                        temp = nullptr;
+                        return;
+                    }
+                    ptr = ptr->next;
                 }
-                calculate_gpa(student, p, semester);
+                insert_course(p, temp);
+                update_gpa(student, semester);
             }
             cout << endl;
             break;
@@ -736,6 +746,8 @@ void delete_whole_semester(Semester *&semester) {
 }
 
 int menu() {
+    cin.clear();
+    cin.sync();
     int option;
     cout << "******************************* Transcript Generator ******************************" << endl;
     cout << "===================================================================================" << endl;
@@ -851,10 +863,8 @@ void read_csv(Student *&student, Program *&program, Semester *&semester) {
             }
     }
     Semester *p = semester;
-    while (p != nullptr) {
-        calculate_gpa(student, p, semester);
-        p = p->next;
-    }
+    update_gpa(student, semester);
+    
 }
 
 void print_all(Student *&student, Program *&program, Semester *&semester) {
