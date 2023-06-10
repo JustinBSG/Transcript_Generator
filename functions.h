@@ -56,7 +56,7 @@ void generate_semester_period(Semester*&, const Student*, char [], const int, co
 void insert_course(Semester*&, Course*&);
 float obtain_grade(const char []);
 void calculate_gpa(Student*&, Semester*&, Semester*&);
-void update_calculation_data(Student*&, Semester*&);
+void update_gpa(Student*&, Semester*&);
 void separate_long_into_two(const char [], char [], char []);
 void insert_data(const int, Student*&, Program*&, Semester*&);
 void change_data(const int, Student*&, Program*&, Semester*&);
