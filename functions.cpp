@@ -491,7 +491,87 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                         break;
                     }
                     case 2: {
-                       
+                        char new_change_date[100] = "";
+                        cin.clear();
+                        cin.sync();
+                        cout << "The original semester of changing program is " << p->change_date << "." << endl;
+                        cout << "Please input new semester of changing program: ";
+                        cin.getline(new_change_date, 100);
+                        Program *check = program;
+                        while (check != nullptr && strcmp(check->change_date, new_change_date) != 0)
+                            check = check->next;
+                        if (check == nullptr) {
+                            Program *temp = new Program;
+                            strcpy(temp->change_date, new_change_date);
+                            strcpy(temp->major, p->major);
+                            strcpy(temp->program, p->program);
+                            temp->next = nullptr;
+                            if (strcmp(p->change_date, "NA") != 0 && strcmp(new_change_date, "NA") == 0) {
+                                char new_admit[20] = "";
+                                cout << "Please input the admit date: " << endl;
+                                cin.getline(new_admit, 20);
+                                strcpy(student->admit_date, new_admit);
+                                Program *ptr_program = program;
+                                while (ptr_program->next != check) 
+                                    ptr_program = ptr_program->next;
+                                Program *delete_program = ptr_program->next;
+                                ptr_program->next = delete_program->next;
+                                delete delete_program;
+                                delete_program = nullptr;
+                                temp->next = program;
+                                program = temp;
+                            } else if (strcmp(p->change_date, "NA") == 0 && strcmp(new_change_date, "NA") != 0) {
+                                char new_admit[20] = "";
+                                cout << "Please input the admit date: " << endl;
+                                cin.getline(new_admit, 20);
+                                strcpy(student->admit_date, new_admit);
+                                Program *delete_program = program;
+                                program = program->next;
+                                delete delete_program;
+                                delete_program = nullptr;
+                                Program *find_program = program;
+                                while (find_program->next != nullptr)
+                                    find_program = find_program->next;
+                                if (strcmp(find_program->change_date, temp->change_date) < 0)
+                                    find_program->next = temp;
+                                else {
+                                    find_program = program->next;
+                                    while (find_program->next != nullptr && !(strcmp(find_program->change_date, temp->change_date) < 0 && strcmp(find_program->next->change_date, temp->change_date) > 0)) 
+                                        find_program = find_program->next;
+                                    temp->next = find_program->next;
+                                    find_program->next = temp;
+                                }
+                            } else {
+                                Program *delete_program = program;
+                                while (delete_program->next != check)
+                                    delete_program = delete_program->next;
+                                delete_program->next = delete_program->next->next;
+                                delete check;
+                                check = nullptr;
+                                if (strcmp(program->next->change_date, temp->change_date) > 0) {
+                                    temp->next = program->next;
+                                    program->next = temp;
+                                } else {
+                                    Program *find_program = program->next;
+                                    while (find_program->next != nullptr)
+                                        find_program = find_program->next;
+                                    if (strcmp(find_program->change_date, temp->change_date) < 0)
+                                        find_program->next = temp;
+                                    else {
+                                        find_program = program->next;
+                                        while (find_program->next != nullptr && !(strcmp(find_program->change_date, temp->change_date) < 0 && strcmp(find_program->next->change_date, temp->change_date) > 0)) 
+                                            find_program = find_program->next;
+                                        temp->next = find_program->next;
+                                        find_program->next = temp;
+                                    }
+                                }
+                            }
+                        } else {
+                            cout << "The semester of changing program has already existed." << endl;
+                            cout << "You cannot change program twice in one semester." << endl;
+                            cout << "Therefore, the input is invalid." << endl;
+                        }
+                        cout << endl;
                         break;
                     }
                     case 3: {
@@ -615,6 +695,15 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                         strcpy(temp->grade, ptr->grade);
                         strcpy(temp->title, ptr->title);
                         temp->next = nullptr;
+
+                        Course *original = p->courses;
+                        while (original->next != ptr)
+                            original = original->next;
+                        Course *delete_original = original->next;
+                        original->next = original->next->next;
+                        delete delete_original;
+                        delete_original = nullptr;
+
                         if (p->courses == nullptr)
                             p->courses = temp;
                         else {
