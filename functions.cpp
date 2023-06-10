@@ -673,61 +673,48 @@ void delete_data(const int option, Program *&program, Semester *&semester) {
         case 4: {
             char semester_period[20] = "";
             cout << "Please input the semester(e.g. 2021-22 Fall): ";
-            cout << "test1" << endl;
             cin.getline(semester_period, 19);
-            cout << "test2" << endl;
             Semester *p = semester;
             while (p != nullptr && strcmp(p->period, semester_period) != 0) 
                 p = p->next;
             if (p == nullptr) {
-                cout << "test3" << endl;
                 cout << "There is no such that semester." << endl;
                 cout << "Therefore, it is an invalid input." << endl;
             } else {
-                cout << "test4" << endl;
                 char course_code[10] = "";
                 cout << "Please input the course code(e.g. COMP1021): ";
                 cin.clear();
                 cin.sync();
                 cin.getline(course_code, 10);
-                cout << "test5" << endl;
                 Course *ptr = p->courses;
                 while (ptr != nullptr && strcmp(ptr->code, course_code) != 0) 
                     ptr = ptr->next;
                 if (ptr == nullptr) {
-                    cout << "test6" << endl;
                     cout << "There is no such that course." << endl;
                     cout << "Therefore, it is an invalid input." << endl;
                 } else {
                     if (ptr == p->courses) { // delete the first one
-                        cout << "test7" << endl;
                         p->courses = ptr->next;
                         delete ptr;
                         ptr = nullptr;
-                        cout << "test8" << endl;
                     } else {
-                        cout << "test9" << endl;
                         ptr = p->courses;
                         while (ptr->next != nullptr && strcmp(ptr->code, course_code) != 0) 
                             ptr = ptr->next;
                         if (ptr->next == nullptr) { // delete the last one 
-                            cout << "test10" << endl;
                             Course *temp = p->courses;
                             while (temp->next != ptr)
                                 temp = temp->next;
                             temp->next = nullptr;
                             delete ptr;
                             ptr = nullptr;
-                            cout << "test11" << endl;
                         } else { // delete the middle one
-                            cout << "test12" << endl;
                             Course *temp = p->courses;
                             while (temp->next != ptr)
                                 temp = temp->next;
                             temp->next = ptr->next;
                             delete ptr;
                             ptr = nullptr;
-                            cout << "test13" << endl;
                         }
                     }
                 }
