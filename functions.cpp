@@ -640,6 +640,7 @@ void delete_data(const int option, Program *&program, Semester *&semester) {
             cout << "Reminder: Deleting the semester will delete all courses that are enrolled in that semester too" << endl;
             cout << "Please input the semester(e.g. 2021-22 Fall): ";
             cin.getline(semester_period, 19);
+            cout << endl;
             Semester *p = semester;
             while (p != nullptr && strcmp(p->period, semester_period) != 0) 
                 p = p->next;
@@ -648,18 +649,24 @@ void delete_data(const int option, Program *&program, Semester *&semester) {
                 cout << "Therefore, it is an invalid input." << endl;
             } else {
                 delete_whole_course(p->courses);
-                p = semester;
-                while (strcmp(p->next->period, semester_period) != 0)
-                    p = p->next;
-                if (p->next->next == nullptr) {
-                    delete p->next;
-                    p->next = nullptr;
+                if (p == semester) {
+                    semester = p->next;
+                    delete p;
+                    p = nullptr;
                 } else {
-                    Semester *ptr = p->next;
-                    p->next = p->next->next;
-                    delete ptr;
-                    ptr = nullptr;
+                    p = semester;
+                    while (strcmp(p->next->period, semester_period) != 0)
+                        p = p->next;
+                    if (p->next->next == nullptr) { // delete last
+                        delete p->next;
+                        p->next = nullptr;
+                    } else { // delete middle
+                        Semester *ptr = p->next->next;
+                        delete p->next;
+                        p->next = ptr;
+                    }
                 }
+                
             }
             break;
         }
