@@ -275,6 +275,7 @@ void insert_data(const int option, Student *&student, Program *&program, Semeste
             cin.clear();
             cin.sync();
             Semester *temp = new Semester;
+            cout << "Reminder: You need to input a semester that is consecutive with existing semester." << endl;
             cout << "Please input the semester(e.g. 2022-23 Fall): ";
             cin.getline(temp->period, 20);
             Semester *p = semester;
@@ -329,7 +330,7 @@ void insert_data(const int option, Student *&student, Program *&program, Semeste
                                     p->next = temp;
                                     cout << "Reminder: It is a normal situation that the latest inserted semester is hidden after generating transcipt." << endl;
                                     cout << "It is because there is no any course in that semester." << endl;
-                                    cout << "That semester will be shown after you insert a course into that semester." << endl;
+                                    cout << "That semester will be shown after you insert a course into that semester." << endl << endl;
                                     return;
                                 }
                             p = p->next;
