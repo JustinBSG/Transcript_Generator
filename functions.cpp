@@ -477,6 +477,8 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
             break;
         } 
         case 2: { // program
+            cin.clear();
+            cin.sync();
             char semester_change[100] = "";
             cout << "Reminder: Please input NA if you want to change content in your first program." << endl;
             cout << "Please input the semester of changing program(e.g. 2022-23 Fall): ";
@@ -501,6 +503,8 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     cout << "Please input valid option: ";
                     cin >> option_data;
                 } 
+                cin.clear();
+                cin.sync();
                 switch (option_data) {
                     case 1: {
                         char new_name[50] = "";
@@ -604,11 +608,15 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     }
                 }
             }
+            cout << endl;
             break;
         }
         case 4: { // course
+            cin.clear();
+            cin.sync();
             char semester_period[20] = "", course_code[10] = "";
             cout << "Please input the semester(e.g. 2022-23 Fall): ";
+            cin.getline(semester_period, 20);
             Semester *p = semester;
             while (p != nullptr && strcmp(p->period, semester_period) != 0)
                 p = p->next;
@@ -622,11 +630,11 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
             while(ptr != nullptr && strcmp(ptr->code, course_code) != 0)
                 ptr = ptr->next;
             if (ptr == nullptr) {
-                cout << "There is no course with the course code(" << ptr->code << ")." << endl << endl;
+                cout << endl << "There is no course with the course code(" << course_code << ")." << endl << endl;
                 return;
             }
             int option_course;
-            cout << "There are 5 types of content that you can change about course." << endl;
+            cout << endl << "There are 5 types of content that you can change about course." << endl;
             cout << "1: Course Code" << endl;
             cout << "2: Course Title" << endl;
             cout << "3: Number of Credit" << endl;
@@ -655,9 +663,22 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     strcpy(temp->title, ptr->title);
                     temp->next = nullptr;
                     ptr = p->courses;
+                    if (strcmp(ptr->code, course_code) == 0) {
+                        p->courses = ptr->next;
+                        delete ptr;
+                        ptr = nullptr;
+                    } else {
+                        while (strcmp(ptr->next->code, course_code) != 0) 
+                            ptr = ptr->next;
+                        Course *delete_course = ptr->next;
+                        ptr->next = ptr->next->next;
+                        delete delete_course;
+                        delete_course = nullptr;
+                    }
+                    ptr = p->courses;
                     if (strcmp(ptr->code, temp->code) > 0) {
                         temp->next = ptr;
-                        ptr = temp;
+                        p->courses = temp;
                     } else {
                         while (ptr->next != nullptr) 
                             ptr = ptr->next;
@@ -671,6 +692,11 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                             ptr->next = temp;
                         }
                     }
+                    Course *test = p->courses;
+                    while (test != nullptr) {
+                        cout << test->code << endl;
+                        test = test->next;
+                    }
                     break;
                 }
                 case 2: {
@@ -682,11 +708,12 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     break;
                 }
                 case 3: {
-                    unsigned int new_course_credit;
+                    unsigned int new_course_credit = 0;
                     cout << "The original number of credit is " << ptr->credit << "." << endl;
                     cout << "Please input new number of credit: ";
                     cin >> new_course_credit;
                     ptr->credit = new_course_credit;
+                    update_gpa(student, semester);
                     break;
                 }
                 case 4: {
@@ -695,6 +722,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     cout << "Please input new grade: ";
                     cin.getline(new_grade, 3);
                     strcpy(ptr->grade, new_grade);
+                    update_gpa(student, semester);
                     break;
                 }
                 case 5: {
@@ -702,50 +730,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     cout << "The original enrolled semester is " << ptr->enrolled_semester << "." << endl;
                     cout << "Please input new enrolled semester: ";
                     cin.getline(new_semester, 20);
-                    p = semester;
-                    while (p != nullptr && strcmp(p->period, new_semester) != 0)
-                        p = p->next;
-                    if (p == nullptr) {
-                        cout << "There is no such semester." << endl;
-                    } else {
-                        Course *temp = new Course;
-                        strcpy(temp->code, ptr->code);
-                        temp->credit = ptr->credit;
-                        strcpy(temp->enrolled_semester, new_semester);
-                        strcpy(temp->grade, ptr->grade);
-                        strcpy(temp->title, ptr->title);
-                        temp->next = nullptr;
-
-                        Course *original = p->courses;
-                        while (original->next != ptr)
-                            original = original->next;
-                        Course *delete_original = original->next;
-                        original->next = original->next->next;
-                        delete delete_original;
-                        delete_original = nullptr;
-
-                        if (p->courses == nullptr)
-                            p->courses = temp;
-                        else {
-                            if (strcmp(p->courses->code, temp->code) > 0) {
-                                temp->next = p->courses;
-                                p->courses = temp;
-                            } else {
-                                Course *find_course = p->courses;
-                                while (find_course->next != nullptr)
-                                    find_course = find_course->next;
-                                if (strcmp(find_course->code, temp->code) < 0)
-                                    find_course->next = temp;
-                                else {
-                                    find_course = p->courses;
-                                    while (find_course->next != nullptr && !(strcmp(find_course->code, temp->code) < 0 && strcmp(find_course->next->code, temp->code) > 0)) 
-                                        find_course = find_course->next;
-                                    temp->next = find_course->next;
-                                    find_course->next = temp;
-                                }
-                            }
-                        }
-                    }
+                    // TBC
                 }
             }
             cout << endl;
