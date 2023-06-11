@@ -393,8 +393,6 @@ void insert_data(const int option, Student *&student, Program *&program, Semeste
 
 void change_data(const int option, Student *&student, Program *&program, Semester *&semester) {
     // show the original one before changing its content
-    cin.clear();
-    cin.sync();
     switch (option) {
         case 1: { // students
             int option_data;
@@ -411,6 +409,8 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                 cin >> option_data;
             }
             cout << endl;
+            cin.clear();
+            cin.sync();
             switch(option_data) {
                 case 1: {
                     char new_name[30] = "";
@@ -450,7 +450,27 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     cout << "Please input year of study: ";
                     cin >> new_year;
                     student->year = new_year;
+                    int num_year = 0;
+                    Semester *p = semester;
+                    while (p != nullptr) {
+                        num_year++;
+                        p = p->next;
+                    }
                     break;
+                    char start_year[5] = "";
+                    strcpy(start_year, (student->admit_date+(find_index_year(student->admit_date))));
+                    for (int i = num_year; i < student->year; i++) 
+                        for (int j = 0; j < 4 ; j++) {
+                            Semester *temp = new Semester;
+                            Semester *p = semester;
+                            temp->next = nullptr;
+                            temp->courses = nullptr;
+                            temp->tga = temp->cga = temp->cce = 0;
+                            generate_semester_period(temp, student, start_year, i, j);
+                            while (p->next != nullptr)
+                                p = p->next;
+                            p->next = temp;
+                        }
                 }
             }
             cout << endl;
@@ -928,6 +948,7 @@ void read_csv(Student *&student, Program *&program, Semester *&semester) {
         cout << "Please input a valid path." << endl;
         cout << "The path for the CSV file (e.g. ./files/student1.csv): ";
         cin >> input_path;
+        ifstream fin(input_path);
     }
     cout << endl;
     if (student != nullptr)
