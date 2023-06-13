@@ -47,8 +47,8 @@ struct Semester {
     Semester *next;
 };
 
-enum Semester_name {Fall, Winter, Spring, Summer, END};
-
+Program* insert_csv_program(int&);
+Course* insert_csv_course(int&, char []);
 int find_index_year(const char*);
 int find_index_month(const char*);
 void generate_compare_period(char [], char [], int&);
@@ -66,7 +66,7 @@ void delete_whole_course(Course *&);
 void delete_whole_semester(Semester *&);
 
 int menu();
-void insert_csv(Student*&, Program*&, Semester*&);
+void insert_csv();
 void read_csv(Student*&, Program*&, Semester*&, char []);
 void print_all(Student*&, Program*&, Semester*&);
 void modify_csv(Student*&, Program*&, Semester*&, char []);

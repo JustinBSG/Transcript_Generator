@@ -1,6 +1,70 @@
 #include "functions.h"
 using namespace std;
 
+Program* insert_csv_program(int &flag) {
+    char choice[5] = "";
+    cin.clear();
+    cin.sync();
+    Program *temp = new Program;
+    cout << "Then, please input the name of the program(e.g. Bachelor Degree in School of Engineering): ";
+    cin.getline(temp->program, 50);
+    cout << "Please input the name of the major(If it does not have, please input NA)(e.g. Computer Science): ";
+    cin.getline(temp->major, 40);
+    cout << "Please input the semester that you changed the program(e.g. 2022-23 Fall): ";
+    cin.getline(temp->change_date, 100);
+    temp->next = nullptr;
+    cout << "Do you still want to continue to input other program(yes/no): ";
+    cin.getline(choice, 5);
+    while (1) {
+        if (strcmp(choice, "no") == 0) {
+            flag = 1;
+            break;
+        } else if (strcmp(choice, "yes") != 0) {
+            cout << "It is an invalid input.";
+            cout << "Please input again: ";
+            cin.clear();
+            cin.sync();
+            cin.getline(choice, 5);
+        }
+        break;
+    }
+    return temp;
+}
+
+Course* insert_csv_course(int &flag, char enrolled_semester[]) {
+    char choice[5] = "";
+    cin.clear();
+    cin.sync();
+    Course *temp = new Course;
+    cout << "Next, please input the course code(e.g. COMP1021): ";
+    cin.getline(temp->code, 10);
+    cout << "Please input the title of the course(e.g. Introduction to Computer Science): ";
+    cin.getline(temp->title, 100);
+    cout << "Please input number of credits of this course: ";
+    cin >> temp->credit;
+    cin.clear();
+    cin.sync();
+    cout << "Please input the grade of this course(If it hasn't released yet, you can just input **): ";
+    cin.getline(temp->grade, 3);
+    strcpy(temp->enrolled_semester, enrolled_semester);
+    cout << "Do you still want to continue to input other program(yes/no): ";
+    cin.getline(choice, 5);
+    while (1) {
+        if (strcmp(choice, "no") == 0) {
+            flag = 1;
+            break;
+        } else if (strcmp(choice, "yes") != 0) {
+            cout << "It is an invalid input.";
+            cout << "Please input again: ";
+            cin.clear();
+            cin.sync();
+            cin.getline(choice, 5);
+        }
+        break;
+    }
+    return temp;
+}
+
 int find_index_year(const char *str) {
     int count_white_space = 0;
     for (int i = 0; i < strlen(str); i++) 
@@ -930,7 +994,9 @@ void delete_whole_program(Program *&program) {
 }
 
 void delete_whole_course(Course *&course) {
-    if (course->next == nullptr) {
+    if (course == nullptr)
+        return;
+    else if (course->next == nullptr) {
         delete course;
         course = nullptr;
     } else {
@@ -974,8 +1040,191 @@ int menu() {
     return option;
 }
 
-void insert_csv(Student *&student, Program *&program, Semester *&semester) {
+void insert_csv() {
+    char address[100] = "", choice[5] = "";
+    int flag = 0;
+    Student *temp_student = new Student;
+    Program *head_program = new Program;
+    Semester *head_semester = new Semester;
+    cin.clear();
+    cin.sync();
+    cout << "Please input the address of new csv file(e.g. ./csvfile/data1.csv): ";
+    cin.getline(address, 100);
+    cout << endl << "First, please input the information about you." << endl;
+    cout << "Please input your name: ";
+    cin.getline(temp_student->student_name, 30);
+    cout << "Please input your advisor's name: ";
+    cin.getline(temp_student->advisor_name, 30);
+    cout << "Please input your admit date(e.g. 1 September 2020): ";
+    cin.getline(temp_student->admit_date, 20);
+    cout << "Please input your student id: ";
+    cin >> temp_student->sid;
+    cout << "Please input your number of years of study: ";
+    cin >> temp_student->year;
+    
+    cin.clear();
+    cin.sync();
+    cout << endl << "Then, please input the name of the program(e.g. Bachelor Degree in School of Engineering): ";
+    cin.getline(head_program->program, 50);
+    cout << "Please input the name of the major(Input NA if it does not have)(e.g. Computer Science): ";
+    cin.getline(head_program->major, 40);
+    strcpy(head_program->change_date, "NA");
+    head_program->next = nullptr;
+    cout << "Do you still want to continue to input other program(yes/no): ";
+    cin.getline(choice, 5);
+    while (1) {
+        if (strcmp(choice, "no") == 0) {
+            flag = 1;
+            break;
+        } else if (strcmp(choice, "yes") != 0) {
+            cout << "It is an invalid input.";
+            cout << "Please input again: ";
+            cin.clear();
+            cin.sync();
+            cin.getline(choice, 5);
+        }
+        break;
+    }
+    while (flag == 0) {
+        cin.clear();
+        cin.sync();
+        cout << endl;
+        if (head_program->next == nullptr)
+            head_program->next = insert_csv_program(flag);
+        else {
+            Program *temp_program = head_program;
+            while (temp_program != nullptr)
+                temp_program = temp_program->next;
+            temp_program = insert_csv_program(flag);
+        }
+    }
 
+    cin.clear();
+    cin.sync();
+    strcpy(choice, "");
+    flag = 0;
+    char start_year[5] = "";
+    strcpy(start_year, (temp_student->admit_date+(find_index_year(temp_student->admit_date))));
+    for (int i = 0; i < temp_student->year; i++)
+        for (int j = 0; j < 4; j++) 
+            if (i == 0 && j == 0) {
+                head_semester->next = nullptr;
+                generate_semester_period(head_semester, temp_student, start_year, i, j);
+            } else {
+                Semester *temp = new Semester;
+                Semester *p = head_semester;
+                temp->next = nullptr;
+                generate_semester_period(temp, temp_student, start_year, i, j);
+                while (p->next != nullptr)
+                    p = p->next;
+                p->next = temp;
+            }
+    Semester *p = head_semester;
+    while (p != nullptr) {
+        p->courses = nullptr;
+        p->cce = p->cga = p->tga = 0;
+        p = p->next;
+    }
+
+    cout << endl << "Next, do you want to insert course to some semesters(yes/no): ";
+    cin.getline(choice, 5);
+    while (1) {
+        if (strcmp(choice, "no") == 0) {
+            flag = 1;
+            break;
+        } else if (strcmp(choice, "yes") != 0) {
+            cout << "It is an invalid input.";
+            cout << "Please input again: ";
+            cin.clear();
+            cin.sync();
+            cin.getline(choice, 5);
+        }
+        break;
+    }
+    while (flag == 0) {
+        cin.clear();
+        cin.sync();
+        char semester_period[20] = "";
+        cout << "In which semester that you enrolled that course(e.g. 2021-22 Fall): ";
+        cin.getline(semester_period, 20);
+        Semester *test_semester = head_semester;
+        while (test_semester != nullptr && strcmp(test_semester->period, semester_period) != 0)
+            test_semester = test_semester->next;
+        if (test_semester == nullptr) {
+            cout << "There is no such a semester." << endl;
+            cout << "It is invalid input." << endl;
+            continue;
+        } else {
+            Course *temp_course = test_semester->courses;
+            if (temp_course == nullptr) {
+                temp_course = insert_csv_course(flag, test_semester->period);
+            } else {
+                Course *temp_course = test_semester->courses;
+                while (temp_course != nullptr)
+                    temp_course = temp_course->next;
+                temp_course = insert_csv_course(flag, test_semester->period);
+            }
+        }
+    }
+    cout << "test1" << endl;
+    ofstream ofs;
+    ofs.open(address, ios::out | ios::trunc);
+    cout << "test2" << endl;
+    Student *p_student = temp_student;
+    Program *p_program = head_program;
+    Semester *p_semester = head_semester;
+    ofs << endl << "student" << ","
+                << p_student->student_name << ","
+                << p_student->advisor_name << ","
+                << p_student->sid << ","
+                << p_student->year << ","
+                << p_student->admit_date;
+    cout << "test3" << endl;
+    while (p_program != nullptr) {
+        cout << "test4" << endl;
+        ofs << endl << "program" << ","
+                    << p_program->program << ","
+                    << p_program->major << ","
+                    << p_program->change_date;
+        p_program = p_program->next;
+    }
+    cout << "test5" << endl;
+    Semester *last = head_semester;
+    while (last->next != nullptr)
+        last = last->next;
+    cout << "test6" << endl;
+    while (p_semester != last) {
+        cout << "test7" << endl;
+        Course *p_course = p_semester->courses;
+        while (p_course != nullptr) {
+            cout << "test8" << endl;
+            ofs << endl << "course" << ","
+                        << p_course->code << ","
+                        << p_course->title << ","
+                        << p_course->credit << ","
+                        << p_course->grade << ","
+                        << p_course->enrolled_semester;
+            p_course = p_course->next;
+        }
+        cout << "test9" << endl;
+        p_semester = p_semester->next;
+    }
+    cout << "test10" << endl;
+    Course *p_course = last->courses;
+    while (p_course != nullptr) {
+        cout << "test11" << endl;
+        ofs << endl << "course" << ","
+                    << p_course->code << ","
+                    << p_course->title << ","
+                    << p_course->credit << ","
+                    << p_course->grade << ","
+                    << p_course->enrolled_semester;
+        p_course = p_course->next;
+    }
+    cout << "test12" << endl;
+    ofs.close();
+    delete_all_dynamic(temp_student, head_program, head_semester);
+    cout << "test13" << endl;
 }
 
 void read_csv(Student *&student, Program *&program, Semester *&semester, char address[]) {
@@ -1205,7 +1454,6 @@ void modify_csv(Student *&student, Program *&program, Semester *&semester, char 
     }
 
     update_gpa(student, semester);
-    // change data in csv file
     ofstream ofs;
     ofs.open(address, ios::out | ios::trunc);
     Student *p_student = student;

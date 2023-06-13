@@ -9,7 +9,7 @@ int main() {
         int option = menu();
         switch (option) {
             case 1:
-                insert_csv(student, program, semester);
+                insert_csv();
                 break;
             case 2:
                 read_csv(student, program, semester, address);
