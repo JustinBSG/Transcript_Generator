@@ -759,7 +759,24 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     cout << "The original enrolled semester is " << ptr->enrolled_semester << "." << endl;
                     cout << "Please input new enrolled semester: ";
                     cin.getline(new_semester, 20);
-                    // TBC
+                    Course *temp = new Course;
+                    strcpy(temp->code, ptr->code);
+                    temp->credit = ptr->credit;
+                    strcpy(temp->grade, ptr->grade);
+                    strcpy(temp->title, ptr->title);
+                    temp->next = nullptr;
+                    strcpy(temp->enrolled_semester, new_semester);
+                    Course *find_course = p->courses;
+                    while (find_course->next != ptr)
+                        find_course = find_course->next;
+                    find_course->next = find_course->next->next;
+                    delete ptr;
+                    ptr = nullptr;
+                    Semester *find_semester = semester;
+                    while (strcmp(find_semester->period, new_semester) != 0)
+                        find_semester = find_semester->next;
+                    insert_course(find_semester, temp);
+                    update_gpa(student, semester);
                 }
             }
             cout << endl;
