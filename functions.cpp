@@ -759,24 +759,57 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     cout << "The original enrolled semester is " << ptr->enrolled_semester << "." << endl;
                     cout << "Please input new enrolled semester: ";
                     cin.getline(new_semester, 20);
-                    Course *temp = new Course;
-                    strcpy(temp->code, ptr->code);
-                    temp->credit = ptr->credit;
-                    strcpy(temp->grade, ptr->grade);
-                    strcpy(temp->title, ptr->title);
-                    temp->next = nullptr;
-                    strcpy(temp->enrolled_semester, new_semester);
-                    Course *find_course = p->courses;
-                    while (find_course->next != ptr)
-                        find_course = find_course->next;
-                    find_course->next = find_course->next->next;
-                    delete ptr;
-                    ptr = nullptr;
+                    cout << "test1" << endl;
                     Semester *find_semester = semester;
-                    while (strcmp(find_semester->period, new_semester) != 0)
+                    while (strcmp(find_semester->period, new_semester) != 0 && find_semester != nullptr)
                         find_semester = find_semester->next;
-                    insert_course(find_semester, temp);
-                    update_gpa(student, semester);
+                    cout << "test2" << endl;
+                    if (find_semester == nullptr) {
+                        cout << "test3" << endl;
+                        cout << "There is no such semester." << endl;
+                        cout << "Therefore, it is an invalid input." << endl;
+                    } else {
+                        cout << "test4" << endl;
+                        Course *find_course = p->courses;
+                        if (find_course == ptr) {
+                            cout << "test5.1" << endl;
+                            p->courses = p->courses->next;
+                            delete find_course;
+                            find_course = nullptr;
+                            cout << "test5.2" << endl;
+                        } else {
+                            cout << "test5.3" << endl;
+                            while (find_course->next != ptr)
+                                find_course = find_course->next;
+                            Course *delete_course = find_course->next;
+                            find_course->next = find_course->next->next;
+                            delete delete_course;
+                            delete_course = nullptr;
+                            cout << "test5.4" << endl;
+                        }
+                        Course *temp = new Course;
+                        cout << "test6" << endl;
+                        strcpy(temp->code, ptr->code);
+                        cout << "test7" << endl;
+                        temp->credit = ptr->credit;
+                        cout << "test8" << endl;
+                        strcpy(temp->grade, ptr->grade);
+                        cout << "test9" << endl;
+                        strcpy(temp->title, ptr->title);
+                        cout << "test10" << endl;
+                        temp->next = nullptr;
+                        cout << "test11" << endl;
+                        strcpy(temp->enrolled_semester, new_semester);
+                        cout << "test12" << endl;
+                        delete ptr;
+                        ptr = nullptr;
+                        cout << "test13" << endl;
+                        insert_course(find_semester, temp);
+                        cout << "test14" << endl;
+                        update_gpa(student, semester);
+                        cout << "test15" << endl;
+                    }
+                    break;
                 }
             }
             cout << endl;
