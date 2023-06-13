@@ -25,10 +25,11 @@ This generator uses the grading system that is used at the HKUST.
     - Calculation of TGA and CGA and Cumulative Credits Earned  
 - [x] It can generate the formatted output on terminal.
 - [x] It can read the record that saved in txt or csv.
-- [ ] It can save the record that saved in txt or csv. 
+- [x] It can save the record that saved in txt or csv. 
 
 ## Advanced Target
 - [ ] Use Class instead of struct
+- [ ] Use QT to create UI for this program.
 - [ ] It can generate pdf file of the output.
 - [ ] It can generate a TGA and CGA graphs on the last page of that pdf file.
 
