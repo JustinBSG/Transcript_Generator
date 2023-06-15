@@ -1,5 +1,14 @@
 # Transcript Generator
 
+## Table of Contents
+[Background](#background)
+[Introduction](#introduction)
+[Bacic Target](#basic-target)
+[Advanced Target](#advanced-target)
+[Progress](#progress)
+[Deadline](#deadline)
+[Reference](#reference)
+
 ## Background
 It is my Year 2 summer semester. I want to join an internship program as an embedded system software engineer or firmware developer. However, I lack experience and skill set. Many companies reject me. Therefore, I am free this summer semester. I decide to make good use of this summer semester. I plan to learn new skills, gain experience, and learn new things while completing side projects. This is one of the side projects that I have made.
 
@@ -16,7 +25,7 @@ It is my Year 2 summer semester. I want to join an internship program as an embe
 | C | 2 |
 | C- | 1.7 |
 | D | 1 |
-| F | 0 |
+| F | 0 <br />
 TBC
 
 ## Basic Target
