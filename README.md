@@ -4,6 +4,19 @@
 It is my Year 2 summer semester. I want to join an internship program as an embedded system software engineer or firmware developer. However, I lack experience and skill set. Many companies reject me. Therefore, I am free this summer semester. I decide to make good use of this summer semester. I plan to learn new skills, gain experience, and learn new things while completing side projects. This is one of the side projects that I have made.
 
 ## Introduction
+| Letter Grade | Points |
+| --- | --- |
+| A+ | 4.3 |
+| A | 4 |
+| A- | 3.7 |
+| B+ | 3.3 |
+| B | 3 |
+| B- | 2.7 |
+| C+ | 2.3 |
+| C | 2 |
+| C- | 1.7 |
+| D | 1 |
+| F | 0 |
 TBC
 
 ## Basic Target
