@@ -17,7 +17,6 @@ This generator uses the grading system that is used at the HKUST.
 | F | 0 |
 
 ## Target
-- [ ] Learn how to build a standard README file. 
 - [x] It displays all informations correctly.  
     - Students' personal information  
         - Name, SID, Year of Study, Admit Date, etc.  
