@@ -48,7 +48,6 @@ struct Semester {
 };
 
 Program* insert_csv_program(int&);
-Course* insert_csv_course(int&, char []);
 int find_index_year(const char*);
 int find_index_month(const char*);
 void generate_compare_period(char [], char [], int&);

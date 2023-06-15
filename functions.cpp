@@ -1,6 +1,9 @@
 #include "functions.h"
 using namespace std;
 
+// Inputting information of student's programs.
+// flag is used to decide whether user want to keep inputting other program
+// return pointer of program to update the linked list of program
 Program* insert_csv_program(int &flag) {
     char choice[5] = "";
     cin.clear();
@@ -13,6 +16,8 @@ Program* insert_csv_program(int &flag) {
     cout << "Please input the semester that you changed the program(e.g. 2022-23 Fall): ";
     cin.getline(temp->change_date, 100);
     temp->next = nullptr;
+
+    // To make sure the input is valid.
     cout << "Do you still want to continue to input other program(yes/no): ";
     cin.getline(choice, 5);
     while (1) {
@@ -31,10 +36,7 @@ Program* insert_csv_program(int &flag) {
     return temp;
 }
 
-Course* insert_csv_course(int &flag, char enrolled_semester[]) {
- 
-}
-
+// To obtain index of year from admit date(e.g. 1 September 2021)
 int find_index_year(const char *str) {
     int count_white_space = 0;
     for (int i = 0; i < strlen(str); i++) 
@@ -45,6 +47,7 @@ int find_index_year(const char *str) {
         }
 }
 
+// To obtain index of month from admit date(e.g. 1 September 2021)
 int find_index_month(const char *str) {
     int count_white_space = 0;
     for (int i = 0; i < strlen(str); i++) 
@@ -55,6 +58,10 @@ int find_index_month(const char *str) {
         }
 }
 
+// To obtain the year and "season" of semester from temp
+// temp[]: To store the "name" of semester (e.g. 2021-22 Fall)
+// years: To store the year of semester (e.g. 2021)
+// season: To store the "season" of the semester (e.g. Fall)
 void generate_compare_period(char temp[], char years[], int &season) {
     char season_char[10] = "";
     strcpy(season_char, temp+find_index_month(temp));
@@ -71,6 +78,12 @@ void generate_compare_period(char temp[], char years[], int &season) {
     strncpy(years, temp, find_index_month(temp));
 }
 
+// To generate the "name" of the semester
+// semester: the head pointer of semester linked list
+// student: the pointer of student dynamic struct object
+// start_year: string of year of admit date
+// i: number of year
+// j: number of "season" of semester, 0 for fall semester, 1 for winter semester, 2 for spring semester, 3 for summer semester
 void generate_semester_period(Semester *&semester, const Student *student, char start_year[], const int i, const int j) {
     char sem[7] = "";
     switch(j) {
@@ -89,6 +102,7 @@ void generate_semester_period(Semester *&semester, const Student *student, char 
         default:
             break;
     }
+
     char temp_start[5];
     strcpy(temp_start, start_year);
     temp_start[3] = temp_start[3]+i;
@@ -102,9 +116,12 @@ void generate_semester_period(Semester *&semester, const Student *student, char 
     strcat(semester->period, sem);
 }
 
+// Inputting course into linked list of semester in alphabetical order
+// semester: head pointer of linked list of semester
+// course: pointer of dynamic struct object
 void insert_course(Semester *&semester, Course *&course) {
     Semester *ptr = semester;
-    while (ptr != nullptr) {
+    while (ptr != nullptr) { // Let ptr be the pointer of next address of last node
         if (strcmp(ptr->period, course->enrolled_semester) == 0)
             break;
         ptr = ptr->next;
@@ -135,6 +152,8 @@ void insert_course(Semester *&semester, Course *&course) {
     }
 }
 
+// To obtain string form of grade and return float form of grade
+// grade[]: the string form of grade
 float obtain_grade(const char grade[]) {
     float grade_float = 0;
     for (int i = 0; i < 2; i++) 
@@ -163,6 +182,10 @@ float obtain_grade(const char grade[]) {
     return grade_float;
 }
 
+// To update the data of cce, tga and gpa of all semesters
+// First, reset all data into 0. Then, calculate all data again
+// student: pointer of dynamic student struct object
+// semester: head pointer of linked list of semester 
 void update_gpa(Student *&student, Semester *&semester) {
     Semester *p_sem = semester;
     while (p_sem != nullptr) {
@@ -174,6 +197,7 @@ void update_gpa(Student *&student, Semester *&semester) {
                 total_credit += p->credit;
             p = p->next;
         }
+
         // calculate tga
         p = p_sem->courses;
         while (p != nullptr) {
@@ -182,6 +206,7 @@ void update_gpa(Student *&student, Semester *&semester) {
             p = p->next;
         }
         p_sem->tga /= total_credit;
+
         // calculate cce
         Semester *ptr = semester;
         while (ptr != p_sem) {
@@ -199,6 +224,7 @@ void update_gpa(Student *&student, Semester *&semester) {
                 p_sem->cce += p->credit;
             p = p->next;
         }
+
         // calculate cga
         ptr = semester;
         while (ptr != p_sem) {
@@ -221,6 +247,7 @@ void update_gpa(Student *&student, Semester *&semester) {
     }
 }
 
+// Separate one long string into two string
 void separate_long_into_two(const char original[], char first[], char second[]) {
     int index = 0;
     for (int i = 0; i < 40; i++)
@@ -230,10 +257,15 @@ void separate_long_into_two(const char original[], char first[], char second[]) 
     strcpy(second, original+index+1);
 }
 
+// According to different types of data, performing operation of inserting data by different methods
+// option: the chosen type of data
+// student: head pointer of dynamic struct student object
+// program: head pointer of dynamic struct program object
+// semester: head pointer of dynamic struct semester object
 void insert_data(const int option, Student *&student, Program *&program, Semester *&semester) {
     cout << endl;
     switch (option) {
-        case 2: {
+        case 2: { // Inserting information of student's program
             cin.clear();
             cin.sync();
             Program *temp = new Program;
@@ -305,7 +337,7 @@ void insert_data(const int option, Student *&student, Program *&program, Semeste
                 break;
             }
         }
-        case 3: {
+        case 3: { // Inputting data of semester
             cin.clear();
             cin.sync();
             Semester *temp = new Semester;
@@ -375,7 +407,7 @@ void insert_data(const int option, Student *&student, Program *&program, Semeste
             cout << endl;
             break;
         }
-        case 4: {
+        case 4: { // Inputting information of course in specific semester
             cin.clear();
             cin.sync();
             Course *temp = new Course;
@@ -425,6 +457,12 @@ void insert_data(const int option, Student *&student, Program *&program, Semeste
     }
 }
 
+// According to different types of data, performing operation of changing data by different methods
+// Changing some data, such as number of credit of a course, requires update other data, such as calculation of cga and tga
+// option: the chosen type of data
+// student: head pointer of dynamic struct student object
+// program: head pointer of dynamic struct program object
+// semester: head pointer of dynamic struct semester object
 void change_data(const int option, Student *&student, Program *&program, Semester *&semester) {
     // show the original one before changing its content
     switch (option) {
@@ -446,7 +484,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
             cin.clear();
             cin.sync();
             switch(option_data) {
-                case 1: {
+                case 1: { // Name of student
                     char new_name[30] = "";
                     cout << "The original name of student is " << student->student_name << "." << endl;
                     cout << "Please input the name of student: ";
@@ -454,7 +492,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     strcpy(student->student_name, new_name);
                     break;
                 }
-                case 2: {
+                case 2: { // Name of advisor
                     char new_name[30] = "";
                     cout << "The original name of advisor is " << student->advisor_name << "." << endl;
                     cout << "Please input the name of advisor: ";
@@ -462,7 +500,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     strcpy(student->advisor_name, new_name);
                     break;
                 }
-                case 3: {
+                case 3: { // Admit Date
                     char new_admit_date[30] = "";
                     cout << "The original admit date is " << student->admit_date << "." << endl;
                     cout << "Please input admit date: ";
@@ -470,7 +508,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     strcpy(student->admit_date, new_admit_date);
                     break;
                 }
-                case 4: {
+                case 4: { // Student ID
                     int new_sid;
                     cout << "The original student ID is " << student->sid << "." << endl;
                     cout << "Please input student ID: ";
@@ -478,7 +516,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     student->sid = new_sid;
                     break;
                 }
-                case 5: {
+                case 5: { // Year of study
                     int new_year;
                     cout << "The original year of study is " << student->year << "." << endl;
                     cout << "Please input year of study: ";
@@ -540,7 +578,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                 cin.clear();
                 cin.sync();
                 switch (option_data) {
-                    case 1: {
+                    case 1: { // Name of program
                         char new_name[50] = "";
                         cout << "The original name of program is " << p->program << "." << endl;
                         cout << "Please input new name of program: ";
@@ -548,7 +586,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                         strcpy(p->program, new_name);
                         break;
                     }
-                    case 2: {
+                    case 2: { // Date of changine program
                         char new_change_date[100] = "";
                         cin.clear();
                         cin.sync();
@@ -661,7 +699,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                         cout << endl;
                         break;
                     }
-                    case 3: {
+                    case 3: { // Name of major
                         char new_name[40] = "";
                         cout << "The original name of major is " << p->major << "." << endl;
                         cout << "Please input new name of major: ";
@@ -713,7 +751,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
             cin.clear();
             cin.sync();
             switch (option_course) {
-                case 1: {
+                case 1: { // Course code
                     char new_course_code[10] = "";
                     cout << "The original course code is " << ptr->code << "." << endl;
                     cout << "Please input new course code: ";
@@ -757,7 +795,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     }
                     break;
                 }
-                case 2: {
+                case 2: { // Course title
                     char new_course_title[100] = "";
                     cout << "The original couse title is " << ptr->title << "." << endl;
                     cout << "Please input new course title: ";
@@ -765,7 +803,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     strcpy(ptr->title, new_course_title);
                     break;
                 }
-                case 3: {
+                case 3: { // Number of credit
                     unsigned int new_course_credit = 0;
                     cout << "The original number of credit is " << ptr->credit << "." << endl;
                     cout << "Please input new number of credit: ";
@@ -774,7 +812,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     update_gpa(student, semester);
                     break;
                 }
-                case 4: {
+                case 4: { // Grade
                     char new_grade[3] = "";
                     cout << "The original grade is " << ptr->grade << "." << endl;
                     cout << "Please input new grade: ";
@@ -783,7 +821,7 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
                     update_gpa(student, semester);
                     break;
                 }
-                case 5: {
+                case 5: { // Enrolled semester
                     char new_semester[20] = "";
                     cout << "The original enrolled semester is " << ptr->enrolled_semester << "." << endl;
                     cout << "Please input new enrolled semester: ";
@@ -829,11 +867,15 @@ void change_data(const int option, Student *&student, Program *&program, Semeste
     }
 }
 
+// To delete some data
+// option: the chosen type of data
+// program: head pointer of dynamic struct program object
+// semester: head pointer of dynamic struct semester object
 void delete_data(const int option, Program *&program, Semester *&semester) {
     cin.clear();
     cin.sync();
     switch (option) {
-        case 2: {
+        case 2: { // Program
             char change_date_delete[100] = "";
             cout << "Reminder: You cannot delete the first program that you have." << endl;
             cout << "You can only change its content." << endl;
@@ -847,12 +889,14 @@ void delete_data(const int option, Program *&program, Semester *&semester) {
                 cout << "Therefore, it is an invalid input." << endl;
             } else {
                 p = program;
+
+                // Find the target program
                 while (strcmp(p->next->change_date, change_date_delete) != 0)
                     p = p->next;
-                if (p->next->next == nullptr) {
+                if (p->next->next == nullptr) { // delete middle one
                     delete p->next;
                     p->next = nullptr;
-                } else {
+                } else { // delete the last one
                     Program *ptr = p->next;
                     p->next = p->next->next;
                     delete ptr;
@@ -862,7 +906,7 @@ void delete_data(const int option, Program *&program, Semester *&semester) {
             cout << endl;
             break;
         }
-        case 3: {
+        case 3: { // delete semester
             char semester_period[20] = "";
             cout << "Reminder: Deleting the semester will delete all courses that are enrolled in that semester too" << endl;
             cout << "Please input the semester(e.g. 2021-22 Fall): ";
@@ -876,7 +920,7 @@ void delete_data(const int option, Program *&program, Semester *&semester) {
                 cout << "Therefore, it is an invalid input." << endl;
             } else {
                 delete_whole_course(p->courses);
-                if (p == semester) {
+                if (p == semester) { // delete the first one 
                     semester = p->next;
                     delete p;
                     p = nullptr;
@@ -897,7 +941,7 @@ void delete_data(const int option, Program *&program, Semester *&semester) {
             }
             break;
         }
-        case 4: {
+        case 4: { // delete course
             char semester_period[20] = "";
             cout << "Please input the semester(e.g. 2021-22 Fall): ";
             cin.getline(semester_period, 20);
@@ -952,6 +996,8 @@ void delete_data(const int option, Program *&program, Semester *&semester) {
     }
 }
 
+// To delete dynamic struct program object
+// Using recursion technique to achieve that
 void delete_whole_program(Program *&program) {
     if (program->next == nullptr) {
         delete program;
@@ -963,6 +1009,8 @@ void delete_whole_program(Program *&program) {
     }
 }
 
+// To delete dynamic struct course object
+// Using recursion technique to achieve that
 void delete_whole_course(Course *&course) {
     if (course == nullptr)
         return;
@@ -976,6 +1024,9 @@ void delete_whole_course(Course *&course) {
     }
 }
 
+// To delete dynamic struct semester object
+// Need to delete all courses that being in semester struc object before deleting dynamic struct semester object
+// Using recursion technique to achieve that
 void delete_whole_semester(Semester *&semester) {
     if (semester->next == nullptr) {
         delete_whole_course(semester->courses);
@@ -989,6 +1040,7 @@ void delete_whole_semester(Semester *&semester) {
     }
 }
 
+// Generate interface of the menu and return option.
 int menu() {
     cin.clear();
     cin.sync();
@@ -1010,6 +1062,11 @@ int menu() {
     return option;
 }
 
+// User uses this function to insert data into this program and generate csv file.
+// First, inputting student's personal information. Then, inputting data of student's program. At last, inputting course information.
+// Personal Information: Name of Student, Name of Advisor, Admit Date, Student ID and Number of years of study
+// Program: Name of Program, Semester of changing program and Name of Major
+// Course: Course Code, Course Title, Number of Credits, Grade and Enrolled Semester
 void insert_csv() {
     char address[100] = "", choice[5] = "";
     int flag = 0;
@@ -1020,6 +1077,8 @@ void insert_csv() {
     cin.sync();
     cout << "Please input the address of new csv file(e.g. ./csvfile/data1.csv): ";
     cin.getline(address, 100);
+
+    // Inputting student's personal information
     cout << endl << "First, please input the information about you." << endl;
     cout << "Please input your name: ";
     cin.getline(temp_student->student_name, 30);
@@ -1032,6 +1091,7 @@ void insert_csv() {
     cout << "Please input your number of years of study: ";
     cin >> temp_student->year;
     
+    // Inputting data of student's programs
     cin.clear();
     cin.sync();
     cout << endl << "Then, please input the name of the program(e.g. Bachelor Degree in School of Engineering): ";
@@ -1040,6 +1100,8 @@ void insert_csv() {
     cin.getline(head_program->major, 40);
     strcpy(head_program->change_date, "NA");
     head_program->next = nullptr;
+
+    // To make sure the input is valid.
     cout << "Do you still want to continue to input other program(yes/no): ";
     cin.getline(choice, 5);
     while (1) {
@@ -1055,6 +1117,7 @@ void insert_csv() {
         }
         break;
     }
+    // When the value of flag equal to 0, it means user want to keep inputting data of other programs
     while (flag == 0) {
         cin.clear();
         cin.sync();
@@ -1069,6 +1132,9 @@ void insert_csv() {
         }
     }
 
+    // Initialize the semester
+    // Inputting the "name" of semester by using function of generate_semester_period()
+    // Initialize the value of cce, cga tga as 0
     cin.clear();
     cin.sync();
     strcpy(choice, "");
@@ -1096,6 +1162,7 @@ void insert_csv() {
         p = p->next;
     }
 
+    // Inputting course information.
     cout << endl << "Next, do you want to insert course to some semesters(yes/no): ";
     cin.getline(choice, 5);
     while (strcmp(choice, "yes") != 0 && strcmp(choice, "no") != 0) {
@@ -1153,18 +1220,23 @@ void insert_csv() {
             }
         } 
     }
+
+    // Create csv file and inputting all inputted data into that csv file
+    // all data are separated by comma
     cout << endl;
     ofstream ofs;
     ofs.open(address, ios::out | ios::trunc);
     Student *p_student = temp_student;
     Program *p_program = head_program;
     Semester *p_semester = head_semester;
+    // Inputting data of student's programs
     ofs << endl << "student" << ","
                 << p_student->student_name << ","
                 << p_student->advisor_name << ","
                 << p_student->sid << ","
                 << p_student->year << ","
                 << p_student->admit_date;
+    // Inputting data of student's programs
     while (p_program != nullptr) {
         ofs << endl << "program" << ","
                     << p_program->program << ","
@@ -1172,6 +1244,7 @@ void insert_csv() {
                     << p_program->change_date;
         p_program = p_program->next;
     }
+    // Inputting data of course
     Semester *last = head_semester;
     while (last->next != nullptr)
         last = last->next;
@@ -1188,6 +1261,7 @@ void insert_csv() {
         }
         p_semester = p_semester->next;
     }
+    // Inputting data of course in the last semester
     Course *p_course = last->courses;
     while (p_course != nullptr) {
         ofs << endl << "course" << ","
@@ -1202,7 +1276,9 @@ void insert_csv() {
     delete_all_dynamic(temp_student, head_program, head_semester);
 }
 
+// To obtain data from csv file and store them into dynamic struct object for further processing
 void read_csv(Student *&student, Program *&program, Semester *&semester, char address[]) {
+    // read csv file
     string input_path;
     cout << "The path for the CSV file (e.g. ./files/student1.csv): ";
     cin >> input_path;
@@ -1297,9 +1373,11 @@ void read_csv(Student *&student, Program *&program, Semester *&semester, char ad
     }
     Semester *p = semester;
     update_gpa(student, semester);
-    
 }
 
+// To generate transcript
+// The format is following the format of unofficial transcript that generated in HKUST Student Intranet
+// It can be separated into 3 parts: student's personal information, acadmic record
 void print_all(Student *&student, Program *&program, Semester *&semester) {
     cout << "Here is the transcript." << endl << endl;
     cout << "                    Unofficial Transcript of Academic Record" << endl;
@@ -1374,6 +1452,13 @@ void print_all(Student *&student, Program *&program, Semester *&semester) {
     } while (ptr != nullptr);
 }
 
+// To modify data in csv file
+// Need read csv file before using this function
+// First, choosing the types of data
+// Then, choosing the operation that perform on that data
+// Next, perform the operation to the data
+// At last, over-write the original csv file by latest data
+// Different types of data and different operations have different methods to do
 void modify_csv(Student *&student, Program *&program, Semester *&semester, char address[]) {
     int option_data, option_modify;
     cout << endl << "Here are four types of data that you can modify:" << endl;
@@ -1383,6 +1468,7 @@ void modify_csv(Student *&student, Program *&program, Semester *&semester, char 
     cout << "4: Course" << endl;
     cout << "What type of data that you want to modify(1-4): ";
     cin >> option_data;
+    // To ensure the input is valid
     while (option_data > 4 || option_data < 1) {
         cout << "Please input valid choice: ";
         cin >> option_data;
@@ -1393,6 +1479,7 @@ void modify_csv(Student *&student, Program *&program, Semester *&semester, char 
     cout << "3: Delete exisitng data" << endl;
     cout << "What operation do you to want to perform(1-3): ";
     cin >> option_modify;
+    // To ensure the input is valid
     while (option_modify > 3|| option_modify < 1) {
         cout << "Please input valid choice: ";
         cin >> option_modify;
@@ -1417,7 +1504,7 @@ void modify_csv(Student *&student, Program *&program, Semester *&semester, char 
             break;
         case 3:
             if (option_data != 1)
-                    delete_data(option_data, program, semester);
+                delete_data(option_data, program, semester);
             else {
                 cout << "You cannot delete any student's personal information specificly." << endl;
                 cout << "You can only change students's personal information." << endl;
@@ -1425,6 +1512,7 @@ void modify_csv(Student *&student, Program *&program, Semester *&semester, char 
             break;
     }
 
+    // over-write the original csv file
     update_gpa(student, semester);
     ofstream ofs;
     ofs.open(address, ios::out | ios::trunc);
@@ -1460,6 +1548,10 @@ void modify_csv(Student *&student, Program *&program, Semester *&semester, char 
     ofs.close();
 }
 
+// To delete all dynamic struct object
+// First, delete dynamic struct student object
+// Then, delete dynamic struct program object
+// At last, delete dynamic struct semester object
 void delete_all_dynamic(Student *&student, Program *&program, Semester *&semester) {
     delete student;
     student = nullptr;
