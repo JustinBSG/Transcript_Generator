@@ -56,6 +56,9 @@ check memory leakage<br />
 Working on:<br />
 
 Not start:<br />
+Create UI windows by using QT<br />
+Create pdf<br />
+Plot Graph<br />
 
 ## Deadline
 Basic Target: 17/6<br />
