@@ -2,6 +2,7 @@
 #define INC_SEMESTER_HPP
 
 #include <string>
+#include "course.hpp"
 
 using namespace std;
 
@@ -18,6 +19,18 @@ private:
     int total_num_courses;
 
 public:
+    Semester();
+    ~Semester();
+
+    string GetPeriod() const;
+    float GetTGA() const;
+    float GetCGA() const;
+    int GetCCE() const;
+    Semester* GetNext() const;
+    Semester* GetPrev() const;
+    Course* GetCourses() const;
+    int GetTotal_num_courses() const; 
+
 };
 
 #endif

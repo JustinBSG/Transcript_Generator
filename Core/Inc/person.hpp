@@ -15,13 +15,22 @@ protected:
     int ust_card_num;
 
 public:
-    Person(string name = "", string admit_date = "", string department = "", int ust_card_num = 0);
-    Person(const Person &other);
+    Person();
+    ~Person();
+
+    string GetName() const;
+    string GetAdmit_date() const;
+    string GetDepartment() const;
+    int GetUst_card_num() const;
 };
 
-class Prof : public Person
+class Professor : public Person
 {
 private:
+
+public:
+    Professor();
+    ~Professor();
 };
 
 class Student : public Person
@@ -35,13 +44,14 @@ private:
     int total_num_program;
 
 public:
-    Student(int year = 0, float cga = 0., float mcga = 0., string status = "", Program **program = nullptr, int total_num_program = 0);
+    Student();
+    ~Student();
 
     int GetYear() const;
     float GetCga() const;
     float GetMcga() const;
     string GetStatus() const;
-    Program *GetProgram(int index) const;
+    Program* GetProgram() const;
     int GetTotal_num_program() const;
 
     void increment_year();

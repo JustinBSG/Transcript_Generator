@@ -15,6 +15,9 @@ private:
     int credits;
 
 public:
+    Course();
+    ~Course();
+
 };
 
 #endif
