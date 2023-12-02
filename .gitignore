@@ -3,3 +3,4 @@
 main.exe
 testcase
 make
+.clang-format

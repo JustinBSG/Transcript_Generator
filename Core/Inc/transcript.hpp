@@ -2,16 +2,16 @@
 #define INC_TRANSCRIPT_HPP
 
 #include <string>
+
 #include "person.hpp"
-#include "program.hpp" 
+#include "program.hpp"
 #include "semester.hpp"
 
-class Transcript
-{
+class Transcript {
     private:
         Student user;
         Professor advisor;
-        Semester semesters;
+        Semester semesters; // maybe use list
         string print_date;
 
     public:
