@@ -2,7 +2,8 @@
 
 using namespace std;
 
-Person::Person(int ust_card_num) : ust_card_num{ust_card_num} {}
+Person::Person(string name, string admit_date, string department, int ust_card_num) :
+                name{name}, admit_date{admit_date}, department{department}, ust_card_num{ust_card_num} {}
 
 string Person::GetName() const {
     return name;
@@ -40,14 +41,17 @@ void Person::print_info() const {
 
 }
 
-Professor::Professor(int ust_card_num) : Person{ust_card_num} {}
+Professor::Professor(string name, string admit_date, string department, int ust_card_num) : 
+                    Person{name, admit_date, department, ust_card_num} {}
 
 void Professor::print_info() const {
 
 }
 
-Student::Student(int ust_card_num, int year, float cga, float mcga, Program **program, int total_num_program) :
-                    Person{ust_card_num}, year{year}, cga{cga}, mcga{mcga}, program{program}, total_num_program{total_num_program} {}
+Student::Student(string name, string admit_date, string department, int ust_card_num, int year, float cga, float mcga, 
+                    string status, Program **program, int total_num_program) :
+                    Person{name, admit_date, department, ust_card_num}, year{year}, cga{cga}, mcga{mcga}, status{status},
+                    program{program}, total_num_program{total_num_program} {}
 
 int Student::GetYear() const {
     return year;

@@ -13,7 +13,7 @@ class Person {
         int ust_card_num;
 
     public:
-        Person(int ust_card_num = 0);
+        Person(string name = "", string admit_date = "", string department = "", int ust_card_num = 0);
         ~Person() = default;
 
         string GetName() const;
@@ -32,7 +32,7 @@ class Person {
 class Professor : public Person {
     private:
     public:
-        Professor(int ust_card_num = 0);
+        Professor(string name = "", string admit_date = "", string department = "", int ust_card_num = 0);
         ~Professor() = default;
 
         void print_info() const override;
@@ -48,7 +48,7 @@ class Student : public Person {
         int total_num_program;
 
     public:
-        Student(int ust_card_num = 0, int year = 0, float cga = 0., float mcga = 0., Program **program = nullptr, int total_num_program = 0);
+        Student(string name = "", string admit_date = "", string department = "", int ust_card_num = 0, int year = 0, float cga = 0., float mcga = 0., string status = "", Program **program = nullptr, int total_num_program = 0);
         ~Student() = default;
 
         int GetYear() const;
