@@ -11,13 +11,16 @@ class Transcript {
     private:
         Student user;
         Professor advisor;
-        Semester semesters; // maybe use list
+        Semester semesters; 
         string print_date;
+        int total_num_semesters;
 
     public:
         Transcript();
         ~Transcript();
 
+        /*  Print whole transcript on terminal in specific format
+        */
         void print() const;
 };
 

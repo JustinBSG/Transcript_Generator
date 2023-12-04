@@ -10,7 +10,7 @@ class Program {
         string major;
 
     public:
-        Program(string name = "", string change_date = "", string major = "");
+        Program() = default;
         Program(const Program &other);
 
         void GetName() const;
