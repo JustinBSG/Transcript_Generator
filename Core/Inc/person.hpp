@@ -44,12 +44,12 @@ class Student : public Person {
         float cga;
         float mcga;
         string status;
-        Program **program;
+        Program *program;
         int total_num_program;
 
     public:
-        Student(string name = "", string admit_date = "", string department = "", int ust_card_num = 0, int year = 0, float cga = 0., float mcga = 0., string status = "", Program **program = nullptr, int total_num_program = 0);
-        ~Student() = default;
+        Student(string name = "", string admit_date = "", string department = "", int ust_card_num = 0, int year = 0, float cga = 0., float mcga = 0., string status = "", Program *program = nullptr, int total_num_program = 0);
+        ~Student();
 
         int GetYear() const;
         float GetCga() const;
@@ -62,7 +62,6 @@ class Student : public Person {
         void calculate_CGA(Semester*);
         void calculate_MCGA(Semester*);
         void change_status(string);
-        void add_new_program(Program*);
         void change_total_num_program(int);
 
         void print_info() const override;

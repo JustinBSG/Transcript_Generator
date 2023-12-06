@@ -7,8 +7,6 @@
 using namespace std;
 
 class Semester {
-    friend class student;
-
     private:
         string period;
         float tga;
@@ -16,7 +14,7 @@ class Semester {
         int cce;
         Semester *next;
         Semester *prev;
-        Course **courses; 
+        Course *courses; 
         int total_num_courses;
 
     public:
@@ -29,8 +27,12 @@ class Semester {
         int GetCCE() const;
         Semester* GetNext() const;
         Semester* GetPrev() const;
-        Course *GetCourses() const;
+        Course* GetCourses() const;
         int GetTotal_num_courses() const;
+
+        Semester* last_semester() const;
+        void add_semester(Semester*);
+        void sort_semester();
 };
 
 #endif

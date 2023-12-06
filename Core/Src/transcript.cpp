@@ -3,15 +3,25 @@
 
 using namespace std;
 
-Transcript::Transcript() : user{create_user()}, advisor{create_prof()}, semesters{create_semesters()},
-                            print_date{createPrint_date()}, total_num_semesters{0} {
-                                Semester *ptr_sem = semesters;
-                                while (ptr_sem != nullptr) {
-                                    if (ptr_sem->GetTotal_num_courses() != 0)
-                                        total_num_semesters++;
-                                    ptr_sem = ptr_sem->GetNext();
-                                }
+Transcript::Transcript() : user{nullptr}, advisor{nullptr}, semesters{nullptr}, print_date{""}, total_num_semesters{0} {}
+
+Transcript::Transcript(Student *user, Professor *prof, Semester *sem) : user{user}, advisor{prof}, 
+                        semesters{sem}, print_date{""}, total_num_semesters{0} {
+                            // initializa total_num_semesters
+                            Semester *ptr_sem = semesters;
+                            while (ptr_sem != nullptr) {
+                                if (ptr_sem->GetTotal_num_courses() != 0)
+                                    total_num_semesters++;
+                                ptr_sem = ptr_sem->GetNext();
                             }
+
+                            // calculate CGA and MCGA
+                            user->calculate_CGA(semesters);
+                            user->calculate_MCGA(semesters);
+
+                            // update print date
+                            updatePrint_date();
+                        }
 
 Transcript::~Transcript() {
     delete user;
@@ -19,22 +29,7 @@ Transcript::~Transcript() {
     delete semesters;
 }
 
-Student* Transcript::create_user() {
-    Student *user;
-    return user;
-}
-
-Professor* Transcript::create_prof() {
-    Professor *prof;
-    return prof;
-}
-
-Semester* Transcript::create_semesters() {
-    Semester *sem;
-    return sem;
-}
-
-string Transcript::createPrint_date() {
+void Transcript::updatePrint_date() {
     time_t rawtime;
     struct tm * timeinfo;
     string buffer;
@@ -48,7 +43,7 @@ string Transcript::createPrint_date() {
     strftime(temp,100,"%X",timeinfo);
     buffer.append(temp);
 
-    return buffer;
+    print_date = buffer;
 }
 
 int Transcript::GetTotal_num_semesters() const {
@@ -56,5 +51,5 @@ int Transcript::GetTotal_num_semesters() const {
 }
 
 void Transcript::print() const {
-    
+
 }

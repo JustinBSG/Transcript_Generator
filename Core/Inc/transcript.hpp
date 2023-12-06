@@ -17,14 +17,16 @@ class Transcript {
 
     public:
         Transcript();
+        Transcript(Student*, Professor*, Semester*);
         ~Transcript();
 
-        Student* create_user();
-        Professor* create_prof();
-        Semester* create_semesters();
-        string createPrint_date();
-
         int GetTotal_num_semesters() const;
+
+        void changeStudent(Student*);
+        void changeProfessor(Professor*);
+        void changeSemester(Semester*);
+        void updatePrint_date();
+        void updateTotal_num_semesters();
 
         void print() const;
 };

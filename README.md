@@ -22,7 +22,7 @@
 | C | 2 |
 | C- | 1.7 |
 | D | 1 |
-| F | 0 
+| F | 0 |
 TBC
 
 ## Basic Target
