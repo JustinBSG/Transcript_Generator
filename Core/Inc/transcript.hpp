@@ -9,9 +9,9 @@
 
 class Transcript {
     private:
-        Student user;
-        Professor advisor;
-        Semester semesters; 
+        Student *user;
+        Professor *advisor;
+        Semester *semesters; 
         string print_date;
         int total_num_semesters;
 
@@ -19,8 +19,13 @@ class Transcript {
         Transcript();
         ~Transcript();
 
-        /*  Print whole transcript on terminal in specific format
-        */
+        Student* create_user();
+        Professor* create_prof();
+        Semester* create_semesters();
+        string createPrint_date();
+
+        int GetTotal_num_semesters() const;
+
         void print() const;
 };
 
