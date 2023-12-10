@@ -4,33 +4,33 @@
 #include <string>
 
 class Program {
-    private:
-        string name;
-        string change_date;
-        string major;
-        Program *next;
-        Program *prev;
+  private:
+    string name;
+    string change_date;
+    string major;
+    Program* next;
+    Program* prev;
 
-    public:
-        Program();
-        Program(const Program &other);
-        ~Program();
+  public:
+    Program();
+    Program(const Program& other);
+    ~Program();
 
-        void GetName() const;
-        void GetChangeDate() const;
-        void GetMajor() const;
-        Program* GetNext() const;
-        Program* GetPrev() const;
+    void GetName() const;
+    void GetChangeDate() const;
+    void GetMajor() const;
+    Program* GetNext() const;
+    Program* GetPrev() const;
 
-        void changeName(string);
-        void changeChange_date(string);
-        void changeMajor(string);
-        void changeNext(Program*);
-        void changePrev(Program*);
+    void changeName(string);
+    void changeChange_date(string);
+    void changeMajor(string);
+    void changeNext(Program*);
+    void changePrev(Program*);
 
-        Program* last_program() const;
-        void add_program(Program*);
-        void sort_program();
+    Program* last_program() const;
+    void add_program(Program*);
+    void sort_program();
 };
 
 #endif
