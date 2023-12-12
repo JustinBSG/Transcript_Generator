@@ -7,13 +7,13 @@ template <typename T>
 class AVL {
   private:
     struct AVLnode {
-      T data;
-      int height;
-      AVL left;
-      AVL right;
-      AVLnode(const T& other);
+        T data;
+        int height;
+        AVL left;
+        AVL right;
+        AVLnode(const T& other);
     };
-    AVLnode *root;
+    AVLnode* root;
 
     AVL& get_right_subtree() const;
     AVL& get_left_subtree() const;
@@ -33,8 +33,8 @@ class AVL {
     bool contain(const T& other) const;
     T& find_min() const;
     T& find_max() const;
-    T& find_node(const T& other) const;
-    T& find_kth_largest(int k) const;
+    AVLnode* find_node(const T& other) const;
+    AVLnode* find_kth_largest_node(int k) const;
 
     void print(int depth = 0) const;
 
