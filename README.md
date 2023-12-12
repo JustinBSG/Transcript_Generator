@@ -41,8 +41,8 @@
 9. [ ] Plot Graph
 
 ## Deadline
-Basic Target: 31/12/2024
-Advanced Target: TBD
+- Basic Target: 31/12/2024
+- Advanced Target: TBD
 
 ## Reference
 1. https://registry.hkust.edu.hk/transcript-grading
