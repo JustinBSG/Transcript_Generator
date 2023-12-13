@@ -22,10 +22,11 @@
 - [ ] It can save the record that saved in txt or csv. 
 
 ## Advanced Target
-- [ ] Use Class instead of struct
+- [x] Use Class instead of struct
 - [ ] Use QT to create UI for this program.
 - [ ] It can generate pdf file of the output.
 - [ ] It can generate a TGA and CGA graphs on the last page of that pdf file.
+- [ ] Use 
 
 ## Progress
 1. [ ] Complete LinkedList template

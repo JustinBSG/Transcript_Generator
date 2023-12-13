@@ -3,8 +3,7 @@
 #include <string>
 
 #include "../Inc/transcript.hpp"
-
-namespace test {};
+#include "mainTest.cpp"
 
 namespace menu {
 #define TERMINAL_MAX_WIDTH 84
@@ -85,5 +84,6 @@ namespace menu {
 
 int main() {
   menu::start();
+  // option();
   return 0;
 }
