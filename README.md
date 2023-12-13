@@ -26,10 +26,10 @@
 - [ ] Use QT to create UI for this program.
 - [ ] It can generate pdf file of the output.
 - [ ] It can generate a TGA and CGA graphs on the last page of that pdf file.
-- [ ] Use 
+- [ ] Use CMake instead of makefile
 
 ## Progress
-1. [ ] Complete LinkedList template
+1. [ ] Complete AVL Tree template
 1. [ ] Complete all classes and their member functions
 1. [ ] input data and create a csv file (option 1)
 2. [ ] read csv file (option 2)
