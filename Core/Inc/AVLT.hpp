@@ -9,17 +9,20 @@ class AVL {
     struct AVLnode {
         T data;
         int height;
-        AVL left;
-        AVL right;
+        AVL<T> left;
+        AVL<T> right;
         AVLnode(const T& other);
     };
     AVLnode* root;
 
-    AVL& get_right_subtree() const;
-    AVL& get_left_subtree() const;
+    AVL<T>& get_right_subtree();
+    AVL<T>& get_left_subtree();
+    const AVL<T>& get_right_subtree() const;
+    const AVL<T>& get_left_subtree() const;
     int get_height() const;
     int get_balance_factor() const;
     void fix_height() const;
+    int size() const;
 
     void rotate_left();
     void rotate_right();
