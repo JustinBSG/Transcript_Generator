@@ -29,7 +29,7 @@ class AVL {
     void balance();
 
   public:
-    AVL() = default;
+    AVL();
     ~AVL();
 
     bool is_empty() const;
@@ -45,4 +45,6 @@ class AVL {
     void remove(const T& other);
 };
 
-#endif INC_AVLT_HPP
+#include "../Src/avlt.tpp"
+
+#endif 

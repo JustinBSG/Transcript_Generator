@@ -1,5 +1,6 @@
-#include "../Inc/AVLT.hpp"
 #include <iostream>
+
+#include "../Inc/avlt.hpp"
 
 template <typename T>
 AVL<T>::AVLnode::AVLnode(const T& other) : data{other}, height{0}, left{}, right{} {}
@@ -26,19 +27,19 @@ const AVL<T>& AVL<T>::get_left_subtree() const {
 
 template <typename T>
 int AVL<T>::get_height() const {
-  return root->height;
+  return is_empty() ? -1 : root->height;
 }
 
 template <typename T>
 int AVL<T>::get_balance_factor() const {
-  return is_empty() ? 0 : root->right.height() - root->left.height();
+  return is_empty() ? 0 : root->right.get_height() - root->left.get_height();
 }
 
 template <typename T>
 void AVL<T>::fix_height() const {
-  if (!is_empty())
-    root->height =
-        1 + max(root->left.height(), root->right.height());
+  if (!is_empty()) {
+    root->height = 1 + max(root->left.get_height(), root->right.get_height());
+  }
 }
 
 template <typename T>
@@ -73,7 +74,6 @@ template <typename T>
 void AVL<T>::balance() {
   if (is_empty())
     return;
-
   fix_height();
   int balance_factor = get_balance_factor();
   if (balance_factor == 2) {
@@ -86,6 +86,9 @@ void AVL<T>::balance() {
     rotate_right();  // Insert data into L/R of LT
   }
 }
+
+template <typename T>
+AVL<T>::AVL() : root{nullptr} {}
 
 template <typename T>
 AVL<T>::~AVL() {
@@ -126,7 +129,7 @@ T& AVL<T>::find_max() const {
 }
 
 template <typename T>
-AVL<T>::AVLnode* AVL<T>::find_node(const T& other) const {
+typename AVL<T>::AVLnode* AVL<T>::find_node(const T& other) const {
   if (is_empty())
     return nullptr;
   else if (!contain(other))
@@ -141,7 +144,7 @@ AVL<T>::AVLnode* AVL<T>::find_node(const T& other) const {
 }
 
 template <typename T>
-AVL<T>::AVLnode* AVL<T>::find_kth_largest_node(int k) const {
+typename AVL<T>::AVLnode* AVL<T>::find_kth_largest_node(int k) const {
   if (k > size())
     return nullptr;
   else if (root == nullptr)
@@ -161,17 +164,17 @@ AVL<T>::AVLnode* AVL<T>::find_kth_largest_node(int k) const {
 
 template <typename T>
 void AVL<T>::print(int depth) const {
-	if (is_empty())
-		return;
-	
-	root->right.print(depth + 1);
+  if (is_empty())
+    return;
 
-	for (int i = 0; i < depth; i++)
-		cout << "\t";
+  root->right.print(depth + 1);
 
-	cout << "(" << root->data << ")" << endl;
+  for (int i = 0; i < depth; i++)
+    cout << "\t";
 
-	root->left.print(depth + 1);
+  cout << "(" << root->data << ")" << endl;
+
+  root->left.print(depth + 1);
 }
 
 template <typename T>

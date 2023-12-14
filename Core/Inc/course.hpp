@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "../Inc/semester.hpp"
-
 using namespace std;
 
 enum grade { F, D, C, B, A };

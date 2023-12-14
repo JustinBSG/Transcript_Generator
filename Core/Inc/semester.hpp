@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "course.hpp"
+#include "../Inc/course.hpp"
 
 using namespace std;
 
