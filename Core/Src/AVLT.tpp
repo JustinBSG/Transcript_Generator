@@ -108,7 +108,7 @@ bool AVL<T>::contain(const T& other) const {
     return true;
   else if (other < root->data)
     return root->left.contain(other);
-  else if (other > root->data)
+  else
     return root->right.contain(other);
 }
 
@@ -139,8 +139,8 @@ typename AVL<T>::AVLnode* AVL<T>::find_node(const T& other) const {
     return root;
   else if (other < root->data)
     return root->left.find_node(other);
-  else if (other > root->data)
-    return root->left.find_node(other);
+  else 
+    return root->right.find_node(other);
 }
 
 template <typename T>
@@ -151,15 +151,15 @@ typename AVL<T>::AVLnode* AVL<T>::find_kth_largest_node(int k) const {
     return nullptr;
 
   int rightSize = 0;
-  if (!root->right.isEmpty())
+  if (!root->right.is_empty())
     rightSize = root->right.size();
 
   if (k <= rightSize)
-    return root->right.kthLargest(k);
+    return root->right.find_kth_largest_node(k);
   else if (k > rightSize + 1)
-    return root->left.kthLargest(k - rightSize - 1);
+    return root->left.find_kth_largest_node(k - rightSize - 1);
   else
-    return this;
+    return root;
 }
 
 template <typename T>
