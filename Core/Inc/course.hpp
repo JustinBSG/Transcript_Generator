@@ -8,30 +8,31 @@ using namespace std;
 enum grade { F, D, C, B, A };
 
 class Course {
+    friend ostream& operator<<(ostream& os, const Course& data);
+
   private:
     string code;
     string title;
     string grade;
-    // Course* next;
-    // Course* prev;
     int credits;
 
   public:
-    Course();
-    ~Course();
+    Course(string code = "", string title = "", string grade = "F", int credits = 0);
+    Course(const Course& other);
+    ~Course() = default;
 
-    string GetCode() const;
-    string GetTitle() const;
-    string GetGrade() const;
-    // Course* GetNext() const;
-    // Course* GetPrev() const;
-    int GetCredits() const;
-
+    string get_code() const;
+    string get_title() const;
+    string get_grade() const;
+    int get_credits() const;
     float find_decimal_place_grade() const;
 
-    // Course* last_course() const;
-    // void add_course(Course*);
-    // void sort_course();
+    void change_code(const string& other_code);
+    void change_title(const string& other_title);
+    void change_grade(const string& other_grade);
+    void change_credits(const int& other_credits);
+
+    Course& operator=(const Course& other);
 };
 
 #endif

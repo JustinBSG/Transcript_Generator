@@ -29,8 +29,11 @@
 - [ ] Use CMake instead of makefile
 
 ## Progress
-1. [ ] Complete AVL Tree template
-1. [ ] Complete all classes and their member functions
+1. [x] Complete AVL Tree template
+1. [ ] Complete class course
+1. [ ] Complete class semester
+1. [ ] Complete class program
+1. [ ] Complete class person
 1. [ ] input data and create a csv file (option 1)
 2. [ ] read csv file (option 2)
 3. [ ] modify data from csv file (option 3)
