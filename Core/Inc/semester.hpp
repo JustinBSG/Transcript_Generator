@@ -4,36 +4,37 @@
 #include <string>
 
 #include "../Inc/course.hpp"
+#include "../Inc/avlt.hpp"
 
 using namespace std;
 
 class Semester {
+  friend ostream& operator<<(ostream& os, const Semester& data);
+
   private:
     string period;
     float tga;
     float cga;
     int cce;
-    Semester* next;
-    Semester* prev;
-    Course* courses;
+    AVL<Course> courses;
     int total_num_courses;
 
   public:
-    Semester();
+    Semester(string period = "", float tga = .0, float cga = .0, int cce = 0, int total_num_courses = 0);
     ~Semester();
 
-    string GetPeriod() const;
-    float GetTGA() const;
-    float GetCGA() const;
-    int GetCCE() const;
-    Semester* GetNext() const;
-    Semester* GetPrev() const;
-    Course* GetCourses() const;
-    int GetTotal_num_courses() const;
+    string get_period() const;
+    float get_tga() const;
+    float get_cga() const;
+    int get_cce() const;
+    AVL<Course> get_courses() const;
+    int get_total_num_courses() const;
 
-    Semester* last_semester() const;
-    void add_semester(Semester*);
-    void sort_semester();
+    void change_period(const string& other_period);
+    void calculate_tga();
+    void calculate_cga();
+    void calculate_cce();
+    void change_total_num_courses(const int& other_total_num_courses);
 };
 
 #endif
