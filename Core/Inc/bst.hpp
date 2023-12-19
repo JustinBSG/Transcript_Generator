@@ -19,6 +19,8 @@ class BST {
     const BST& right_subtree() const;
     const BST& left_subtree() const;
 
+    BSTnode* copy_node(const BSTnode* other);
+
   public:
     BST();
     BST(const BST& other);
@@ -39,8 +41,10 @@ class BST {
 
     void insert(const T& other);
     void remove(const T& other);
+
+    BST<T>& operator=(const BST<T>& other);
 };
 
-#include "bst.cpp"
+#include "../Src/bst.cpp"
 
 #endif

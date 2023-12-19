@@ -1,4 +1,4 @@
-#include "bst.hpp"
+#include "../Inc/bst.hpp"
 
 using namespace std;
 
@@ -23,6 +23,17 @@ const BST<T>& BST<T>::right_subtree() const {
 template <typename T>
 const BST<T>& BST<T>::left_subtree() const {
   return root->left;
+}
+
+template <typename T>
+typename BST<T>::BSTnode* BST<T>::copy_node(const BSTnode* other) {
+  if (other == nullptr)
+    return nullptr;
+
+  BSTnode *temp = new BSTnode{other->data};
+  temp->left.root = copy_node(other->left.root);
+  temp->right.root = copy_node(other->right.root);
+  return temp;
 }
 
 template <typename T>
@@ -182,4 +193,14 @@ void BST<T>::remove(const T& other) {
     temp->left.root = temp->right.root = nullptr;
     delete temp;
   }
+}
+
+template <typename T>
+BST<T>& BST<T>::operator=(const BST<T>& other) {
+  if (this != &other) {
+    while (this->size() != 0)
+      remove(find_max());
+    root = copy_node(other.root);
+  }
+  return *this;
 }
