@@ -1,0 +1,32 @@
+[
+    {
+        "command": "g++ -std=c++11 -Wall -Wextra -I Core/Inc -c Core/Src/course.cpp -o Core/Build/course.o\r",
+        "directory": "d:/OneDrive/Documents/Program/C++/Transcript_Generator",
+        "file": "d:\\OneDrive\\Documents\\Program\\C++\\Transcript_Generator\\Core\\Src\\course.cpp"
+    },
+    {
+        "command": "g++ -std=c++11 -Wall -Wextra -I Core/Inc -c Core/Src/main.cpp -o Core/Build/main.o\r",
+        "directory": "d:/OneDrive/Documents/Program/C++/Transcript_Generator",
+        "file": "d:\\OneDrive\\Documents\\Program\\C++\\Transcript_Generator\\Core\\Src\\main.cpp"
+    },
+    {
+        "command": "g++ -std=c++11 -Wall -Wextra -I Core/Inc -c Core/Src/person.cpp -o Core/Build/person.o\r",
+        "directory": "d:/OneDrive/Documents/Program/C++/Transcript_Generator",
+        "file": "d:\\OneDrive\\Documents\\Program\\C++\\Transcript_Generator\\Core\\Src\\person.cpp"
+    },
+    {
+        "command": "g++ -std=c++11 -Wall -Wextra -I Core/Inc -c Core/Src/program.cpp -o Core/Build/program.o\r",
+        "directory": "d:/OneDrive/Documents/Program/C++/Transcript_Generator",
+        "file": "d:\\OneDrive\\Documents\\Program\\C++\\Transcript_Generator\\Core\\Src\\program.cpp"
+    },
+    {
+        "command": "g++ -std=c++11 -Wall -Wextra -I Core/Inc -c Core/Src/semester.cpp -o Core/Build/semester.o\r",
+        "directory": "d:/OneDrive/Documents/Program/C++/Transcript_Generator",
+        "file": "d:\\OneDrive\\Documents\\Program\\C++\\Transcript_Generator\\Core\\Src\\semester.cpp"
+    },
+    {
+        "command": "g++ -std=c++11 -Wall -Wextra -I Core/Inc -c Core/Src/transcript.cpp -o Core/Build/transcript.o\r",
+        "directory": "d:/OneDrive/Documents/Program/C++/Transcript_Generator",
+        "file": "d:\\OneDrive\\Documents\\Program\\C++\\Transcript_Generator\\Core\\Src\\transcript.cpp"
+    }
+]
