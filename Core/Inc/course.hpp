@@ -23,9 +23,9 @@ class Course {
 
     string get_code() const;
     string get_title() const;
-    string get_grade() const;
+    string get_grade_str() const;
     int get_credits() const;
-    float find_decimal_place_grade() const;
+    float get_grade_num() const;
 
     void change_code(const string& other_code);
     void change_title(const string& other_title);
@@ -33,6 +33,9 @@ class Course {
     void change_credits(const int& other_credits);
 
     Course& operator=(const Course& other);
+    bool operator<(const Course& other);
+    bool operator>(const Course& other);
+    bool operator==(const Course& other);
 };
 
 #endif

@@ -4,7 +4,7 @@
 #include <string>
 
 #include "../Inc/course.hpp"
-#include "../Inc/avlt.hpp"
+#include "../Inc/bst.hpp"
 
 using namespace std;
 
@@ -14,27 +14,31 @@ class Semester {
   private:
     string period;
     float tga;
-    float cga;
-    int cce;
-    AVL<Course> courses;
+    int total_num_credits;
     int total_num_courses;
+    BST<Course> courses;
 
   public:
-    Semester(string period = "", float tga = .0, float cga = .0, int cce = 0, int total_num_courses = 0);
-    ~Semester();
+    Semester(string period = "", float tga = .0, int total_num_credits = 0, int total_num_courses = 0);
+    ~Semester() = default;
 
     string get_period() const;
     float get_tga() const;
-    float get_cga() const;
-    int get_cce() const;
-    AVL<Course> get_courses() const;
+    int get_total_num_credits() const;
     int get_total_num_courses() const;
 
     void change_period(const string& other_period);
     void calculate_tga();
-    void calculate_cga();
-    void calculate_cce();
-    void change_total_num_courses(const int& other_total_num_courses);
+    void calculate_total_num_credits();
+    void update_total_num_courses();
+
+    void insert_course(const Course& other);
+    void remove_course(const string& code);
+
+    Semester& operator=(const Semester& other);
+    bool operator<(const Semester& other);
+    bool operator>(const Semester& other);
+    bool operator==(const Semester& other);
 };
 
 #endif

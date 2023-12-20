@@ -30,7 +30,7 @@ typename BST<T>::BSTnode* BST<T>::copy_node(const BSTnode* other) {
   if (other == nullptr)
     return nullptr;
 
-  BSTnode *temp = new BSTnode{other->data};
+  BSTnode* temp = new BSTnode{other->data};
   temp->left.root = copy_node(other->left.root);
   temp->right.root = copy_node(other->right.root);
   return temp;
