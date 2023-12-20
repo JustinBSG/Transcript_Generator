@@ -3,13 +3,13 @@
 
 #include <string>
 
-#include "../Inc/course.hpp"
 #include "../Inc/bst.hpp"
+#include "../Inc/course.hpp"
 
 using namespace std;
 
 class Semester {
-  friend ostream& operator<<(ostream& os, const Semester& data);
+    friend ostream& operator<<(ostream& os, const Semester& data);
 
   private:
     string period;
@@ -19,13 +19,15 @@ class Semester {
     BST<Course> courses;
 
   public:
-    Semester(string period = "", float tga = .0, int total_num_credits = 0, int total_num_courses = 0);
+    Semester(string period = "", float tga = .0, int total_num_credits = 0,
+             int total_num_courses = 0);
     ~Semester() = default;
 
     string get_period() const;
     float get_tga() const;
     int get_total_num_credits() const;
     int get_total_num_courses() const;
+    BST<Course>& get_courses();
 
     void change_period(const string& other_period);
     void calculate_tga();

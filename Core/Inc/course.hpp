@@ -9,7 +9,7 @@ enum grade { F, D, C, B, A };
 
 class Course {
     friend ostream& operator<<(ostream& os, const Course& data);
-
+    
   private:
     string code;
     string title;

@@ -25,6 +25,27 @@ Program& Program::operator=(const Program& other) {
   return *this;
 }
 
+bool Program::operator<(const Program& other) {
+    if (change_date >= other.change_date)
+    return false;
+  else 
+    return true;
+}
+
+bool Program::operator>(const Program& other) {
+    if (change_date >= other.change_date)
+    return false;
+  else 
+    return true;
+}
+
+bool Program::operator==(const Program& other) {
+    if (change_date == other.change_date)
+    return true;
+  else 
+    return false;
+}
+
 ostream& operator<<(ostream& os, const Major& data) {
   // TODO: following format of old version
 }
@@ -50,24 +71,15 @@ Major& Major::operator=(const Major& other) {
 }
 
 bool Major::operator<(const Major& other) {
-  if (name_major >= other.name_major)
-    return false;
-  else 
-    return true;
+  return this->operator<(other);
 }
 
 bool Major::operator>(const Major& other) {
-  if (name_major >= other.name_major)
-    return false;
-  else 
-    return true;
+  return this->operator>(other);
 }
 
 bool Major::operator==(const Major& other) {
-  if (name_major == other.name_major)
-    return true;
-  else 
-    return false;
+  return this->operator==(other);
 }
 
 ostream& operator<<(ostream& os, const Minor& data) {
@@ -95,22 +107,13 @@ Minor& Minor::operator=(const Minor& other) {
 }
 
 bool Minor::operator<(const Minor& other) {
-  if (name_minor >= other.name_minor)
-    return false;
-  else  
-    return true;
+  return this->operator<(other);
 }
 
 bool Minor::operator>(const Minor& other) {
-  if (name_minor <= other.name_minor)
-    return false;
-  else 
-    return true;
+  return this->operator>(other);
 }
 
 bool Minor::operator==(const Minor& other) {
-  if (name_minor == other.name_minor)
-    return true;
-  else
-    return false;
+  return this->operator==(other);
 }

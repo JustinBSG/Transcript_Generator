@@ -21,6 +21,8 @@ int Semester::get_total_num_credits() const { return total_num_credits; }
 
 int Semester::get_total_num_courses() const { return total_num_courses; }
 
+BST<Course>& Semester::get_courses() { return courses; }
+
 void Semester::change_period(const string& other_period) { period = other_period; }
 
 void Semester::calculate_tga() {

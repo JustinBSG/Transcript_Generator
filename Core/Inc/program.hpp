@@ -24,6 +24,9 @@ class Program {
     void change_major(const string& other_major);
 
     Program& operator=(const Program& other);
+    bool operator<(const Program& other);
+    bool operator>(const Program& other);
+    bool operator==(const Program& other);
 };
 
 class Major : public Program {

@@ -3,10 +3,13 @@
 
 #include <string>
 
+#include "../Inc/bst.hpp"
 #include "../Inc/program.hpp"
 #include "../Inc/semester.hpp"
 
 class Person {
+    friend ostream& operator<<(ostream& os, const Person& data);
+
   protected:
     string name;
     string admit_date;
@@ -16,61 +19,65 @@ class Person {
   public:
     Person(string name = "", string admit_date = "", string department = "",
            int ust_card_num = 0);
+    Person(const Person& other) = delete;
     ~Person() = default;
 
-    string GetName() const;
-    string GetAdmit_date() const;
-    string GetDepartment() const;
-    int GetUst_card_num() const;
+    string get_name() const;
+    string get_admit_date() const;
+    string get_department() const;
+    int get_ust_card_num() const;
 
-    void ChangeName(string);
-    void ChangeAdmit_date(string);
-    void ChangeDepartment(string);
-    void ChangeUst_card_num(int);
-
-    virtual void print_info() const;
+    void change_name(const string& other_name);
+    void change_admit_date(const string& other_admit_date);
+    void change_department(const string& other_department);
+    void change_ust_card_num(const int& other_ust_card_num);
 };
 
 class Professor : public Person {
+    friend ostream& operator<<(ostream& os, const Professor& data);
+
   private:
   public:
     Professor(string name = "", string admit_date = "", string department = "",
               int ust_card_num = 0);
+    Professor(const Professor& other) = delete;
     ~Professor() = default;
-
-    void print_info() const override;
 };
 
 class Student : public Person {
+    friend ostream& operator<<(ostream& os, const Student& data);
+
   private:
     int year;
     float cga;
     float mcga;
     string status;
-    Program *program;
-    int total_num_program;
+    BST<Major> majors;
+    BST<Minor> minors;
 
   public:
     Student(string name = "", string admit_date = "", string department = "",
             int ust_card_num = 0, int year = 0, float cga = 0., float mcga = 0.,
-            string status = "", Program *program = nullptr,
-            int total_num_program = 0);
-    ~Student();
+            string status = "");
+    Student(const Student& other) = delete;
+    ~Student() = default;
 
-    int GetYear() const;
-    float GetCga() const;
-    float GetMcga() const;
-    string GetStatus() const;
-    Program *GetProgram(int) const;
-    int GetTotal_num_program() const;
+    int get_year() const;
+    float get_CGA() const;
+    float get_MCGA() const;
+    string get_status() const;
+    BST<Major>& get_majors();
+    BST<Minor>& get_minors();
 
-    void change_year(int);
-    void calculate_CGA(Semester *);
-    void calculate_MCGA(Semester *);
-    void change_status(string);
-    void change_total_num_program(int);
+    void change_year(const int& other_year);
+    void calculate_CGA();
+    void calculate_MCGA();
+    void change_status(const string& other_status);
 
-    void print_info() const override;
+    void insert_major(const string& name_major);
+    void remove_major(const string& name_major);
+    void insert_minor(const string& name_minor);
+    void remove_minor(const string& name_minor);
 };
 
 #endif
