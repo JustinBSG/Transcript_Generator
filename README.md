@@ -32,7 +32,7 @@
 1. [x] Complete AVL Tree template
 1. [x] Complete class course
 1. [x] Complete class semester
-1. [ ] Complete class program
+1. [x] Complete class program
 1. [ ] Complete class person
 1. [ ] input data and create a csv file (option 1)
 2. [ ] read csv file (option 2)
