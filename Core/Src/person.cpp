@@ -63,7 +63,28 @@ BST<Major>& Student::get_majors() { return majors; }
 
 BST<Minor>& Student::get_minors() { return minors; }
 
-void Student::insert_major(const string& name_major) {
+void Student::change_year(const int& other_year) { year = other_year; }
+
+void Student::calculate_CGA() {
+  // call other function
+}
+
+void Student::calculate_MCGA() {
+  // call other function
+}
+
+void Student::change_status(const string& other_status) { status = other_status; }
+
+void Student::insert_major(const Major& other) { majors.insert(other); }
+
+void Student::remove_major(const string& name_major) {
   Major temp{name_major};
-  majors.insert(temp);
+  majors.remove(temp);
+}
+
+void Student::insert_minor(const Minor& other) { minors.insert(other); }
+
+void Student::remove_minor(const string& name_minor) {
+  Minor temp{name_minor};
+  minors.remove(temp);
 }

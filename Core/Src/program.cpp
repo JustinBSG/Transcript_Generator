@@ -1,5 +1,7 @@
 #include "../Inc/program.hpp"
 
+#include <iostream>
+
 using namespace std;
 
 Program::Program(string name, string change_date)
@@ -26,28 +28,30 @@ Program& Program::operator=(const Program& other) {
 }
 
 bool Program::operator<(const Program& other) {
-    if (change_date >= other.change_date)
+  if (change_date >= other.change_date)
     return false;
-  else 
+  else
     return true;
 }
 
 bool Program::operator>(const Program& other) {
-    if (change_date >= other.change_date)
+  if (change_date >= other.change_date)
     return false;
-  else 
+  else
     return true;
 }
 
 bool Program::operator==(const Program& other) {
-    if (change_date == other.change_date)
+  if (change_date == other.change_date)
     return true;
-  else 
+  else
     return false;
 }
 
 ostream& operator<<(ostream& os, const Major& data) {
   // TODO: following format of old version
+  os << data.name << "_" << data.change_date << "_" << data.name_major;
+  return os;
 }
 
 Major::Major(string name, string change_date, string name_major)
@@ -71,19 +75,41 @@ Major& Major::operator=(const Major& other) {
 }
 
 bool Major::operator<(const Major& other) {
-  return this->operator<(other);
+  if (other.change_date != "")
+    return this->Program::operator<(other);
+  else {
+    if (name_major >= other.name_major)
+      return false;
+    else
+      return true;
+  }
 }
 
 bool Major::operator>(const Major& other) {
-  return this->operator>(other);
+  if (other.change_date != "")
+    return this->Program::operator>(other);
+  else {
+    if (name_major <= other.name_major)
+      return false;
+    else
+      return true;
+  }
 }
 
 bool Major::operator==(const Major& other) {
-  return this->operator==(other);
+  if (other.change_date != "")
+    return this->Program::operator==(other);
+  else {
+    if (name_major == other.name_major)
+      return true;
+    else
+      return false;
+  }
 }
 
 ostream& operator<<(ostream& os, const Minor& data) {
   // TODO: following format of old version
+  os << data.name << "_" << data.change_date << "_" << data.name_minor;
 }
 
 Minor::Minor(string name, string change_date, string name_minor)
@@ -107,13 +133,34 @@ Minor& Minor::operator=(const Minor& other) {
 }
 
 bool Minor::operator<(const Minor& other) {
-  return this->operator<(other);
+  if (other.change_date != "")
+    return this->Program::operator<(other);
+  else {
+    if (name_minor >= other.name_minor)
+      return false;
+    else
+      return true;
+  }
 }
 
 bool Minor::operator>(const Minor& other) {
-  return this->operator>(other);
+  if (other.change_date != "")
+    return this->Program::operator>(other);
+  else {
+    if (name_minor <= other.name_minor)
+      return false;
+    else
+      return true;
+  }
 }
 
 bool Minor::operator==(const Minor& other) {
-  return this->operator==(other);
+  if (other.change_date != "")
+    return this->Program::operator==(other);
+  else {
+    if (name_minor == other.name_minor)
+      return true;
+    else
+      return false;
+  }
 }

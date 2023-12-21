@@ -74,9 +74,9 @@ class Student : public Person {
     void calculate_MCGA();
     void change_status(const string& other_status);
 
-    void insert_major(const string& name_major);
+    void insert_major(const Major& other);
     void remove_major(const string& name_major);
-    void insert_minor(const string& name_minor);
+    void insert_minor(const Minor& other);
     void remove_minor(const string& name_minor);
 };
 

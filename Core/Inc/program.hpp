@@ -17,11 +17,9 @@ class Program {
 
     string get_name() const;
     string get_change_date() const;
-    string get_major() const;
 
     void change_name(const string& other_name);
     void change_change_date(const string& other_change_date);
-    void change_major(const string& other_major);
 
     Program& operator=(const Program& other);
     bool operator<(const Program& other);
