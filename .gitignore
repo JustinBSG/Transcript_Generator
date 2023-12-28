@@ -1,7 +1,4 @@
-*.o
-*.d
-main.exe
-testcase
+Core/Build/
+testcase/
 make
 .clang-format
-make-DESKTOP-3GIU998
