@@ -1,30 +1,34 @@
 # Compiler
 CXX := g++
 # Compiler flags
-CXXFLAGS := -std=c++11 -Wall -Wextra -I Core/Inc
+CXXFLAGS := -std=c++11 -Wall -Wextra
 
 # Directories
-SRCDIR := Core/Src
-INCDIR := Core/Inc
-BUILDDIR := Core/Build
+CORE_DIR := Core
+BUILD_DIR := $(CORE_DIR)/Build
+INC_DIR := $(CORE_DIR)/Inc
+SRC_DIR := $(CORE_DIR)/Src
 
 # Source files
-SRCS := $(wildcard $(SRCDIR)/*.cpp)
+CPP_FILES := $(wildcard $(SRC_DIR)/*.cpp)
+
 # Object files
-OBJS := $(patsubst $(SRCDIR)/%.cpp,$(BUILDDIR)/%.o,$(SRCS))
+OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(CPP_FILES))
 
-# Name of the final executable
-TARGET := myprogram
+# Executable
+TARGET := $(BUILD_DIR)/Transcript_generator.exe
 
-.PHONY: all clean
-
+# Default rule
 all: $(TARGET)
 
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) $(OBJS) -o $@
+# Rule to build the executable
+$(TARGET): $(OBJ_FILES)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+# Rule to compile source files
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $< -o $@
 
+# Clean rule
 clean:
-	rm -rf $(BUILDDIR)/*.o $(TARGET)
+	rm -rf $(BUILD_DIR)/*.o $(TARGET)

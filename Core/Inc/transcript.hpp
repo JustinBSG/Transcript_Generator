@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "../Inc/bst.hpp"
 #include "person.hpp"
 #include "program.hpp"
 #include "semester.hpp"
@@ -11,22 +12,25 @@ class Transcript {
   private:
     Student *user;
     Professor *advisor;
-    Semester *semesters;
+    BST<Semester> *semesters;
     string print_date;
-    int total_num_semesters;
 
   public:
-    Transcript();
-    Transcript(Student *, Professor *, Semester *);
+    Transcript(Student *user = nullptr, Professor *advisor = nullptr);
     ~Transcript();
 
-    int GetTotal_num_semesters() const;
+    Student *get_student() const;
+    Professor *get_professor() const;
+    BST<Semester> *get_semesters() const;
+    string get_print_date() const;
 
-    void changeStudent(Student *);
-    void changeProfessor(Professor *);
-    void changeSemester(Semester *);
-    void updatePrint_date();
-    void updateTotal_num_semesters();
+    void insert_student(Student *other_student);
+    void insert_professor(Professor *other_professor);
+    void insert_semester(BST<Semester> *other_semester);
+    void update_print_date();
+
+    void calculate_CGA();
+    void calculate_MCGA();
 
     void print() const;
 };

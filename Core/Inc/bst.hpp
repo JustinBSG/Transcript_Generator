@@ -45,6 +45,6 @@ class BST {
     BST<T>& operator=(const BST<T>& other);
 };
 
-#include "../Src/bst.cpp"
+#include "bst.cpp"
 
 #endif

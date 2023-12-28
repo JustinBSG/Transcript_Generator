@@ -54,13 +54,14 @@ class Student : public Person {
     string status;
     BST<Major> majors;
     BST<Minor> minors;
+    BST<Semester> *semesters; 
 
   public:
     Student(string name = "", string admit_date = "", string department = "",
             int ust_card_num = 0, int year = 0, float cga = 0., float mcga = 0.,
-            string status = "");
+            string status = "", BST<Semester> *semesters = nullptr);
     Student(const Student& other) = delete;
-    ~Student() = default;
+    ~Student();
 
     int get_year() const;
     float get_CGA() const;
@@ -70,14 +71,13 @@ class Student : public Person {
     BST<Minor>& get_minors();
 
     void change_year(const int& other_year);
-    void calculate_CGA();
-    void calculate_MCGA();
     void change_status(const string& other_status);
 
     void insert_major(const Major& other);
     void remove_major(const string& name_major);
     void insert_minor(const Minor& other);
     void remove_minor(const string& name_minor);
+    void insert_semesters(BST<Semester> *other_semesters);
 };
 
 #endif

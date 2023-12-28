@@ -44,12 +44,18 @@ ostream& operator<<(ostream& os, const Student& data) {
 }
 
 Student::Student(string name, string admit_date, string department, int ust_card_num,
-                 int year, float cga, float mcga, string status)
+                 int year, float cga, float mcga, string status,
+                 BST<Semester>* semesters)
     : Person{name, admit_date, department, ust_card_num},
       year{year},
       cga{cga},
       mcga{mcga},
-      status{status} {}
+      status{status},
+      semesters{semesters} {}
+
+Student::~Student() {
+  delete semesters;
+}
 
 int Student::get_year() const { return year; }
 
@@ -65,14 +71,6 @@ BST<Minor>& Student::get_minors() { return minors; }
 
 void Student::change_year(const int& other_year) { year = other_year; }
 
-void Student::calculate_CGA() {
-  // call other function
-}
-
-void Student::calculate_MCGA() {
-  // call other function
-}
-
 void Student::change_status(const string& other_status) { status = other_status; }
 
 void Student::insert_major(const Major& other) { majors.insert(other); }
@@ -87,4 +85,11 @@ void Student::insert_minor(const Minor& other) { minors.insert(other); }
 void Student::remove_minor(const string& name_minor) {
   Minor temp{name_minor};
   minors.remove(temp);
+}
+
+void Student::insert_semesters(BST<Semester>* other_semesters) {
+  if (other_semesters == nullptr)
+    return;
+  else
+    semesters = other_semesters;
 }

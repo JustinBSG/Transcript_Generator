@@ -1,4 +1,6 @@
-#include "../Inc/bst.hpp"
+#include "bst.hpp"
+
+#include <iostream>
 
 using namespace std;
 
@@ -157,7 +159,7 @@ typename BST<T>::BSTnode* BST<T>::find_BST_node(const T& other) const {
   if (is_empty())
     return nullptr;
 
-  if (other == root->data)
+  if (root->data == other)
     return root;
   else if (root->data < other)
     return root->left.find_BST_node(other);
@@ -169,9 +171,9 @@ template <typename T>
 void BST<T>::insert(const T& other) {
   if (is_empty())
     root = new BSTnode(other);
-  else if (other < root->data)
+  else if (root->data > other)
     root->left.insert(other);
-  else if (other > root->data)
+  else if (root->data < other)
     root->right.insert(other);
 }
 
@@ -180,9 +182,9 @@ void BST<T>::remove(const T& other) {
   if (is_empty())
     return;
 
-  if (other < root->data)
+  if (root->data > other)
     root->left.remove(other);
-  else if (other > root->data)
+  else if (root->data < other)
     root->right.remove(other);
   else if (root->left.root && root->right.root) {
     root->data = root->right.find_min();
