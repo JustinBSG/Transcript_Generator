@@ -4,7 +4,13 @@
 
 using namespace std;
 
-Generator::~Generator() {}
+Generator::~Generator() {
+  for (int i = 0; i < transcripts.size(); i++) {
+    delete transcripts[i];
+    transcripts[i] = nullptr;
+  }
+  transcripts.clear();
+}
 
 void Generator::start() {
   cout << TERMINAL_TITLE << endl;
@@ -21,7 +27,7 @@ void Generator::start() {
     cout << "6: Leave" << endl << endl;
     cout << "What operation that you want to choose(1-6): ";
     std::cin >> option;
-    while (option > 6 || option < 1) {
+    while (option > 7 || option < 1) {
       cout << "Please input valid choice: ";
       std::cin >> option;
     }
@@ -46,6 +52,10 @@ void Generator::start() {
       case 6:
         end(current);
         return;
+      case 7:
+        // cout << get_num_transcript() << endl;
+
+        break;
     }
   }
 }
@@ -60,8 +70,54 @@ void Generator::print_all(Transcript* current) {}
 
 void Generator::restart(Transcript* current) {}
 
-void Generator::end(Transcript* current) {}
+void Generator::end(Transcript* current) {
+  cout << endl << "BYE~" << endl << endl << SPLIT_LINE << endl;
 
-void Generator::insert_transcript(Transcript* other_transcript) {}
+  if (current != nullptr) {
+    bool contain = false;
+    for (int i = 0; i < transcripts.size(); i++)
+      if (transcripts[i] == current) {
+        contain = true;
+        break;
+      }
 
-void Generator::remove_transcript(int index) {}
+    if (!contain) {
+      delete current;
+      current = nullptr;
+    }
+  }
+}
+
+int Generator::get_num_transcript() const { return transcripts.size(); }
+
+void Generator::insert_transcript(Transcript* other_transcript) {
+  if (other_transcript != nullptr)
+    transcripts.push_back(other_transcript);
+}
+
+void Generator::remove_transcript(int index) {
+  if (transcripts.size() >= index)
+    return;
+
+  delete transcripts[index];
+  transcripts[index] = nullptr;
+  clear_nullptr();
+}
+
+void Generator::clear_nullptr() {
+  bool do_smth = false;
+  for (int i = 0; i < transcripts.size(); i++)
+    if (transcripts[i] == nullptr) {
+      do_smth = true;
+      break;
+    }
+
+  if (do_smth) {
+    vector<Transcript*> temp;
+    for (int i = 0; i < transcripts.size(); i++)
+      if (transcripts[i] != nullptr)
+        temp.push_back(transcripts[i]);
+    transcripts.clear();
+    transcripts = temp;
+  }
+}

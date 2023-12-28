@@ -28,22 +28,27 @@
 - [ ] It can generate a TGA and CGA graphs on the last page of that pdf file.
 - [ ] Use CMake instead of makefile
 
-## Progress
+## To-Do List
 1. [x] Complete BST template
 1. [x] Complete class course
 1. [x] Complete class semester
 1. [x] Complete class program
 1. [x] Complete class person
 1. [ ] Complete class transcript
+1. [ ] Complete class generator
 1. [ ] input data and create a csv file (option 1)
 2. [ ] read csv file (option 2)
 3. [ ] modify data from csv file (option 3)
 4. [ ] generate transcript on terminal (option 4)
-5. [ ] delete all dynamic data type (option 5)
+5. [ ] make another transcript (option 5)
+5. [x] delete all dynamic data type
 6. [ ] check memory leakage
 7. [ ] Create UI windows by using QT
 8. [ ] Create pdf
 9. [ ] Plot Graph
+
+## Next thing that need to be completed
+- Add command on every functions
 
 ## Deadline
 - Basic Target: 31/12/2024

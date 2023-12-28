@@ -22,7 +22,6 @@ class Generator {
     ~Generator();
 
     void start();
-
     void insert_csv(Transcript* current);
     void read_csv(Transcript* current);
     void modify_csv(Transcript* current);
@@ -30,8 +29,11 @@ class Generator {
     void restart(Transcript* current);
     void end(Transcript* current);
 
+    int get_num_transcript() const;
+
     void insert_transcript(Transcript* other_transcript);
     void remove_transcript(int index);
+    void clear_nullptr();
 };
 
 #endif
