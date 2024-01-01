@@ -68,7 +68,12 @@ void Generator::modify_csv(Transcript* current) {}
 
 void Generator::print_all(Transcript* current) {}
 
-void Generator::restart(Transcript* current) {}
+void Generator::restart(Transcript* current) {
+  if (current != nullptr) {
+    transcripts.push_back(current);
+    current = nullptr;
+  }
+}
 
 void Generator::end(Transcript* current) {
   cout << endl << "BYE~" << endl << endl << SPLIT_LINE << endl;
