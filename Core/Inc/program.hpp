@@ -7,6 +7,7 @@ using namespace std;
 
 class Program {
   protected:
+    // e.g. Bachelor of Engineering
     string name;
     string change_date;
 
@@ -53,6 +54,7 @@ class Major : public Program {
     friend ostream& operator<<(ostream& os, const Major& data);
 
   private:
+    // Electronic Engineering
     string name_major;
 
   public:

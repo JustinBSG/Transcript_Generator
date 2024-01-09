@@ -37,7 +37,7 @@ void Transcript::insert_professor(Professor *other_professor) {
     advisor = other_professor;
 }
 
-void Transcript::insert_semester(BST<Semester> *other_semester) {
+void Transcript::insert_semesters(BST<Semester> *other_semester) {
   if (semesters != nullptr)
     semesters = other_semester;
 }

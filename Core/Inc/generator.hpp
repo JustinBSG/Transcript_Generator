@@ -28,11 +28,11 @@ class Generator {
     void start();
 
     /**
-     * @brief Input data by user and output CSV file
+     * @brief Input data by user
      *
      * @param current
      */
-    void insert_csv(Transcript* current);
+    void insert_data(Transcript* current);
 
     /**
      * @brief Input data from CSV file
@@ -40,6 +40,13 @@ class Generator {
      * @param current
      */
     void read_csv(Transcript* current);
+
+    /**
+     * @brief Generate CSV file into Output/
+     *
+     * @param current
+     */
+    void generate_csv(Transcript* current);
 
     /**
      * @brief Modify data that inside CSV file

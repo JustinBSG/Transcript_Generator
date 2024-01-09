@@ -66,7 +66,7 @@ class Transcript {
      *
      * @param other_semester
      */
-    void insert_semester(BST<Semester> *other_semester);
+    void insert_semesters(BST<Semester> *other_semester);
 
     /**
      * @brief Update print_date
