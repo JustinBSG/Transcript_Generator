@@ -53,9 +53,7 @@ Student::Student(string name, string admit_date, string department, int ust_card
       status{status},
       semesters{semesters} {}
 
-Student::~Student() {
-  delete semesters;
-}
+Student::~Student() { delete semesters; }
 
 int Student::get_year() const { return year; }
 
@@ -68,6 +66,8 @@ string Student::get_status() const { return status; }
 BST<Major>& Student::get_majors() { return majors; }
 
 BST<Minor>& Student::get_minors() { return minors; }
+
+BST<Semester>* Student::get_semesters() { return semesters; }
 
 void Student::change_year(const int& other_year) { year = other_year; }
 

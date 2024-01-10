@@ -61,73 +61,160 @@ void Generator::start() {
 }
 
 void Generator::insert_data(Transcript* current) {
-  if (current == nullptr)
-    Transcript* current = new Transcript;
-  else {
+  if (current == nullptr) {
+    Student* temp_student = new Student;
+    Professor* temp_advisor = new Professor;
+    Transcript* current = new Transcript{temp_student, temp_advisor};
+  } else {
     cout << "Please choose option 5 to generate another transcript." << endl;
     return;
   }
 
   // Input data of student class object
   cout << "First, please input the information about you." << endl;
-  cout << "Please input your name: " << endl;
-  // cin
-  cout << "Please input your advisor's name: " << endl;
-  // cin
-  cout << "Please input your admit date(e.g. 1 September 2020): " << endl;
-  // cin
-  cout << "Please input your student id: " << endl;
-  // cin
-  cout << "Please input your number of years of study: " << endl;
-  // cin
+  cout << "Please input your name: ";
+  string student_name;
+  cin >> student_name;
+  cout << "Please input your admit date(e.g. 1 September 2020): ";
+  string student_admit_date;
+  cin >> student_admit_date;
+  cout << "Please input your student id: ";
+  int student_id;
+  cin >> student_id;
+  cout << "Please input your years of study: ";
+  int student_year;
+  cin >> student_year;
+  cout << "Please choose your status of study:" << endl;
+  cout << "1. Active in Program" << endl;
+  cout << "2. Withdraw Program" << endl;
+  cout << "3. Suspend Program" << endl;
+  cout << "Please input your choose in number: ";
+  int student_status_int;
+  string student_status_string;
+  cin >> student_status_int;
+  while (student_status_int > 3 || student_status_int < 1) {
+    cout << "Please input a valid number: ";
+    cin >> student_status_int;
+  }
+  switch (student_status_int) {
+    case 1:
+      student_status_string = "Active in Program";
+      break;
+    case 2:
+      student_status_string = "Active in Program";
+      break;
+    case 3:
+      student_status_string = "Active in Program";
+      break;
+  }
+  Student* temp_student = current->get_student();
+  temp_student->change_name(student_name);
+  temp_student->change_admit_date(student_admit_date);
+  temp_student->change_ust_card_num(student_id);
+  temp_student->change_year(student_year);
+  temp_student->change_status(student_status_string);
 
   // Input data of advisor
   cout << "Thenm please input the information about your advisor." << endl;
-  cout << "Please input name of advisor(e.g. CHAN, Da Man): " << endl;
-  // cin
+  cout << "Please input name of your advisor(e.g. CHAN, Da Man): " << endl;
+  string advisor_name;
+  cin >> advisor_name;
+  Professor* temp_advisor = current->get_professor();
+  temp_advisor->change_name(advisor_name);
 
   // Input data of Major or Minor
   cout << "Next, please input the information about your academics program." << endl;
   cout << "Please input name of first program(e.g. Bachelor Degree in School of "
           "Engineering): "
        << endl;
-  // cin
+  string first_major_name;
+  cin >> first_major_name;
+  Major first_major{first_major_name, "NA", "NA"};
+  BST<Major>* temp_semesters = new BST<Major>;
+  temp_semesters->insert(first_major);
   while (1) {
     cout << "Do you still have another Major Program?(yes/no): " << endl;
     string input_continue;
-    // cin
+    cin >> input_continue;
     if (input_continue == "yes") {
       cout << "Please input name of program(e.g. Bachelor Degree of Engineering): "
            << endl;
-      // cin
+      string temp_major_name;
+      cin >> temp_major_name;
       cout << "Please input name of major(e.g. Computer Science): " << endl;
-      // cin
+      string temp_name_major_name;
+      cin >> temp_name_major_name;
       cout
         << "Please input the semester that you change program(e.g. 2022-23 Fall): "
         << endl;
-      // cin
+      string temp_change_date;
+      cin >> temp_change_date;
+      Major temp_major{temp_major_name, temp_change_date, temp_name_major_name};
+      temp_student->get_majors().insert(temp_major);
     } else
       break;
   }
   while (1) {
     cout << "Do you declare any Minor Program?(yes/no): " << endl;
     string input_continue;
-    // cin
+    cin >> input_continue;
     if (input_continue == "yes") {
       cout << "Please input name of Minor Program(e.g. Smart City): " << endl;
-      // cin
+      string temp_minor_name;
+      cin >> temp_minor_name;
       cout << "Please input the semester that you declare this minor program(e.g. "
               "2022-23 Fall): "
            << endl;
-      // cin
+      string temp_minor_date;
+      cin >> temp_minor_date;
+      Minor temp_minor{"NA", temp_minor_date, temp_minor_name};
+      temp_student->get_minors().insert(temp_minor);
     } else
       break;
   }
 
   // generate semesters automatically
-  BST<Semester> *temp = new BST<Semester>;
-  
-
+  BST<Semester>* semesters = new BST<Semester>;
+  int index_year = 0, count_space = 0, index = 0;
+  while (count_space != 2) {
+    if (student_admit_date[index] == ' ')
+      count_space++;
+    index++;
+  }
+  index_year = index;
+  for (int i = 0; i < 16; i++) {
+    Semester temp;
+    string temp_year;
+    for (int k = 0; k < 4; k++)
+      if (k == 3)
+        temp_year.push_back(student_admit_date[index_year + k] + i / 4);
+      else
+        temp_year.push_back(student_admit_date[index_year + k]);
+    temp_year.push_back('-');
+    temp_year.push_back(student_admit_date[index_year + 2]);
+    if (student_admit_date[index_year + 3] == '9')
+      temp_year.push_back('0');
+    else
+      temp_year.push_back(student_admit_date[index_year + 3] + i / 4 + 1);
+    temp_year.push_back(' ');
+    switch (i % 4) {
+      case 0:
+        temp_year.append("Fall");
+        break;
+      case 1:
+        temp_year.append("Winter");
+        break;
+      case 2:
+        temp_year.append("Spring");
+        break;
+      case 3:
+        temp_year.append("Summer");
+    }
+    temp.change_period(temp_year);
+    semesters->insert(temp);
+  }
+  current->insert_semesters(semesters);
+  temp_student->insert_semesters(semesters);
   transcripts.push_back(current);
 }
 

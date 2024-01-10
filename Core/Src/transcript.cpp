@@ -4,10 +4,9 @@
 
 using namespace std;
 
-Transcript::Transcript(Student *user, Professor *advisor)
-    : user{user}, advisor{advisor} {
+Transcript::Transcript(Student *user, Professor *advisor, BST<Semester> *semesters)
+    : user{user}, advisor{advisor}, semesters{semesters} {
   update_print_date();
-  // TODO: rethink about how to deal with the pointer of semester
 }
 
 Transcript::~Transcript() {
@@ -59,12 +58,8 @@ void Transcript::update_print_date() {
   print_date = buffer;
 }
 
-void Transcript::calculate_CGA() {
+void Transcript::calculate_CGA() {}
 
-}
-
-void Transcript::calculate_MCGA() {
-  
-}
+void Transcript::calculate_MCGA() {}
 
 void Transcript::print() const {}

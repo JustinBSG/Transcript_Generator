@@ -152,6 +152,13 @@ class Student : public Person {
     BST<Minor>& get_minors();
 
     /**
+     * @brief Get the semesters object
+     * 
+     * @return BST<Semester>* 
+     */
+    BST<Semester>* get_semesters();
+
+    /**
      * @brief Change year to other_year
      * 
      * @param other_year 
@@ -194,7 +201,7 @@ class Student : public Person {
     void remove_minor(const string& name_minor);
 
     /**
-     * @brief Insert given semesters
+     * @brief Insert given semesters with shallow copy
      * 
      * @param other_semesters 
      */

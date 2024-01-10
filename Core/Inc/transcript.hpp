@@ -16,7 +16,8 @@ class Transcript {
     string print_date;
 
   public:
-    Transcript(Student *user = nullptr, Professor *advisor = nullptr);
+    Transcript(Student *user = nullptr, Professor *advisor = nullptr,
+               BST<Semester> *semesters = nullptr);
     ~Transcript();
 
     /**
