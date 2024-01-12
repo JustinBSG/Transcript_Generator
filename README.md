@@ -46,6 +46,7 @@
 7. [ ] Create UI windows by using QT
 8. [ ] Create pdf
 9. [ ] Plot Graph
+10. [ ] Auto fill number of credit of each course
 
 ## Next thing that need to be completed
 - Add command on every functions

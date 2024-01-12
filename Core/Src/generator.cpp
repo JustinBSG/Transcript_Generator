@@ -173,7 +173,8 @@ void Generator::insert_data(Transcript* current) {
       break;
   }
 
-  // generate semesters automatically
+  // Input data of semesters
+  // Insert period of all semesters automatically
   BST<Semester>* semesters = new BST<Semester>;
   int index_year = 0, count_space = 0, index = 0;
   while (count_space != 2) {
@@ -213,8 +214,43 @@ void Generator::insert_data(Transcript* current) {
     temp.change_period(temp_year);
     semesters->insert(temp);
   }
+
+  // Input courses of each semester
+  if (semesters->size() != 0) {
+    int count_semester = 0;
+    while (count_semester < semesters->size()) {
+      cout << "Please input the course code of one course that you have taken in ";
+      cout
+        << semesters->find_kth_largest_node(semesters->size() - count_semester)->data
+        << "(you can type NA if there is no remaining course left): ";
+      string temp_course_code;
+      cin >> temp_course_code;
+      if (temp_course_code == "NA") {
+        count_semester++;
+        continue;
+      }
+      cout << "Please input the course title of this course: ";
+      string temp_course_title;
+      cin >> temp_course_title;
+      cout << "Please input the number of credit of this course: ";
+      int temp_course_num_credit;
+      cin >> temp_course_num_credit;
+      cout << "Please input the grade that you got in this course: ";
+      string temp_course_grade;
+      cin >> temp_course_grade;
+      // data validation
+
+      Course temp_course{temp_course_code, temp_course_title, temp_course_grade,
+                         temp_course_num_credit};
+      semesters->find_kth_largest_node(semesters->size() - count_semester)
+        ->data.insert_course(temp_course);
+      cout << endl;
+    }
+  }
+
   current->insert_semesters(semesters);
   temp_student->insert_semesters(semesters);
+
   transcripts.push_back(current);
 }
 
