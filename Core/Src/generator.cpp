@@ -246,6 +246,11 @@ void Generator::insert_data(Transcript* current) {
         ->data.insert_course(temp_course);
       cout << endl;
     }
+
+    // Calculate CGA of user
+    current->calculate_CGA();
+    // Calculate MCGA of user
+    // current->calculate_MCGA();
   }
 
   current->insert_semesters(semesters);

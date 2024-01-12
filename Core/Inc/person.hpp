@@ -165,6 +165,9 @@ class Student : public Person {
      */
     void change_year(const int& other_year);
 
+    void calculate_CGA(BST<Semester> *semesters);
+    void calculate_MCGA(BST<Semester> *semesters);
+
     /**
      * @brief Chnage status to other_status
      * 

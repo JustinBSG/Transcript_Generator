@@ -71,6 +71,30 @@ BST<Semester>* Student::get_semesters() { return semesters; }
 
 void Student::change_year(const int& other_year) { year = other_year; }
 
+void Student::calculate_CGA(BST<Semester>* semesters) {
+  float result = 0;
+  int count_semester = 0, sum_of_credits = 0;
+  while (count_semester < semesters->size()) {  // each semester
+    int count_course = 0;
+    while (count_course <
+           semesters->find_kth_largest_node(semesters->size() - count_semester)
+             ->data.get_total_num_courses()) {  // each course
+      Course& temp =
+        semesters->find_kth_largest_node(semesters->size() - count_semester)
+          ->data.get_courses()
+          .find_kth_largest_node(count_course)
+          ->data;
+      result += temp.get_grade_num() * temp.get_credits();
+      sum_of_credits += temp.get_credits();
+      count_course++;
+    }
+    count_semester++;
+  }
+  cga = result / sum_of_credits;
+}
+
+void Student::calculate_MCGA(BST<Semester>* semesters) {}
+
 void Student::change_status(const string& other_status) { status = other_status; }
 
 void Student::insert_major(const Major& other) { majors.insert(other); }

@@ -75,16 +75,7 @@ class Transcript {
      */
     void update_print_date();
 
-    /**
-     * @brief Update CGA inside student class object
-     *
-     */
     void calculate_CGA();
-
-    /**
-     * @brief Updata MCGA inside student class object
-     *
-     */
     void calculate_MCGA();
 
     void print() const;

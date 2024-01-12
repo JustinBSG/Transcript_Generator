@@ -58,8 +58,8 @@ void Transcript::update_print_date() {
   print_date = buffer;
 }
 
-void Transcript::calculate_CGA() {}
+void Transcript::calculate_CGA() { user->calculate_CGA(semesters); }
 
-void Transcript::calculate_MCGA() {}
+void Transcript::calculate_MCGA() { user->calculate_MCGA(semesters); }
 
 void Transcript::print() const {}
