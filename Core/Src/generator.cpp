@@ -28,7 +28,7 @@ void Generator::start() {
     cout << "7: Leave" << endl << endl;
     cout << "What operation that you want to choose(1-7): ";
     std::cin >> option;
-    while (option > 8 || option < 1) {
+    while (option > 9 || option < 1) {
       cout << "Please input valid choice: ";
       std::cin >> option;
     }
@@ -56,6 +56,9 @@ void Generator::start() {
       case 7:
         end(current);
         return;
+      case 8:
+        current->print();
+        break;
     }
   }
 }
@@ -265,7 +268,7 @@ void Generator::generate_csv(Transcript* current) {}
 
 void Generator::modify_csv(Transcript* current) {}
 
-void Generator::print_all(Transcript* current) {}
+void Generator::print_all(Transcript* current) { current->print(); }
 
 void Generator::restart(Transcript* current) {
   if (current != nullptr) {

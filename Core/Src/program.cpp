@@ -4,6 +4,12 @@
 
 using namespace std;
 
+ostream& operator<<(ostream& os, const Program& data) {
+  os << "Name of Program: " << data.name << " "
+     << "Semester of changing program: " << data.change_date << " ";
+  return os;
+}
+
 Program::Program(string name, string change_date)
     : name{name}, change_date{change_date} {}
 
@@ -49,8 +55,7 @@ bool Program::operator==(const Program& other) {
 }
 
 ostream& operator<<(ostream& os, const Major& data) {
-  // TODO: following format of old version
-  os << data.name << "_" << data.change_date << "_" << data.name_major;
+  os << dynamic_cast<const Program&>(data) << "Name of major: " << data.name_major << " ";
   return os;
 }
 
@@ -108,8 +113,8 @@ bool Major::operator==(const Major& other) {
 }
 
 ostream& operator<<(ostream& os, const Minor& data) {
-  // TODO: following format of old version
-  os << data.name << "_" << data.change_date << "_" << data.name_minor;
+  os << dynamic_cast<const Program&>(data) << "Name of minor: " << data.name_minor;
+  return os;
 }
 
 Minor::Minor(string name, string change_date, string name_minor)

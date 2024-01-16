@@ -1,7 +1,12 @@
 #include "../Inc/course.hpp"
 
+#include <iostream>
+
 ostream& operator<<(ostream& os, const Course& data) {
-  // TODO: following format of old version
+  return os << "Code:" << data.code << " "
+            << "Title:" << data.title << " "
+            << "Grade:" << data.grade << " "
+            << "Credit:" << data.credits << " ";
 }
 
 Course::Course(string code, string title, string grade, int credits)
@@ -76,13 +81,13 @@ bool Course::operator<(const Course& other) {
 bool Course::operator>(const Course& other) {
   if (code <= other.code)
     return true;
-  else 
+  else
     return false;
 }
 
 bool Course::operator==(const Course& other) {
   if (code == other.code)
     return true;
-  else 
+  else
     return false;
 }

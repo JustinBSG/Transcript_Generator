@@ -3,11 +3,17 @@
 using namespace std;
 
 ostream& operator<<(ostream& os, const Person& data) {
-  // TODO: following format of old version
+  return os << "Name:" << data.name << " "
+            << "Admit Date:" << data.admit_date << " "
+            << "Department:" << data.department << " "
+            << "UST Card Number:" << data.ust_card_num << " ";
 }
 
 Person::Person(string name, string admit_date, string department, int ust_card_num)
-    : name{name}, admit_date{admit_date}, department{department} {}
+    : name{name},
+      admit_date{admit_date},
+      department{department},
+      ust_card_num{ust_card_num} {}
 
 string Person::get_name() const { return name; }
 
@@ -32,7 +38,7 @@ void Person::change_ust_card_num(const int& other_ust_card_num) {
 }
 
 ostream& operator<<(ostream& os, const Professor& data) {
-  // TODO: following format of old version
+  return os << dynamic_cast<const Person&>(data);
 }
 
 Professor::Professor(string name, string admit_date, string department,
@@ -40,7 +46,31 @@ Professor::Professor(string name, string admit_date, string department,
     : Person{name, admit_date, department, ust_card_num} {}
 
 ostream& operator<<(ostream& os, const Student& data) {
-  // TODO: following format of old version
+  os << dynamic_cast<const Person&>(data) << "Year:" << data.year << " "
+     << "CGA" << data.cga << " "
+     << "MCGA:" << data.mcga << " "
+     << "Status:" << data.status << " " << endl;
+  int count_majors = 0, count_minors = 0;
+  while (count_majors < data.majors.size()) {
+    os << "Major" << count_majors+1 << ":" << endl;
+    Major temp =
+      data.majors.find_kth_largest_node(data.majors.size() - count_majors)->data;
+    os << temp << endl;
+    count_majors++;
+  }
+
+  while (count_minors < data.minors.size()) {
+    os << "Minor" << count_majors+1<< ":" << endl;
+    Minor temp =
+      data.minors.find_kth_largest_node(data.minors.size() - count_minors)->data;
+    os << temp << endl;
+    count_minors++;
+  }
+  // if (data.semesters != nullptr)
+  //   // os << data.semesters << endl;
+  // else
+  //   os << "Semesters are nullptr" << endl;
+  return os;
 }
 
 Student::Student(string name, string admit_date, string department, int ust_card_num,
