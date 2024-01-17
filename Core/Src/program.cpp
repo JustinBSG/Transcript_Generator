@@ -41,7 +41,7 @@ bool Program::operator<(const Program& other) {
 }
 
 bool Program::operator>(const Program& other) {
-  if (change_date >= other.change_date)
+  if (change_date <= other.change_date)
     return false;
   else
     return true;

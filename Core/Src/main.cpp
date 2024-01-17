@@ -4,34 +4,38 @@
 #include "../Inc/generator.hpp"
 
 int main() {
-  // Course test_course{"course_code", "course_title", "course_grade", 3};
-  // Major test_major{"major_name", "major_change_date", "major_name_major"};
-  // Minor test_minor{"minor_name", "minor_change_date", "minor_name_minor"};
-  Student test_student{
-    "student_name",  "student_admit_date", "student_department", 777, 3, 3.1, 3.3,
-    "student_status"};
+  // the problem is datatype Major
+  // insert problem, can only asending order
   BST<Major> majors;
-  BST<Minor> minors;
-  Major major1{"major_program1", "2020-21 Spring", "CS"};
-  Major major3{"major_program3", "2022-23 Spring", "MATH"};
-  Major major2{"major_program2", "2021-22 Fall", "EE"};
-  Minor minor1{"NA", "2021-22 Spring", "Minor1"};
-  Minor minor2{"NA", "2022-23 Fall", "Minor2"};
-  test_student.insert_major(major1);
-  test_student.insert_major(major2); 
-  test_student.insert_major(major3);
-  test_student.insert_minor(minor1);
-  test_student.insert_minor(minor2);
-  cout << test_student.get_majors().size() << endl;
-  cout << test_student.get_minors().size() << endl;
-  int count_majors = 0;
-  while (count_majors < test_student.get_majors().size()) {
-    Major temp =
-      test_student.get_majors()
-        .find_kth_largest_node(count_majors+1)
-        ->data;
-    cout << temp.get_name() << endl;
-    count_majors++;
+  Major major1{"major1", "2020-21 Fall", "major_name_1"};
+  Major major2{"major2", "2021-22 Fall", "major_name_2"};
+  Major major3{"major3", "2022-23 Fall", "major_name_3"};
+
+  majors.insert(major3);
+  majors.insert(major1);
+  majors.insert(major2);
+
+  int count_major = 0;
+  cout << majors.size() << endl;
+  while (count_major < majors.size()) {
+    cout << majors.find_kth_largest_node(majors.size() - count_major)->data << endl;
+    count_major++;
   }
+
+  // BST<string> tests;
+  // string test1{"2020-21 Spring"};
+  // string test2{"2021-22 Spring"};
+  // string test3{"2022-23 Spring"};
+
+  // tests.insert(test3);
+  // tests.insert(test2);
+  // tests.insert(test1);
+
+  // int count_test = 0;
+  // cout << tests.size() << endl;
+  // while (count_test < tests.size()) {
+  //   cout << tests.find_kth_largest_node(tests.size() - count_test)->data << endl;
+  //   count_test++;
+  // }
   return 0;
 }
