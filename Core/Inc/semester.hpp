@@ -8,6 +8,10 @@
 
 using namespace std;
 
+enum Period_Semester {
+  Fall, Winter, Spring, Summer
+};
+
 class Semester {
     friend ostream& operator<<(ostream& os, const Semester& data);
 
@@ -82,6 +86,14 @@ class Semester {
      * @param code 
      */
     void remove_course(const string& code);
+
+    /**
+     * @brief Convert period_semester from string to int/
+     * 
+     * @param period_semester 
+     * @return int 
+     */
+    int convert_period(const string period_semester);
 
     Semester& operator=(const Semester& other);
     bool operator<(const Semester& other);

@@ -60,6 +60,19 @@ void Semester::remove_course(const string& code) {
   calculate_total_num_credits();
 }
 
+int Semester::convert_period(const string period_semester) {
+  if (period_semester == "Fall")
+    return Fall;
+  else if (period_semester == "Winter")
+    return Winter;
+  else if (period_semester == "Spring")
+    return Spring;
+  else if (period_semester == "Summer")
+    return Summer;
+  else
+    return -1;
+}
+
 Semester& Semester::operator=(const Semester& other) {
   if (this != &other) {
     period = other.period;
@@ -71,17 +84,37 @@ Semester& Semester::operator=(const Semester& other) {
 }
 
 bool Semester::operator<(const Semester& other) {
-  if (period >= other.period)
-    return false;
-  else
+  string period_year[2] = {period.substr(0, 8), other.period.substr(0, 8)};
+  if (period_year[0] < period_year[1])
     return true;
+  else if (period_year[0] == period_year[1]) {
+    string period_semester[2] = {period.substr(8, period.length()),
+                                 other.period.substr(8, other.period.length())};
+    int period_semester_int[2] = {convert_period(period_semester[0]),
+                                  convert_period(period_semester[1])};
+    if (period_semester_int[0] < period_semester_int[1])
+      return true;
+    else 
+      return false;
+  } else
+    return false;
 }
 
 bool Semester::operator>(const Semester& other) {
-  if (period <= other.period)
-    return false;
-  else
+  string period_year[2] = {period.substr(0, 8), other.period.substr(0, 8)};
+  if (period_year[0] > period_year[1])
     return true;
+  else if (period_year[0] == period_year[1]) {
+    string period_semester[2] = {period.substr(8, period.length()),
+                                 other.period.substr(8, other.period.length())};
+    int period_semester_int[2] = {convert_period(period_semester[0]),
+                                  convert_period(period_semester[1])};
+    if (period_semester_int[0] > period_semester_int[1])
+      return true;
+    else 
+      return false;
+  } else
+    return false;
 }
 
 bool Semester::operator==(const Semester& other) {

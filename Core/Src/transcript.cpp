@@ -63,29 +63,30 @@ void Transcript::calculate_CGA() { user->calculate_CGA(semesters); }
 void Transcript::calculate_MCGA() { user->calculate_MCGA(semesters); }
 
 void Transcript::print() const {
-  cout << "Here is the transcript." << endl << endl;
-  cout << "                    Unofficial Transcript of Academic Record" << endl;
-  cout << "-------------------------------------------------------------------------"
-          "----------"
-       << endl
-       << endl;
-  cout << "Personal Information" << endl << endl;
-  cout << "Name:\t\t" << user->get_name() << endl;
-  cout << "Student ID:\t" << user->get_ust_card_num() << endl;
-  cout << "Year of Study:\t" << user->get_year() << endl;
-  cout << "Advisor:\t" << advisor->get_name() << endl << endl;
-  cout << "-------------------------------------------------------------------------"
-          "----------"
-       << endl
-       << endl;
-  cout << "Academic Program" << endl << endl;
-  cout << "Admit Date:\t" << user->get_admit_date() << endl;
-  cout << "Program:\t" << user->get_majors().find_min().get_name();
-  int count_majors = 1, count_minors = 0;
-  while (count_majors < user->get_majors().size()) {
-    Major temp = user->get_majors()
-                   .find_kth_largest_node(user->get_majors().size() - count_majors)
-                   ->data;
+  // cout << "Here is the transcript." << endl << endl;
+  // cout << "                    Unofficial Transcript of Academic Record" << endl;
+  // cout << "-------------------------------------------------------------------------"
+  //         "----------"
+  //      << endl
+  //      << endl;
+  // cout << "Personal Information" << endl << endl;
+  // cout << "Name:\t\t" << user->get_name() << endl;
+  // cout << "Student ID:\t" << user->get_ust_card_num() << endl;
+  // cout << "Year of Study:\t" << user->get_year() << endl;
+  // cout << "Advisor:\t" << advisor->get_name() << endl << endl;
+  // cout << "-------------------------------------------------------------------------"
+  //         "----------"
+  //      << endl
+  //      << endl;
+  // cout << "Academic Program" << endl << endl;
+  // cout << "Admit Date:\t" << user->get_admit_date() << endl;
+  // cout << "Program:\t" << user->get_majors().find_min().get_name();
+  // int count_majors = 1, count_minors = 0;
+  // while (count_majors < user->get_majors().size()) {
+  //   Major temp = user->get_majors()
+  //                  .find_kth_largest_node(user->get_majors().size() - count_majors)
+  //                  ->data;
 
-  }
+  // }
+  cout << *user << endl;
 }
