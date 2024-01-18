@@ -3,10 +3,10 @@
 using namespace std;
 
 ostream& operator<<(ostream& os, const Person& data) {
-  return os << "Name:" << data.name << " "
-            << "Admit Date:" << data.admit_date << " "
-            << "Department:" << data.department << " "
-            << "UST Card Number:" << data.ust_card_num << " ";
+  return os << "Name:" << data.name << endl
+            << "Admit Date:" << data.admit_date << endl
+            << "Department:" << data.department << endl
+            << "UST Card Number:" << data.ust_card_num;
 }
 
 Person::Person(string name, string admit_date, string department, int ust_card_num)
@@ -46,30 +46,57 @@ Professor::Professor(string name, string admit_date, string department,
     : Person{name, admit_date, department, ust_card_num} {}
 
 ostream& operator<<(ostream& os, const Student& data) {
-  os << dynamic_cast<const Person&>(data) << "Year:" << data.year << " "
-     << "CGA" << data.cga << " "
-     << "MCGA:" << data.mcga << " "
-     << "Status:" << data.status << " " << endl;
+  os << "Student:" << endl
+     << dynamic_cast<const Person&>(data) << endl
+     << "Year:" << data.year << endl
+     << "CGA" << data.cga << endl
+     << "MCGA:" << data.mcga << endl
+     << "Status:" << data.status << endl
+     << endl;
   int count_majors = 0, count_minors = 0;
   while (count_majors < data.majors.size()) {
-    os << "Major" << count_majors+1 << ":" << endl;
+    os << "Major" << count_majors + 1 << ":" << endl;
     Major temp =
       data.majors.find_kth_largest_node(data.majors.size() - count_majors)->data;
     os << temp << endl;
     count_majors++;
   }
-
+  os << endl;
   while (count_minors < data.minors.size()) {
-    os << "Minor" << count_majors+1<< ":" << endl;
+    os << "Minor" << count_minors + 1 << ":" << endl;
     Minor temp =
       data.minors.find_kth_largest_node(data.minors.size() - count_minors)->data;
     os << temp << endl;
     count_minors++;
   }
-  // if (data.semesters != nullptr)
-  //   // os << data.semesters << endl;
-  // else
-  //   os << "Semesters are nullptr" << endl;
+  os << endl;
+  os << "Semesters:" << endl;
+  if (data.semesters != nullptr) {
+    int count_semester = 0;
+    while (count_semester < data.get_semesters()->size()) {
+      Semester temp =
+        data.get_semesters()
+          ->find_kth_largest_node(data.get_semesters()->size() - count_semester)
+          ->data;
+      os << temp.get_period() << ":" << endl;
+      int count_course = 0;
+      while (count_course < temp.get_courses().size()) {
+        Course temp_course = temp.get_courses().find_kth_largest_node(
+          temp.get_courses().size() - count_course)->data;
+        os << "Course Code: " << temp_course.get_code() << endl
+           << "Course Title:" << temp_course.get_title() << endl
+           << "No. of Credit: " << temp_course.get_credits()
+           << endl
+           << "Grade: " << temp_course.get_grade_str() << endl;
+        count_course++;
+      }
+      os << "TGA: " << temp.get_tga() << endl;
+      os << endl;
+      count_semester++;
+    }
+    os << "CGA: " << data.cga << endl;
+  } else
+    os << "Semesters are nullptr" << endl;
   return os;
 }
 
@@ -97,7 +124,7 @@ BST<Major>& Student::get_majors() { return majors; }
 
 BST<Minor>& Student::get_minors() { return minors; }
 
-BST<Semester>* Student::get_semesters() { return semesters; }
+BST<Semester>* Student::get_semesters() const { return semesters; }
 
 void Student::change_year(const int& other_year) { year = other_year; }
 
@@ -112,7 +139,7 @@ void Student::calculate_CGA(BST<Semester>* semesters) {
       Course& temp =
         semesters->find_kth_largest_node(semesters->size() - count_semester)
           ->data.get_courses()
-          .find_kth_largest_node(count_course)
+          .find_kth_largest_node(count_course+1)
           ->data;
       result += temp.get_grade_num() * temp.get_credits();
       sum_of_credits += temp.get_credits();
@@ -144,6 +171,6 @@ void Student::remove_minor(const string& name_minor) {
 void Student::insert_semesters(BST<Semester>* other_semesters) {
   if (other_semesters == nullptr)
     return;
-  else
+  else 
     semesters = other_semesters;
 }

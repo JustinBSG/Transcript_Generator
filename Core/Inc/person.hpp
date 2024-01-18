@@ -156,7 +156,7 @@ class Student : public Person {
      *
      * @return BST<Semester>*
      */
-    BST<Semester>* get_semesters();
+    BST<Semester>* get_semesters() const;
 
     /**
      * @brief Change year to other_year

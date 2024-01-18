@@ -57,7 +57,7 @@ void Generator::start() {
         end(current);
         return;
       case 8:
-        current->print();
+        
         break;
     }
   }

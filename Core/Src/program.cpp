@@ -5,8 +5,8 @@
 using namespace std;
 
 ostream& operator<<(ostream& os, const Program& data) {
-  os << "Name of Program: " << data.name << " "
-     << "Semester of changing program: " << data.change_date << " ";
+  os << "Name of Program: " << data.name << endl
+     << "Semester of changing program: " << data.change_date;
   return os;
 }
 
@@ -55,7 +55,8 @@ bool Program::operator==(const Program& other) {
 }
 
 ostream& operator<<(ostream& os, const Major& data) {
-  os << dynamic_cast<const Program&>(data) << "Name of major: " << data.name_major << " ";
+  os << dynamic_cast<const Program&>(data) << endl
+     << "Name of major: " << data.name_major;
   return os;
 }
 
@@ -113,7 +114,8 @@ bool Major::operator==(const Major& other) {
 }
 
 ostream& operator<<(ostream& os, const Minor& data) {
-  os << dynamic_cast<const Program&>(data) << "Name of minor: " << data.name_minor;
+  os << dynamic_cast<const Program&>(data) << endl
+     << "Name of minor: " << data.name_minor;
   return os;
 }
 

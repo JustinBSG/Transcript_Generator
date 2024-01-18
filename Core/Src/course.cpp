@@ -80,9 +80,9 @@ bool Course::operator<(const Course& other) {
 
 bool Course::operator>(const Course& other) {
   if (code <= other.code)
-    return true;
-  else
     return false;
+  else
+    return true;
 }
 
 bool Course::operator==(const Course& other) {
