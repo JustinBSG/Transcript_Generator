@@ -3,10 +3,10 @@
 using namespace std;
 
 ostream& operator<<(ostream& os, const Person& data) {
-  return os << "Name:" << data.name << endl
-            << "Admit Date:" << data.admit_date << endl
-            << "Department:" << data.department << endl
-            << "UST Card Number:" << data.ust_card_num;
+  return os << "Name: " << data.name << endl
+            << "Admit Date: " << data.admit_date << endl
+            << "Department: " << data.department << endl
+            << "UST Card Number: " << data.ust_card_num;
 }
 
 Person::Person(string name, string admit_date, string department, int ust_card_num)
@@ -46,12 +46,12 @@ Professor::Professor(string name, string admit_date, string department,
     : Person{name, admit_date, department, ust_card_num} {}
 
 ostream& operator<<(ostream& os, const Student& data) {
-  os << "Student:" << endl
+  os << "Student: " << endl
      << dynamic_cast<const Person&>(data) << endl
-     << "Year:" << data.year << endl
-     << "CGA" << data.cga << endl
-     << "MCGA:" << data.mcga << endl
-     << "Status:" << data.status << endl
+     << "Year: " << data.year << endl
+     << "CGA: " << data.cga << endl
+     << "MCGA: " << data.mcga << endl
+     << "Status: " << data.status << endl
      << endl;
   int count_majors = 0, count_minors = 0;
   while (count_majors < data.majors.size()) {

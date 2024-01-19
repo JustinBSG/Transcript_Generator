@@ -32,7 +32,7 @@ class Generator {
      *
      * @param current
      */
-    void insert_data(Transcript* current);
+    void insert_data(Transcript*& current);
 
     /**
      * @brief Input data from CSV file

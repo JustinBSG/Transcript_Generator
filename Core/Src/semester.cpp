@@ -11,7 +11,7 @@ Semester::Semester(string period, float tga, int total_num_credits,
     : period{period},
       tga{tga},
       total_num_credits{total_num_credits},
-      total_num_courses{} {}
+      total_num_courses{total_num_courses} {}
 
 string Semester::get_period() const { return period; }
 
@@ -60,7 +60,7 @@ void Semester::remove_course(const string& code) {
   calculate_total_num_credits();
 }
 
-int Semester::convert_period(const string period_semester) {
+int Semester::convert_period(const string& period_semester) {
   if (period_semester == "Fall")
     return Fall;
   else if (period_semester == "Winter")
@@ -94,7 +94,7 @@ bool Semester::operator<(const Semester& other) {
                                   convert_period(period_semester[1])};
     if (period_semester_int[0] < period_semester_int[1])
       return true;
-    else 
+    else
       return false;
   } else
     return false;
@@ -111,7 +111,7 @@ bool Semester::operator>(const Semester& other) {
                                   convert_period(period_semester[1])};
     if (period_semester_int[0] > period_semester_int[1])
       return true;
-    else 
+    else
       return false;
   } else
     return false;

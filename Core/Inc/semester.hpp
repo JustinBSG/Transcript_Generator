@@ -8,9 +8,7 @@
 
 using namespace std;
 
-enum Period_Semester {
-  Fall, Winter, Spring, Summer
-};
+enum Period_Semester { Fall, Winter, Spring, Summer };
 
 class Semester {
     friend ostream& operator<<(ostream& os, const Semester& data);
@@ -29,43 +27,43 @@ class Semester {
 
     /**
      * @brief Get the period object
-     * 
-     * @return string 
+     *
+     * @return string
      */
     string get_period() const;
 
     /**
      * @brief Get the tga object
-     * 
-     * @return float 
+     *
+     * @return float
      */
     float get_tga() const;
 
     /**
      * @brief Get the total_num_credits object
-     * 
-     * @return int 
+     *
+     * @return int
      */
     int get_total_num_credits() const;
 
     /**
      * @brief Get the total_num_courses object
-     * 
-     * @return int 
+     *
+     * @return int
      */
     int get_total_num_courses() const;
 
     /**
      * @brief Get the courses object
-     * 
-     * @return BST<Course>& 
+     *
+     * @return BST<Course>&
      */
     BST<Course>& get_courses();
 
     /**
      * @brief Change period to other_period
-     * 
-     * @param other_period 
+     *
+     * @param other_period
      */
     void change_period(const string& other_period);
 
@@ -75,25 +73,25 @@ class Semester {
 
     /**
      * @brief Insert other Course object to BST<Course>
-     * 
-     * @param other 
+     *
+     * @param other
      */
     void insert_course(const Course& other);
 
     /**
      * @brief Remove course with same code
-     * 
-     * @param code 
+     *
+     * @param code
      */
     void remove_course(const string& code);
 
     /**
      * @brief Convert period_semester from string to int/
-     * 
-     * @param period_semester 
-     * @return int 
+     *
+     * @param period_semester
+     * @return int
      */
-    int convert_period(const string period_semester);
+    int convert_period(const string& period_semester);
 
     Semester& operator=(const Semester& other);
     bool operator<(const Semester& other);
