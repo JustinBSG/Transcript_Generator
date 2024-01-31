@@ -63,7 +63,6 @@ void Generator::start() {
   }
 }
 
-// TODO: many bugs
 void Generator::insert_data(Transcript*& current) {
   if (current == nullptr) {
     Student* temp_student = new Student;
@@ -176,45 +175,45 @@ void Generator::insert_data(Transcript*& current) {
 
     // // Input data of semesters
     // // Insert period of all semesters automatically
-    // BST<Semester>* semesters = new BST<Semester>;
-    // int index_year = 0, count_space = 0, index = 0;
-    // while (count_space != 2) {
-    //   if (student_admit_date[index] == ' ')
-    //     count_space++;
-    //   index++;
-    // }
-    // index_year = index;
-    // for (int i = 0; i < 16; i++) {
-    //   Semester temp;
-    //   string temp_year;
-    //   for (int k = 0; k < 4; k++)
-    //     if (k == 3)
-    //       temp_year.push_back(student_admit_date[index_year + k] + i / 4);
-    //     else
-    //       temp_year.push_back(student_admit_date[index_year + k]);
-    //   temp_year.push_back('-');
-    //   temp_year.push_back(student_admit_date[index_year + 2]);
-    //   if (student_admit_date[index_year + 3] == '9')
-    //     temp_year.push_back('0');
-    //   else
-    //     temp_year.push_back(student_admit_date[index_year + 3] + i / 4 + 1);
-    //   temp_year.push_back(' ');
-    //   switch (i % 4) {
-    //     case 0:
-    //       temp_year.append("Fall");
-    //       break;
-    //     case 1:
-    //       temp_year.append("Winter");
-    //       break;
-    //     case 2:
-    //       temp_year.append("Spring");
-    //       break;
-    //     case 3:
-    //       temp_year.append("Summer");
-    //   }
-    //   temp.change_period(temp_year);
-    //   semesters->insert(temp);
-    // }
+    BST<Semester>* semesters = new BST<Semester>;
+    int index_year = 0, count_space = 0, index = 0;
+    while (count_space != 2) {
+      if (student_admit_date[index] == ' ')
+        count_space++;
+      index++;
+    }
+    index_year = index;
+    for (int i = 0; i < 16; i++) {
+      Semester temp;
+      string temp_year;
+      for (int k = 0; k < 4; k++)
+        if (k == 3)
+          temp_year.push_back(student_admit_date[index_year + k] + i / 4);
+        else
+          temp_year.push_back(student_admit_date[index_year + k]);
+      temp_year.push_back('-');
+      temp_year.push_back(student_admit_date[index_year + 2]);
+      if (student_admit_date[index_year + 3] == '9')
+        temp_year.push_back('0');
+      else
+        temp_year.push_back(student_admit_date[index_year + 3] + i / 4 + 1);
+      temp_year.push_back(' ');
+      switch (i % 4) {
+        case 0:
+          temp_year.append("Fall");
+          break;
+        case 1:
+          temp_year.append("Winter");
+          break;
+        case 2:
+          temp_year.append("Spring");
+          break;
+        case 3:
+          temp_year.append("Summer");
+      }
+      temp.change_period(temp_year);
+      semesters->insert(temp);
+    }
 
     // // Input courses of each semester
     // if (semesters->size() != 0) {
@@ -255,8 +254,8 @@ void Generator::insert_data(Transcript*& current) {
     //   // current->calculate_MCGA();
     // }
 
-    // current->insert_semesters(semesters);
-    // temp_student->insert_semesters(semesters);
+    current->insert_semesters(semesters);
+    temp_student->insert_semesters(semesters);
     current->insert_student(temp_student);
     current->insert_professor(temp_advisor);
     transcripts.push_back(current);
