@@ -156,24 +156,23 @@ void Generator::insert_data(Transcript*& current) {
       } else
         break;
     }
-    // while (1) {
-    //   cout << "Do you declare any Minor Program?(yes/no): " << endl;
-    //   string input_continue;
-    //   cin >> input_continue;
-    //   if (input_continue == "yes") {
-    //     cout << "Please input name of Minor Program(e.g. Smart City): " << endl;
-    //     string temp_minor_name;
-    //     cin >> temp_minor_name;
-    //     cout << "Please input the semester that you declare this minor program(e.g. "
-    //             "2022-23 Fall): "
-    //          << endl;
-    //     string temp_minor_date;
-    //     cin >> temp_minor_date;
-    //     Minor temp_minor{"NA", temp_minor_date, temp_minor_name};
-    //     temp_student->get_minors().insert(temp_minor);
-    //   } else
-    //     break;
-    // }
+    while (1) {
+      cout << "Do you declare any Minor Program?(yes/no): ";
+      string input_continue;
+      getline(cin, input_continue);
+      if (input_continue == "yes") {
+        cout << "Please input name of Minor Program(e.g. Smart City): ";
+        string temp_minor_name;
+        getline(cin, temp_minor_name);
+        cout << "Please input the semester that you declare this minor program(e.g. "
+                "2022-23 Fall): ";
+        string temp_minor_date;
+        getline(cin, temp_minor_date);
+        Minor temp_minor{"NA", temp_minor_date, temp_minor_name};
+        temp_student->get_minors().insert(temp_minor);
+      } else
+        break;
+    }
 
     // // Input data of semesters
     // // Insert period of all semesters automatically
