@@ -67,7 +67,7 @@ void Generator::start() {
 void Generator::insert_data(Transcript*& current) {
   if (current == nullptr) {
     Student* temp_student = new Student;
-    // Professor* temp_advisor = new Professor;
+    Professor* temp_advisor = new Professor;
     current = new Transcript;
 
     // Input data of student class object
@@ -113,46 +113,49 @@ void Generator::insert_data(Transcript*& current) {
     temp_student->change_ust_card_num(student_id);
     temp_student->change_year(student_year);
     temp_student->change_status(student_status_string);
-    // // Input data of advisor
-    // cout << "Thenm please input the information about your advisor." << endl;
-    // cout << "Please input name of your advisor(e.g. CHAN, Da Man): " << endl;
-    // string advisor_name;
-    // cin >> advisor_name;
-    // Professor* temp_advisor = current->get_professor();
-    // temp_advisor->change_name(advisor_name);
 
-    // // Input data of Major or Minor
-    // cout << "Next, please input the information about your academics program." << endl;
-    // cout << "Please input name of first program(e.g. Bachelor Degree in School of "
-    //         "Engineering): "
-    //     << endl;
-    // string first_major_name;
-    // cin >> first_major_name;
-    // Major first_major{first_major_name, "NA", "NA"};
-    // BST<Major>* temp_semesters = new BST<Major>;
-    // temp_semesters->insert(first_major);
-    // while (1) {
-    //   cout << "Do you still have another Major Program?(yes/no): " << endl;
-    //   string input_continue;
-    //   cin >> input_continue;
-    //   if (input_continue == "yes") {
-    //     cout << "Please input name of program(e.g. Bachelor Degree of Engineering): "
-    //         << endl;
-    //     string temp_major_name;
-    //     cin >> temp_major_name;
-    //     cout << "Please input name of major(e.g. Computer Science): " << endl;
-    //     string temp_name_major_name;
-    //     cin >> temp_name_major_name;
-    //     cout
-    //       << "Please input the semester that you change program(e.g. 2022-23 Fall): "
-    //       << endl;
-    //     string temp_change_date;
-    //     cin >> temp_change_date;
-    //     Major temp_major{temp_major_name, temp_change_date, temp_name_major_name};
-    //     temp_student->get_majors().insert(temp_major);
-    //   } else
-    //     break;
-    // }
+    // // Input data of advisor
+    cout << "Then please input the information about your advisor." << endl;
+    cout << "Please input name of your advisor(e.g. CHAN, Da Man): ";
+    string advisor_name;
+    getline(cin, advisor_name);
+    temp_advisor->change_name(advisor_name);
+
+    // Input data of Major or Minor
+    cout << "Next, please input the information about your academics program."
+         << endl;
+    cout << "Please input name of first program(e.g. Bachelor Degree in School of "
+            "Engineering): ";
+    string first_program_name;
+    getline(cin, first_program_name);
+    cout << "Please input its name of major(e.g. Computer Science)(if you haven't "
+            "had major yet, please input NA): ";
+    string first_major_name;
+    getline(cin, first_major_name);
+    Major first_major{first_program_name, "NA", first_major_name};
+    BST<Major>* temp_semesters = new BST<Major>;
+    temp_semesters->insert(first_major);
+    while (1) {
+      cout << "Do you still have another Major Program?(yes/no): ";
+      string input_continue;
+      getline(cin, input_continue);
+      if (input_continue == "yes") {
+        cout
+          << "Please input name of program(e.g. Bachelor Degree of Engineering): ";
+        string temp_major_name;
+        getline(cin, temp_major_name);
+        cout << "Please input name of major(e.g. Computer Science): ";
+        string temp_name_major_name;
+        getline(cin, temp_name_major_name);
+        cout << "Please input the semester that you change program(e.g. 2022-23 "
+                "Fall): ";
+        string temp_change_date;
+        getline(cin, temp_change_date);
+        Major temp_major{temp_major_name, temp_change_date, temp_name_major_name};
+        temp_student->get_majors().insert(temp_major);
+      } else
+        break;
+    }
     // while (1) {
     //   cout << "Do you declare any Minor Program?(yes/no): " << endl;
     //   string input_continue;
@@ -163,7 +166,7 @@ void Generator::insert_data(Transcript*& current) {
     //     cin >> temp_minor_name;
     //     cout << "Please input the semester that you declare this minor program(e.g. "
     //             "2022-23 Fall): "
-    //         << endl;
+    //          << endl;
     //     string temp_minor_date;
     //     cin >> temp_minor_date;
     //     Minor temp_minor{"NA", temp_minor_date, temp_minor_name};
@@ -218,9 +221,10 @@ void Generator::insert_data(Transcript*& current) {
     // if (semesters->size() != 0) {
     //   int count_semester = 0;
     //   while (count_semester < semesters->size()) {
-    //     cout << "Please input the course code of one course that you have taken in ";
-    //     cout
-    //       << semesters->find_kth_largest_node(semesters->size() - count_semester)->data
+    //     cout << "Please input the course code of one course that you have taken in
+    //     "; cout
+    //       << semesters->find_kth_largest_node(semesters->size() -
+    //       count_semester)->data
     //       << "(you can type NA if there is no remaining course left): ";
     //     string temp_course_code;
     //     cin >> temp_course_code;
@@ -255,6 +259,7 @@ void Generator::insert_data(Transcript*& current) {
     // current->insert_semesters(semesters);
     // temp_student->insert_semesters(semesters);
     current->insert_student(temp_student);
+    current->insert_professor(temp_advisor);
     transcripts.push_back(current);
   } else {
     cout << "Please choose option 5 to generate another transcript." << endl;
