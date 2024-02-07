@@ -63,6 +63,7 @@ void Generator::start() {
   }
 }
 
+// TODO: found bugs 1. trace trap after "Do you declare any Minor Program"
 void Generator::insert_data(Transcript*& current) {
   if (current == nullptr) {
     Student* temp_student = new Student;
@@ -112,6 +113,7 @@ void Generator::insert_data(Transcript*& current) {
     temp_student->change_ust_card_num(student_id);
     temp_student->change_year(student_year);
     temp_student->change_status(student_status_string);
+    cin.ignore();
 
     // // Input data of advisor
     cout << "Then please input the information about your advisor." << endl;
@@ -121,8 +123,7 @@ void Generator::insert_data(Transcript*& current) {
     temp_advisor->change_name(advisor_name);
 
     // Input data of Major or Minor
-    cout << "Next, please input the information about your academics program."
-         << endl;
+    cout << "Next, please input the information about your academics program." << endl;
     cout << "Please input name of first program(e.g. Bachelor Degree in School of "
             "Engineering): ";
     string first_program_name;
@@ -139,8 +140,7 @@ void Generator::insert_data(Transcript*& current) {
       string input_continue;
       getline(cin, input_continue);
       if (input_continue == "yes") {
-        cout
-          << "Please input name of program(e.g. Bachelor Degree of Engineering): ";
+        cout << "Please input name of program(e.g. Bachelor Degree of Engineering): ";
         string temp_major_name;
         getline(cin, temp_major_name);
         cout << "Please input name of major(e.g. Computer Science): ";
@@ -169,7 +169,7 @@ void Generator::insert_data(Transcript*& current) {
         getline(cin, temp_minor_date);
         Minor temp_minor{"NA", temp_minor_date, temp_minor_name};
         temp_student->get_minors().insert(temp_minor);
-      } else
+      } else 
         break;
     }
 
@@ -216,43 +216,40 @@ void Generator::insert_data(Transcript*& current) {
     }
 
     // // Input courses of each semester
-    // if (semesters->size() != 0) {
-    //   int count_semester = 0;
-    //   while (count_semester < semesters->size()) {
-    //     cout << "Please input the course code of one course that you have taken in
-    //     "; cout
-    //       << semesters->find_kth_largest_node(semesters->size() -
-    //       count_semester)->data
-    //       << "(you can type NA if there is no remaining course left): ";
-    //     string temp_course_code;
-    //     cin >> temp_course_code;
-    //     if (temp_course_code == "NA") {
-    //       count_semester++;
-    //       continue;
-    //     }
-    //     cout << "Please input the course title of this course: ";
-    //     string temp_course_title;
-    //     cin >> temp_course_title;
-    //     cout << "Please input the number of credit of this course: ";
-    //     int temp_course_num_credit;
-    //     cin >> temp_course_num_credit;
-    //     cout << "Please input the grade that you got in this course: ";
-    //     string temp_course_grade;
-    //     cin >> temp_course_grade;
-    //     // data validation
+    if (semesters->size() != 0) {
+      int count_semester = 0;
+      while (count_semester < semesters->size()) {
+        cout << "Please input the course code of one course that you have taken in";
+        cout << semesters->find_kth_largest_node(semesters->size() - count_semester)->data
+             << "(you can type NA if there is no remaining course left): ";
+        string temp_course_code;
+        cin >> temp_course_code;
+        if (temp_course_code == "NA") {
+          count_semester++;
+          continue;
+        }
+        cout << "Please input the course title of this course: ";
+        string temp_course_title;
+        cin >> temp_course_title;
+        cout << "Please input the number of credit of this course: ";
+        int temp_course_num_credit;
+        cin >> temp_course_num_credit;
+        cout << "Please input the grade that you got in this course: ";
+        string temp_course_grade;
+        cin >> temp_course_grade;
+        // data validation
 
-    //     Course temp_course{temp_course_code, temp_course_title, temp_course_grade,
-    //                       temp_course_num_credit};
-    //     semesters->find_kth_largest_node(semesters->size() - count_semester)
-    //       ->data.insert_course(temp_course);
-    //     cout << endl;
-    //   }
+        Course temp_course{temp_course_code, temp_course_title, temp_course_grade,
+                           temp_course_num_credit};
+        semesters->find_kth_largest_node(semesters->size() - count_semester)
+          ->data.insert_course(temp_course);
+        cout << endl;
+      }
 
-    //   // Calculate CGA of user
-    //   current->calculate_CGA();
-    //   // Calculate MCGA of user
-    //   // current->calculate_MCGA();
-    // }
+      current->calculate_CGA();
+      // Calculate MCGA of user
+      // current->calculate_MCGA();
+    }
 
     current->insert_semesters(semesters);
     temp_student->insert_semesters(semesters);
