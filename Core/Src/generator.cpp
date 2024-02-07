@@ -214,6 +214,10 @@ void Generator::insert_data(Transcript*& current) {
       temp.change_period(temp_year);
       semesters->insert(temp);
     }
+    cout << "bug_test1" << endl;
+    cout << semesters->find_kth_largest_node(0)->data << endl;
+    cout << semesters->find_kth_largest_node(semesters->size()-0)->data << endl;
+    cout << "bug_test2" << endl;
 
     // // Input courses of each semester
     if (semesters->size() != 0) {
