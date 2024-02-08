@@ -39,7 +39,7 @@ class Generator {
      *
      * @param current
      */
-    void read_csv(Transcript* current);
+    void read_csv(Transcript*& current);
 
     /**
      * @brief Generate CSV file into Output/

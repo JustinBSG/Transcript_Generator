@@ -1,6 +1,10 @@
 #include "../Inc/generator.hpp"
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
 
 using namespace std;
 
@@ -16,6 +20,7 @@ void Generator::start() {
   cout << TERMINAL_TITLE << endl;
   Transcript* current = nullptr;
   while (1) {
+    cout << SPLIT_LINE << endl;
     int option;
     cout << endl;
     cout << "Here are operations that you can choose:" << endl;
@@ -27,13 +32,13 @@ void Generator::start() {
     cout << "6: Save and make a new transcript" << endl;
     cout << "7: Save and switch to another transcript" << endl;
     cout << "8: Leave" << endl << endl;
-    cout << "What operation that you want to choose(1-7): ";
+    cout << "What operation that you want to choose(1-8): ";
     std::cin >> option;
     while (option > 10 || option < 1) {
       cout << "Please input valid choice: ";
       std::cin >> option;
     }
-    cout << endl << SPLIT_LINE << endl;
+    cout << endl << SPLIT_LINE << endl << endl;
 
     switch (option) {
       case 1:
@@ -122,7 +127,7 @@ void Generator::insert_data(Transcript*& current) {
 
     // // Input data of advisor
     cout << "Then please input the information about your advisor." << endl;
-    cout << "Please input name of your advisor(e.g. CHAN, Da Man): ";
+    cout << "Please input name of your advisor(e.g. CHAN Da Man): ";
     string advisor_name;
     getline(cin, advisor_name);
     temp_advisor->change_name(advisor_name);
@@ -260,12 +265,62 @@ void Generator::insert_data(Transcript*& current) {
     current->calculate_CGA();
     // current->calculate_MCGA();
   } else {
-    cout << "Please choose option 5 to generate another transcript." << endl;
+    cout << "Please choose option 6 to generate new transcript." << endl;
     return;
   }
 }
 
-void Generator::read_csv(Transcript* current) {}
+void Generator::read_csv(Transcript*& current) {
+  if (current == nullptr) {
+    // open file
+    ifstream csv_file("");
+    if (!csv_file.is_open()) {
+      cout << "Failed to open CSV file." << endl;
+      return;
+    }
+
+    // first layer is each line of csv file
+    // second layer is each field of each line
+    vector<vector<string>> data;
+
+    // read csv file
+    string line;
+    while (getline(csv_file, line)) {
+      istringstream each_line(line);
+
+      vector<string> fields;
+      string field;
+      while (getline(each_line, field, ',')) {
+        fields.push_back(field);
+      }
+
+      data.push_back(fields);
+    }
+
+    csv_file.close();
+
+    // extract and classify data and insert them to current
+    Student* temp_student = new Student;
+    Professor* temp_advisor = new Professor;
+    current = new Transcript;
+    for (int i = 0; i < data.size(); i++) {
+      if (data[i][0] == "student") {
+        
+      } else if (data[i][0] == "professor") {
+
+      } else if (data[i][0] == "major") {
+
+      } else if (data[i][0] == "minor") {
+
+      } else if (data[i][0] == "course") {
+
+      }
+    }
+  } else {
+    cout << "Please choose option to 6 to generate new transcript." << endl;
+    return;
+  }
+}
 
 void Generator::generate_csv(Transcript* current) {}
 
@@ -280,7 +335,7 @@ void Generator::restart(Transcript*& current) {
 void Generator::switch_transcript(Transcript*& current) {}
 
 void Generator::end(Transcript* current) {
-  cout << endl << "BYE~" << endl << endl << SPLIT_LINE << endl;
+  cout << "BYE~" << endl << endl << SPLIT_LINE << endl;
 
   if (current != nullptr) {
     bool contain = false;
