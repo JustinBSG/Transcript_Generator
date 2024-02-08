@@ -214,17 +214,13 @@ void Generator::insert_data(Transcript*& current) {
       temp.change_period(temp_year);
       semesters->insert(temp);
     }
-    cout << "bug_test1" << endl;
-    cout << semesters->find_kth_largest_node(0)->data << endl;
-    cout << semesters->find_kth_largest_node(semesters->size()-0)->data << endl;
-    cout << "bug_test2" << endl;
 
     // // Input courses of each semester
     if (semesters->size() != 0) {
       int count_semester = 0;
       while (count_semester < semesters->size()) {
-        cout << "Please input the course code of one course that you have taken in";
-        cout << semesters->find_kth_largest_node(semesters->size() - count_semester)->data
+        cout << "Please input the course code of one course that you have taken in ";
+        cout << semesters->find_kth_largest_node(semesters->size() - count_semester)->data.get_period()
              << "(you can type NA if there is no remaining course left): ";
         string temp_course_code;
         cin >> temp_course_code;
