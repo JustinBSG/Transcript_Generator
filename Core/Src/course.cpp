@@ -38,6 +38,9 @@ float Course::get_grade_num() const {
       case 'D':
         result = 1;
         break;
+      default:
+        result = 0;
+        break;
     }
 
   if (grade.size() == 2)
