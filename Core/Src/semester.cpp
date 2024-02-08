@@ -27,10 +27,10 @@ void Semester::change_period(const string& other_period) { period = other_period
 
 void Semester::calculate_tga() {
   float result = 0;
-  for (int i = 0; i < courses.size(); i++) {
+  for (int i = 0; i < courses.size(); i++) 
     result += courses.find_kth_largest_node(i + 1)->data.get_grade_num() *
               courses.find_kth_largest_node(i + 1)->data.get_credits();
-  }
+  
   result /= total_num_credits;
 
   tga = result;
@@ -48,8 +48,8 @@ void Semester::update_total_num_courses() { total_num_courses = courses.size(); 
 void Semester::insert_course(const Course& other) {
   courses.insert(other);
   update_total_num_courses();
-  calculate_tga();
   calculate_total_num_credits();
+  calculate_tga();
 }
 
 void Semester::remove_course(const string& code) {

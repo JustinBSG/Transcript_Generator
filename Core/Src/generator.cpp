@@ -132,8 +132,7 @@ void Generator::insert_data(Transcript*& current) {
     string first_major_name;
     getline(cin, first_major_name);
     Major first_major{first_program_name, "NA", first_major_name};
-    BST<Major>* temp_semesters = new BST<Major>;
-    temp_semesters->insert(first_major);
+    temp_student->get_majors().insert(first_major);
     while (1) {
       cout << "Do you still have another Major Program?(yes/no): ";
       string input_continue;
@@ -222,20 +221,21 @@ void Generator::insert_data(Transcript*& current) {
         cout << semesters->find_kth_largest_node(semesters->size() - count_semester)->data.get_period()
              << "(you can type NA if there is no remaining course left): ";
         string temp_course_code;
-        cin >> temp_course_code;
+        getline(cin, temp_course_code);
         if (temp_course_code == "NA") {
           count_semester++;
           continue;
         }
         cout << "Please input the course title of this course: ";
         string temp_course_title;
-        cin >> temp_course_title;
+        getline(cin, temp_course_title);
         cout << "Please input the number of credit of this course: ";
         int temp_course_num_credit;
         cin >> temp_course_num_credit;
+        cin.ignore();
         cout << "Please input the grade that you got in this course: ";
         string temp_course_grade;
-        cin >> temp_course_grade;
+        getline(cin, temp_course_grade);
         // data validation
 
         Course temp_course{temp_course_code, temp_course_title, temp_course_grade,
@@ -245,7 +245,7 @@ void Generator::insert_data(Transcript*& current) {
         cout << endl;
       }
     }
-    
+
     current->insert_semesters(semesters);
     temp_student->insert_semesters(semesters);
     current->insert_student(temp_student);
