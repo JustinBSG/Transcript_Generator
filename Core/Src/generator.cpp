@@ -63,7 +63,6 @@ void Generator::start() {
   }
 }
 
-// TODO: found bugs 1. trace trap after "Do you declare any Minor Program"
 void Generator::insert_data(Transcript*& current) {
   if (current == nullptr) {
     Student* temp_student = new Student;
@@ -245,17 +244,15 @@ void Generator::insert_data(Transcript*& current) {
           ->data.insert_course(temp_course);
         cout << endl;
       }
-
-      current->calculate_CGA();
-      // Calculate MCGA of user
-      // current->calculate_MCGA();
     }
-
+    
     current->insert_semesters(semesters);
     temp_student->insert_semesters(semesters);
     current->insert_student(temp_student);
     current->insert_professor(temp_advisor);
     transcripts.push_back(current);
+    current->calculate_CGA();
+    // current->calculate_MCGA();
   } else {
     cout << "Please choose option 5 to generate another transcript." << endl;
     return;
