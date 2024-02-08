@@ -24,11 +24,12 @@ void Generator::start() {
     cout << "3: Generate CSV file" << endl;
     cout << "4: Modify data that inside CSV file" << endl;
     cout << "5: Generate transcript into terminal" << endl;
-    cout << "6: Make another transcript" << endl;
-    cout << "7: Leave" << endl << endl;
+    cout << "6: Save and make a new transcript" << endl;
+    cout << "7: Save and switch to another transcript" << endl;
+    cout << "8: Leave" << endl << endl;
     cout << "What operation that you want to choose(1-7): ";
     std::cin >> option;
-    while (option > 9 || option < 1) {
+    while (option > 10 || option < 1) {
       cout << "Please input valid choice: ";
       std::cin >> option;
     }
@@ -51,12 +52,17 @@ void Generator::start() {
         print_all(current);
         break;
       case 6:
+        save(current);
         restart(current);
         break;
       case 7:
+        save(current);
+        switch_transcript(current);
+        break;
+      case 8:
         end(current);
         return;
-      case 8:
+      case 9:
         cout << *(current->get_student()) << endl;
         break;
     }
@@ -267,12 +273,11 @@ void Generator::modify_csv(Transcript* current) {}
 
 void Generator::print_all(Transcript* current) { current->print(); }
 
-void Generator::restart(Transcript* current) {
-  if (current != nullptr) {
-    transcripts.push_back(current);
-    current = nullptr;
-  }
+void Generator::restart(Transcript*& current) {
+  current = nullptr;
 }
+
+void Generator::switch_transcript(Transcript*& current) {}
 
 void Generator::end(Transcript* current) {
   cout << endl << "BYE~" << endl << endl << SPLIT_LINE << endl;
@@ -291,6 +296,8 @@ void Generator::end(Transcript* current) {
     }
   }
 }
+
+void Generator::save(Transcript* current) {}
 
 int Generator::get_num_transcript() const { return transcripts.size(); }
 

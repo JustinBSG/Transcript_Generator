@@ -63,11 +63,18 @@ class Generator {
     void print_all(Transcript* current);
 
     /**
-     * @brief Edit another transcript
+     * @brief Make a new transcript
      *
      * @param current
      */
-    void restart(Transcript* current);
+    void restart(Transcript*& current);
+
+    /**
+     * @brief Switch to anther transcript
+     * 
+     * @param current 
+     */
+    void switch_transcript(Transcript*& current);
 
     /**
      * @brief Release all dellocated memory
@@ -75,6 +82,13 @@ class Generator {
      * @param current
      */
     void end(Transcript* current);
+
+    /**
+     * @brief Save current transcript into the vector of transcript
+     * 
+     * @param current 
+     */
+    void save(Transcript* current);
 
     /**
      * @brief Return number of transcript

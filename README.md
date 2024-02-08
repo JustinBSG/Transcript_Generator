@@ -34,19 +34,22 @@
 1. [x] Complete class semester
 1. [x] Complete class program
 1. [x] Complete class person
-1. [ ] Complete class transcript
+1. [x] Complete class transcript
 1. [ ] Complete class generator
-1. [ ] input data and create a csv file (option 1)
+1. [x] input data(option 1) 
 2. [ ] read csv file (option 2)
-3. [ ] modify data from csv file (option 3)
-4. [ ] generate transcript on terminal (option 4)
-5. [ ] make another transcript (option 5)
+2. [ ] generate csv file (option 3)
+3. [ ] modify data from csv file (option 4)
+4. [ ] generate transcript on terminal (option 5)
+5. [ ] save current transcript and make another transcript (option 6)
+5. [ ] save current transcript and switch to anther transcript (option 7)
+5. [ ] save current transcript
 5. [x] delete all dynamic data type
 6. [ ] check memory leakage
+1. [ ] Calculate MCGA
 7. [ ] Create UI windows by using QT
-8. [ ] Create pdf
-9. [ ] Plot Graph
-10. [ ] Auto fill number of credit of each course
+8. [ ] Create pdf by using reportlab and python
+9. [ ] Plot Graph by using gnuplot
 
 ## Next thing that need to be completed
 - Add command on every functions
