@@ -1,10 +1,10 @@
 #include "../Inc/generator.hpp"
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <sstream>
-#include <vector>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -178,7 +178,7 @@ void Generator::insert_data(Transcript*& current) {
         getline(cin, temp_minor_date);
         Minor temp_minor{"NA", temp_minor_date, temp_minor_name};
         temp_student->get_minors().insert(temp_minor);
-      } else 
+      } else
         break;
     }
 
@@ -229,7 +229,8 @@ void Generator::insert_data(Transcript*& current) {
       int count_semester = 0;
       while (count_semester < semesters->size()) {
         cout << "Please input the course code of one course that you have taken in ";
-        cout << semesters->find_kth_largest_node(semesters->size() - count_semester)->data.get_period()
+        cout << semesters->find_kth_largest_node(semesters->size() - count_semester)
+                  ->data.get_period()
              << "(you can type NA if there is no remaining course left): ";
         string temp_course_code;
         getline(cin, temp_course_code);
@@ -264,10 +265,8 @@ void Generator::insert_data(Transcript*& current) {
     transcripts.push_back(current);
     current->calculate_CGA();
     // current->calculate_MCGA();
-  } else {
+  } else
     cout << "Please choose option 6 to generate new transcript." << endl;
-    return;
-  }
 }
 
 void Generator::read_csv(Transcript*& current) {
@@ -305,32 +304,117 @@ void Generator::read_csv(Transcript*& current) {
     current = new Transcript;
     for (int i = 0; i < data.size(); i++) {
       if (data[i][0] == "student") {
-        
       } else if (data[i][0] == "professor") {
-
       } else if (data[i][0] == "major") {
-
       } else if (data[i][0] == "minor") {
-
       } else if (data[i][0] == "course") {
-
       }
     }
-  } else {
+  } else
     cout << "Please choose option to 6 to generate new transcript." << endl;
-    return;
-  }
 }
 
-void Generator::generate_csv(Transcript* current) {}
+void Generator::generate_csv(const Transcript* current) {
+  if (current != nullptr) {
+    // generate csv file
+    string file_path = "../../Output/output";
+    file_path += transcripts.size();
+    file_path += ".csv";
+
+    ofstream output_file{file_path};
+    if (!output_file.is_open()) {
+      cout << "Failed to open output file." << endl;
+      return;
+    }
+
+    vector<vector<string>> data;
+    // input data of student
+    vector<string> vector_student;
+    Student* student = current->get_student();
+    vector_student.push_back("student");
+    vector_student.push_back(student->get_name());
+    vector_student.push_back(student->get_admit_date());
+    vector_student.push_back(student->get_department());
+    vector_student.push_back(to_string(student->get_ust_card_num()));
+    vector_student.push_back(to_string(student->get_year()));
+    vector_student.push_back(to_string(student->get_CGA()));
+    vector_student.push_back(to_string(student->get_MCGA()));
+    vector_student.push_back(student->get_status());
+    data.push_back(vector_student);
+
+    // input data of major
+    for (int i = 0; i < student->get_majors().size(); i++) {
+      vector<string> vector_major;
+      Major major =
+        student->get_majors().find_kth_largest_node(student->get_majors().size() - i)->data;
+      vector_major.push_back("major");
+      vector_major.push_back(major.get_name());
+      vector_major.push_back(major.get_change_date());
+      vector_major.push_back(major.get_name_major());
+      data.push_back(vector_major);
+    }
+
+    // input data of minor
+    for (int i = 0; i < student->get_minors().size(); i++) {
+      vector<string> vector_minor;
+      Minor minor =
+        student->get_minors().find_kth_largest_node(student->get_minors().size() - i)->data;
+      vector_minor.push_back("minor");
+      vector_minor.push_back(minor.get_name());
+      vector_minor.push_back(minor.get_change_date());
+      vector_minor.push_back(minor.get_name_minor());
+      data.push_back(vector_minor);
+    }
+
+    // input data of professor
+    vector<string> vector_professor;
+    Professor* professor = current->get_professor();
+    vector_professor.push_back("professor");
+    vector_professor.push_back(professor->get_name());
+    data.push_back(vector_professor);
+
+    // input data of semester
+    for (int i = 0; i < current->get_semesters()->size(); i++) {
+      Semester semester = current->get_semesters()
+                            ->find_kth_largest_node(current->get_semesters()->size() - i)
+                            ->data;
+      vector<string> vector_semester;
+      vector_semester.push_back("semester");
+      vector_semester.push_back(semester.get_period());
+      data.push_back(vector_semester);
+
+      // input data of course in this semester
+      for (int i = 0; i < semester.get_total_num_courses(); i++) {
+        Course course = semester.get_courses()
+                          .find_kth_largest_node(semester.get_total_num_courses() - i)
+                          ->data;
+        vector<string> vector_course;
+        vector_course.push_back("course");
+        vector_course.push_back(course.get_code());
+        vector_course.push_back(course.get_title());
+        vector_course.push_back(course.get_grade_str());
+        vector_course.push_back(to_string(course.get_credits()));
+        data.push_back(vector_course);
+      }
+    }
+
+    // write data into the csv file
+    for (const vector<string>& row : data) {
+      for (const string& field : row)
+        output_file << field << ',';
+      output_file << "\n";
+    }
+
+    output_file.close();
+  } else
+    cout << "Please input data into current transcript first." << endl;
+}
 
 void Generator::modify_csv(Transcript* current) {}
 
 void Generator::print_all(Transcript* current) { current->print(); }
 
-void Generator::restart(Transcript*& current) {
-  current = nullptr;
-}
+void Generator::restart(Transcript*& current) { current = nullptr; }
 
 void Generator::switch_transcript(Transcript*& current) {}
 

@@ -46,7 +46,7 @@ class Generator {
      *
      * @param current
      */
-    void generate_csv(Transcript* current);
+    void generate_csv(const Transcript* current);
 
     /**
      * @brief Modify data that inside CSV file
