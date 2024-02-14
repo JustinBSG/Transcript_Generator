@@ -428,22 +428,25 @@ void Generator::restart(Transcript*& current) { current = nullptr; }
 
 void Generator::switch_transcript(Transcript*& current) {}
 
-// TODO: Redo this part
-void Generator::end(Transcript* current) {
+void Generator::end(Transcript*& current) {
   cout << "BYE~" << endl << endl << SPLIT_LINE << endl;
 
-  if (current != nullptr) {
-    bool contain = false;
-    for (int i = 0; i < transcripts.size(); i++)
-      if (transcripts[i] == current) {
-        contain = true;
-        break;
+  bool contain_current = false;
+  if (transcripts.size() != 0) {
+    for (int i = 0; i < transcripts.size(); i++) {
+      if (current == transcripts[i]) {
+        current = nullptr;
+        contain_current = true;  
       }
-
-    if (!contain) {
-      delete current;
-      current = nullptr;
+      delete transcripts[i];
+      transcripts[i] = nullptr;
     }
+    transcripts.clear();
+  }
+
+  if (contain_current) {
+    delete current;
+    current = nullptr;
   }
 }
 

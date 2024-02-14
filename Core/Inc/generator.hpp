@@ -80,7 +80,7 @@ class Generator {
      *
      * @param current
      */
-    void end(Transcript* current);
+    void end(Transcript*& current);
 
     /**
      * @brief Save current transcript into the vector of transcript
