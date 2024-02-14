@@ -43,10 +43,9 @@ class Generator {
 
     /**
      * @brief Generate CSV file into Output/
-     *
-     * @param current
+     * 
      */
-    void generate_csv(const Transcript* current);
+    void generate_csv();
 
     /**
      * @brief Modify data that inside CSV file

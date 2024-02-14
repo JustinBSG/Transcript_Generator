@@ -48,7 +48,7 @@ void Generator::start() {
         read_csv(current);
         break;
       case 3:
-        generate_csv(current);
+        generate_csv();
         break;
       case 4:
         modify_csv(current);
@@ -314,7 +314,7 @@ void Generator::read_csv(Transcript*& current) {
     cout << "Please choose option to 6 to generate new transcript." << endl;
 }
 
-void Generator::generate_csv(const Transcript* current) {
+void Generator::generate_csv() {
   if (transcripts.size() != 0) {
     cout << "There are " << transcripts.size() << "." << endl;
     for (int i = 0; i < transcripts.size(); i++)
@@ -376,7 +376,7 @@ void Generator::generate_csv(const Transcript* current) {
 
     // input data of professor
     vector<string> vector_professor;
-    Professor* professor = current->get_professor();
+    Professor* professor = transcripts[select_transcript - 1]->get_professor();
     vector_professor.push_back("professor");
     vector_professor.push_back(professor->get_name());
     data.push_back(vector_professor);
@@ -428,6 +428,7 @@ void Generator::restart(Transcript*& current) { current = nullptr; }
 
 void Generator::switch_transcript(Transcript*& current) {}
 
+// TODO: Redo this part
 void Generator::end(Transcript* current) {
   cout << "BYE~" << endl << endl << SPLIT_LINE << endl;
 
@@ -446,7 +447,10 @@ void Generator::end(Transcript* current) {
   }
 }
 
-void Generator::save(Transcript* current) {}
+void Generator::save(Transcript* current) {
+  transcripts.push_back(current);
+  current = nullptr;
+}
 
 int Generator::get_num_transcript() const { return transcripts.size(); }
 
