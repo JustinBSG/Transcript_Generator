@@ -315,7 +315,15 @@ void Generator::read_csv(Transcript*& current) {
 }
 
 void Generator::generate_csv(const Transcript* current) {
-  if (current != nullptr) {
+  if (transcripts.size() != 0) {
+    cout << "There are " << transcripts.size() << "." << endl;
+    for (int i = 0; i < transcripts.size(); i++)
+      cout << i + 1 << ": " << transcripts[i]->get_print_date() << endl;
+    cout << "Please select one transcript that you want to generate CSV file: ";
+    int select_transcript;
+    cin >> select_transcript;
+    cin.ignore();
+
     // generate csv file
     string file_path = "../../Output/output";
     file_path += transcripts.size();
@@ -330,7 +338,7 @@ void Generator::generate_csv(const Transcript* current) {
     vector<vector<string>> data;
     // input data of student
     vector<string> vector_student;
-    Student* student = current->get_student();
+    Student* student = transcripts[select_transcript - 1]->get_student();
     vector_student.push_back("student");
     vector_student.push_back(student->get_name());
     vector_student.push_back(student->get_admit_date());
@@ -374,9 +382,11 @@ void Generator::generate_csv(const Transcript* current) {
     data.push_back(vector_professor);
 
     // input data of semester
-    for (int i = 0; i < current->get_semesters()->size(); i++) {
-      Semester semester = current->get_semesters()
-                            ->find_kth_largest_node(current->get_semesters()->size() - i)
+    for (int i = 0; i < transcripts[select_transcript - 1]->get_semesters()->size(); i++) {
+      Semester semester = transcripts[select_transcript - 1]
+                            ->get_semesters()
+                            ->find_kth_largest_node(
+                              transcripts[select_transcript - 1]->get_semesters()->size() - i)
                             ->data;
       vector<string> vector_semester;
       vector_semester.push_back("semester");
@@ -407,7 +417,7 @@ void Generator::generate_csv(const Transcript* current) {
 
     output_file.close();
   } else
-    cout << "Please input data into current transcript first." << endl;
+    cout << "Please input data into current transcript or save it first." << endl;
 }
 
 void Generator::modify_csv(Transcript* current) {}
