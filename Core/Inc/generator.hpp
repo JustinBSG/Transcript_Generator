@@ -109,8 +109,6 @@ class Generator {
      * @param index
      */
     void remove_transcript(int index);
-
-    void clear_nullptr();
 };
 
 #endif

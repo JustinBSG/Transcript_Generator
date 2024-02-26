@@ -431,23 +431,31 @@ void Generator::switch_transcript(Transcript*& current) {}
 void Generator::end(Transcript*& current) {
   cout << "BYE~" << endl << endl << SPLIT_LINE << endl;
 
-  bool contain_current = false;
-  if (transcripts.size() != 0) {
-    for (int i = 0; i < transcripts.size(); i++) {
-      if (current == transcripts[i]) {
-        current = nullptr;
-        contain_current = true;  
-      }
-      delete transcripts[i];
-      transcripts[i] = nullptr;
+  bool current_exist = false;
+  if (current != nullptr) { // there is current
+    // Case 1: transcripts is empty
+    if (transcripts.size() == 0) {
+      delete current;
+      current = nullptr;
+      return;
     }
-    transcripts.clear();
+
+    // transcript is not empty
+    for (int i = 0; i < transcripts.size() && !current_exist; i++) 
+      // Case 2/3: transcripts has current or does not have current
+      if (current == transcripts[i])
+        current_exist = true;
+    
+    if (current_exist) 
+      current = nullptr;
+    else {
+      delete current;
+      current = nullptr;
+    }
   }
 
-  if (contain_current) {
-    delete current;
-    current = nullptr;
-  }
+  while (transcripts.size() != 0)
+    remove_transcript(0);
 }
 
 void Generator::save(Transcript* current) {
@@ -468,23 +476,5 @@ void Generator::remove_transcript(int index) {
 
   delete transcripts[index];
   transcripts[index] = nullptr;
-  clear_nullptr();
-}
-
-void Generator::clear_nullptr() {
-  bool do_smth = false;
-  for (int i = 0; i < transcripts.size(); i++)
-    if (transcripts[i] == nullptr) {
-      do_smth = true;
-      break;
-    }
-
-  if (do_smth) {
-    vector<Transcript*> temp;
-    for (int i = 0; i < transcripts.size(); i++)
-      if (transcripts[i] != nullptr)
-        temp.push_back(transcripts[i]);
-    transcripts.clear();
-    transcripts = temp;
-  }
+  transcripts.erase(transcripts.begin()+index);
 }
