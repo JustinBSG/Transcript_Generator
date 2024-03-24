@@ -316,17 +316,18 @@ void Generator::read_csv(Transcript*& current) {
 
 void Generator::generate_csv() {
   if (transcripts.size() != 0) {
-    cout << "There are " << transcripts.size() << "." << endl;
+    cout << "There are " << transcripts.size() << " saved transcripts." << endl;
     for (int i = 0; i < transcripts.size(); i++)
       cout << i + 1 << ": " << transcripts[i]->get_print_date() << endl;
     cout << "Please select one transcript that you want to generate CSV file: ";
     int select_transcript;
     cin >> select_transcript;
     cin.ignore();
+    // data validation
 
     // generate csv file
     string file_path = "../../Output/output";
-    file_path += transcripts.size();
+    file_path += select_transcript;
     file_path += ".csv";
 
     ofstream output_file{file_path};
