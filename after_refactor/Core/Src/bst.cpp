@@ -31,7 +31,7 @@ typename BST<T>::BSTnode* BST<T>::copy_BSTnode(const BSTnode* other) {
   try {
     if (other == nullptr)
       throw std::runtime_error("Pointer is nullptr!");
-    BSTnode* temp = new BSTnode{ohter->data};
+    BSTnode* temp = new BSTnode{other->data};
     temp->left.root = copy_BSTnode(other->left.root);
     temp->right.root = copy_BSTnode(other->right.root);
     return temp;
