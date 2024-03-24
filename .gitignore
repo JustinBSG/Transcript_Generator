@@ -1,5 +1,8 @@
 testcase
 .clang-format
-Build
+
 old_version
 make
+
+*.exe
+*.o
