@@ -1,0 +1,59 @@
+1
+LAU Chun Ting
+1 September 2020
+20856261
+1
+1
+CHAN Da Man
+Bachelor Degree in School of Engineering
+NA
+yes
+Bachelor of Engineering
+Electronic Engineering
+2022-23 Fall
+yes
+Bachelor of Engineering
+Computer Engineering
+2023-24 Spring
+no
+yes
+IT1
+2022-23 Fall
+yes
+IT2
+2023-24 Fall
+no
+COMP1021
+title1
+3
+C+
+LANG1002S
+title2
+3
+C+
+MATH1013
+title3
+3
+C-
+NA
+PHYS1112
+title4
+3
+C+
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+9
+8

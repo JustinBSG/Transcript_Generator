@@ -1,0 +1,159 @@
+******************************* Transcript Generator *******************************
+====================================================================================
+
+Here are operations that you can choose:
+1: Input data by yourself
+2: Input data from CSV file
+3: Generate CSV file
+4: Modify data that inside CSV file
+5: Generate transcript into terminal
+6: Save and make a new transcript
+7: Save and switch to another transcript
+8: Leave
+
+What operation that you want to choose(1-8): 
+====================================================================================
+
+First, please input the information about you.
+Please input your name: Please input your admit date(e.g. 1 September 2020): Please input your student id: Please input your years of study: Please choose your status of study:
+1. Active in Program
+2. Withdraw Program
+3. Suspend Program
+Please input your choose in number: Then please input the information about your advisor.
+Please input name of your advisor(e.g. CHAN, Da Man): Next, please input the information about your academics program.
+Please input name of first program(e.g. Bachelor Degree in School of Engineering): Please input its name of major(e.g. Computer Science)(if you haven't had major yet, please input NA): Do you still have another Major Program?(yes/no): Please input name of program(e.g. Bachelor Degree of Engineering): Please input name of major(e.g. Computer Science): Please input the semester that you change program(e.g. 2022-23 Fall): Do you still have another Major Program?(yes/no): Please input name of program(e.g. Bachelor Degree of Engineering): Please input name of major(e.g. Computer Science): Please input the semester that you change program(e.g. 2022-23 Fall): Do you still have another Major Program?(yes/no): Do you declare any Minor Program?(yes/no): Please input name of Minor Program(e.g. Smart City): Please input the semester that you declare this minor program(e.g. 2022-23 Fall): Do you declare any Minor Program?(yes/no): Please input name of Minor Program(e.g. Smart City): Please input the semester that you declare this minor program(e.g. 2022-23 Fall): Do you declare any Minor Program?(yes/no): Please input the course code of one course that you have taken in 2020-21 Fall(you can type NA if there is no remaining course left): Please input the course title of this course: Please input the number of credit of this course: Please input the grade that you got in this course: 
+Please input the course code of one course that you have taken in 2020-21 Fall(you can type NA if there is no remaining course left): Please input the course title of this course: Please input the number of credit of this course: Please input the grade that you got in this course: 
+Please input the course code of one course that you have taken in 2020-21 Fall(you can type NA if there is no remaining course left): Please input the course title of this course: Please input the number of credit of this course: Please input the grade that you got in this course: 
+Please input the course code of one course that you have taken in 2020-21 Fall(you can type NA if there is no remaining course left): Please input the course code of one course that you have taken in 2020-21 Winter(you can type NA if there is no remaining course left): Please input the course title of this course: Please input the number of credit of this course: Please input the grade that you got in this course: 
+Please input the course code of one course that you have taken in 2020-21 Winter(you can type NA if there is no remaining course left): Please input the course code of one course that you have taken in 2020-21 Spring(you can type NA if there is no remaining course left): Please input the course code of one course that you have taken in 2020-21 Summer(you can type NA if there is no remaining course left): Please input the course code of one course that you have taken in 2021-22 Fall(you can type NA if there is no remaining course left): Please input the course code of one course that you have taken in 2021-22 Winter(you can type NA if there is no remaining course left): Please input the course code of one course that you have taken in 2021-22 Spring(you can type NA if there is no remaining course left): Please input the course code of one course that you have taken in 2021-22 Summer(you can type NA if there is no remaining course left): Please input the course code of one course that you have taken in 2022-23 Fall(you can type NA if there is no remaining course left): Please input the course code of one course that you have taken in 2022-23 Winter(you can type NA if there is no remaining course left): Please input the course code of one course that you have taken in 2022-23 Spring(you can type NA if there is no remaining course left): Please input the course code of one course that you have taken in 2022-23 Summer(you can type NA if there is no remaining course left): Please input the course code of one course that you have taken in 2023-24 Fall(you can type NA if there is no remaining course left): Please input the course code of one course that you have taken in 2023-24 Winter(you can type NA if there is no remaining course left): Please input the course code of one course that you have taken in 2023-24 Spring(you can type NA if there is no remaining course left): Please input the course code of one course that you have taken in 2023-24 Summer(you can type NA if there is no remaining course left): ====================================================================================
+
+Here are operations that you can choose:
+1: Input data by yourself
+2: Input data from CSV file
+3: Generate CSV file
+4: Modify data that inside CSV file
+5: Generate transcript into terminal
+6: Save and make a new transcript
+7: Save and switch to another transcript
+8: Leave
+
+What operation that you want to choose(1-8): 
+====================================================================================
+
+Student: 
+Name: LAU, Chun Ting
+Admit Date: 1 September 2020
+Department: 
+UST Card Number: 20856261
+Year: 1
+CGA: 2.15
+MCGA: 0
+Status: Active in Program
+
+Major1:
+Name of Program: Bachelor of Engineering
+Semester of changing program: 2022-23 Fall
+Name of major: Electronic Engineering
+Major2:
+Name of Program: Bachelor of Engineering
+Semester of changing program: 2023-24 Spring
+Name of major: Computer Engineering
+Major3:
+Name of Program: Bachelor Degree in School of Engineering
+Semester of changing program: NA
+Name of major: NA
+
+Minor1:
+Name of Program: NA
+Semester of changing program: 2022-23 Fall
+Name of minor: IT1
+Minor2:
+Name of Program: NA
+Semester of changing program: 2023-24 Fall
+Name of minor: IT2
+
+Semesters:
+2020-21 Fall:
+Course Code: COMP1021
+Course Title:title1
+No. of Credit: 3
+Grade: C+
+Course Code: LANG1002S
+Course Title:title2
+No. of Credit: 3
+Grade: C+
+Course Code: MATH1013
+Course Title:title3
+No. of Credit: 3
+Grade: C-
+TGA: 2.1
+
+2020-21 Winter:
+Course Code: PHYS1112
+Course Title:title4
+No. of Credit: 3
+Grade: C+
+TGA: 2.3
+
+2020-21 Spring:
+TGA: 0
+
+2020-21 Summer:
+TGA: 0
+
+2021-22 Fall:
+TGA: 0
+
+2021-22 Winter:
+TGA: 0
+
+2021-22 Spring:
+TGA: 0
+
+2021-22 Summer:
+TGA: 0
+
+2022-23 Fall:
+TGA: 0
+
+2022-23 Winter:
+TGA: 0
+
+2022-23 Spring:
+TGA: 0
+
+2022-23 Summer:
+TGA: 0
+
+2023-24 Fall:
+TGA: 0
+
+2023-24 Winter:
+TGA: 0
+
+2023-24 Spring:
+TGA: 0
+
+2023-24 Summer:
+TGA: 0
+
+CGA: 2.15
+
+====================================================================================
+
+Here are operations that you can choose:
+1: Input data by yourself
+2: Input data from CSV file
+3: Generate CSV file
+4: Modify data that inside CSV file
+5: Generate transcript into terminal
+6: Save and make a new transcript
+7: Save and switch to another transcript
+8: Leave
+
+What operation that you want to choose(1-8): 
+====================================================================================
+
+BYE~
+
+====================================================================================

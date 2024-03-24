@@ -1,5 +1,5 @@
 testcase
 .clang-format
-Core/Build
+Build/
 old_version
 make
