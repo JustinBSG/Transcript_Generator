@@ -1,9 +1,16 @@
 # Transcript Generator (Refactoring)
 
 ## Todo List
-1. [ ] Create domain model and class diagram by UML 
+1. [x] Create domain model and class diagram by UML 
 2. [ ] Implement all .cpp and .hpp
+  - [ ] bst.cpp and bst.hpp
+  - [ ] course.cpp and course.hpp
+  - [ ] generator.cpp and generator.hpp
+  - [ ] person.cpp and person.hpp
+  - [ ] semester.cpp and semester.hpp
+  - [ ] transcript.cpp and transcript.hpp
 3. [ ] Rewrite messy codes
+  - Use AVLTree instead of using BST
 4. [ ] Add comments
 5. [ ] Rebuild the Makefile
 6. [ ] Rewrite README.md
