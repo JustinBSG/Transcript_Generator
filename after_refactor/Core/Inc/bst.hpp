@@ -130,8 +130,8 @@ class BST {
     int size() const;
 
     /**
-     * @brief Return the kth largest BSTnode
-     * @brief Range of k: 0 <= k <= size of BST - 1
+     * @brief Return the kth largest BSTnode \
+     * @brief Range of k: 1 <= k <= size of BST
      * 
      * @param k 
      * @return BSTnode* 
@@ -139,8 +139,8 @@ class BST {
     BSTnode* find_kth_largest_node(int k) const;
 
     /**
-     * @brief Return the kth smallest BSTnode
-     * @brief Range of k: 0 <= k <= size of BST - 1
+     * @brief Return the kth smallest BSTnode \
+     * @brief Range of k: 1 <= k <= size of BST
      * 
      * @param k 
      * @return BSTnode* 
