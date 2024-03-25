@@ -164,8 +164,9 @@ BST<T>::BSTnode* BST<T>::find_kth_largest_node(int k) const {
     std::cerr << "Exception: " << e.what() << std::endl;
     std::cerr << "Function: BST<T>::BSTnode* BST<T>::find_kth_largest_node(int k) const" << std::endl;
     std::cerr << "Parameter: k = " << k << std::endl;
-    std::cerr << "Internal variable: root = " << (root == nullptr ? "nullptr" : static_cast<const void*>(root)) << std::endl;
-    std::cerr << "                   size of BST = " << size() << std::endl;
+    std::cerr << "Internal variable:  root = " << (root == nullptr ? "nullptr" : static_cast<const void*>(root)) << std::endl;
+    std::cerr << "                    size of BST = " << size() << std::endl;
+    std::cerr << "                    leftSize = " << (root->right.is_empty() ? 0 : root->right.size()) << std::endl;
     throw;
   }
 }
@@ -196,22 +197,71 @@ BST<T>::BSTnode* BST<T>::find_kth_smallest_node(int k) const {
     std::cerr << "Parameter: k = " << k << std::endl;
     std::cerr << "Internal variable:  root = " << (root == nullptr ? "nullptr" : static_cast<const void*>(root)) << std::endl;
     std::cerr << "                    size of BST = " << size() << std::endl;
-    std::cerr << "                    rightSize = " << std::endl;
+    std::cerr << "                    leftSize = " << (root->left.is_empty() ? 0 : root->left.size()) << std::endl;
     throw;
   }
 }
 
 template <typename T>
-BST<T>::BSTnode* BST<T>::find_BSTnode(const T& other) const {}
+BST<T>::BSTnode* BST<T>::find_BSTnode(const T& other) const {
+  if (is_empty())
+    return nullptr;
+
+  if (root->data == other)
+    return root;
+  else if (root->data < other)
+    return root->left.find_BST_node(other);
+  else
+    return root->right.find_BST_node(other);
+}
 
 template <typename T>
-void insert(const T& other) {}
+void insert(const T& other) {
+  if (is_empty())
+    root = new BSTnode(other);
+  else if (root->data > other)
+    root->left.insert(other);
+  else if (root->data < other)
+    root->right.insert(other);
+}
 
 template <typename T>
-void remove(const T& other) {}
+void remove(const T& other) {
+  if (is_empty())
+    return;
+  
+  if (root->data > other)
+    root->left.remove(other);
+  else if (root->data < other)
+    root->right.remove(other);
+  else if (root->left.root && root->right.root) {
+    root->data = root->right.find_min();
+    root->right.remove(root->data);
+  } else {
+    BSTnode* temp = root;
+    root = (root->left.is_empty()) ? root->right.root : root->left.root;
+    temp->left.root = temp->right.root = nullptr;
+    delete temp;
+  }  
+}
 
 template <typename T>
-BST<T>& BST<T>::operator=(const BST<T>& other) {}
+BST<T>& BST<T>::operator=(const BST<T>& other) {
+  if (this != &other) {
+    while (this->size() != 0)
+      remove(root->data);
+    root = copy_BSTnode(other.root);
+  }
+  return *this;
+}
 
 template <typename T>
-BST<T>& BST<T>::operator=(BST<T>&& other) {}
+BST<T>& BST<T>::operator=(BST<T>&& other) {
+  if (this != &other) {
+    while (this->size() != 0)
+      remove(root->data);
+    root = other.root;
+    other.root = nullptr;
+  }
+  return *this;
+}
