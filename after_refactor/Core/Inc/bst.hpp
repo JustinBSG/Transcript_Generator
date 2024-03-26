@@ -164,7 +164,8 @@ class BST {
     void insert(const T& other);
 
     /**
-     * @brief Remove data from BST
+     * @brief Remove other data from BST \
+     * @brief do nothing if other data does not exist in BST or BST is empty
      * 
      * @param other 
      */
