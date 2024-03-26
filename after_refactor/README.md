@@ -4,10 +4,10 @@
 1. [x] Create domain model and class diagram by UML 
 2. [ ] Implement all .cpp and .hpp
   - [x] bst.cpp and bst.hpp
-  - [ ] course.cpp and course.hpp
-  - [ ] generator.cpp and generator.hpp
-  - [ ] person.cpp and person.hpp
+  - [x] course.cpp and course.hpp
   - [ ] semester.cpp and semester.hpp
+  - [ ] person.cpp and person.hpp
+  - [ ] generator.cpp and generator.hpp
   - [ ] transcript.cpp and transcript.hpp
 3. [ ] Rewrite messy codes
   - Use AVLTree instead of using BST
