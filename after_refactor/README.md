@@ -3,7 +3,7 @@
 ## Todo List
 1. [x] Create domain model and class diagram by UML 
 2. [ ] Implement all .cpp and .hpp
-  - [ ] bst.cpp and bst.hpp
+  - [x] bst.cpp and bst.hpp
   - [ ] course.cpp and course.hpp
   - [ ] generator.cpp and generator.hpp
   - [ ] person.cpp and person.hpp
