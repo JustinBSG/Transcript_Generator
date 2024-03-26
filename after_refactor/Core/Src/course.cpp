@@ -54,36 +54,21 @@ void Course::change_grade(const std::string& other_grade) { grade = other_grade;
 void Course::change_credits(const int& other_credits) { credits = other_credits; }
 
 bool Course::operator<(const Course& other) {
-  if (code < other.code)
-    return true;
-  else
-    return false;
+  return code < other.code;
 }
 
 bool Course::operator>(const Course& other) {
-  if (code > other.code)
-    return true;
-  else
-    return false;
+  return code > other.code;
 }
 
 bool Course::operator<=(const Course& other) {
-  if (code <= other.code)
-    return true;
-  else
-    return false;
+  return code <= other.code;
 }
 
 bool Course::operator>=(const Course& other) {
-  if (code >= other.code)
-    return true;
-  else
-    return false;
+  return code >= other.code;
 }
 
 bool Course::operator==(const Course& other) {
-  if (code == other.code)
-    return true;
-  else
-    return false;
+  return code == other.code;
 }
