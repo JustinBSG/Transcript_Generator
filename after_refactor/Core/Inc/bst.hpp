@@ -148,7 +148,8 @@ class BST {
     BSTnode* find_kth_smallest_node(int k) const;
 
     /**
-     * @brief Return the BSTnode that contain other data
+     * @brief Return the BSTnode that contain other data \
+     * @brief return nullptr if other data is not found
      * 
      * @param other 
      * @return BSTnode* 
@@ -163,7 +164,7 @@ class BST {
     void insert(const T& other);
 
     /**
-     * @brief Insert data from BST
+     * @brief Remove data from BST
      * 
      * @param other 
      */

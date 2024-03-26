@@ -99,22 +99,39 @@ void BST<T>::print(int depth) const {
 
 template <typename T>
 const T& BST<T>::find_max_data() const {
-  const BSTnode* temp = root;
+  try {
+    if (size() == 0)
+      throw std::logic_error("There is no any data inside BST!");
 
-  while (!temp->right.is_empty())
-    temp = temp->right.root;
+    const BSTnode* temp = root;
 
-  return temp->data;
+    while (!temp->right.is_empty())
+      temp = temp->right.root;
+
+    return temp->data;
+  } catch (const std::exception& e) {
+    std::cerr << "Exception: " << e.what() << std::endl;
+    std::cerr << "Function: const T& BST<T>::find_max_data() const" << std::endl;
+    throw;
+  }
 }
 
 template <typename T>
 const T& BST<T>::find_min_data() const {
-  const BSTnode* temp = root;
+  try {
+    if (size() == 0)
+      throw std::logic_error("There is no any data inside BST!");
+    const BSTnode* temp = root;
 
-  while (!temp->left.is_empty())
-    temp = temp->left.root;
+    while (!temp->left.is_empty())
+      temp = temp->left.root;
 
-  return temp->data;
+    return temp->data;
+  } catch (const std::exception& e) {
+    std::cerr << "Exception: " << e.what() << std::endl;
+    std::cerr << "Function: const T& BST<T>::find_min_data() const" << std::endl;
+    throw;
+  }
 }
 
 template <typename T>
@@ -123,12 +140,12 @@ const T& BST<T>::get_data() const {
 }
 
 template <typename T>
-BST<T>::BSTnode* BST<T>::get_left_BSTnode() const {
+typename BST<T>::BSTnode* BST<T>::get_left_BSTnode() const {
   return root->left;
 }
 
 template <typename T>
-BST<T>::BSTnode* BST<T>::get_right_BSTnode() const {
+typename BST<T>::BSTnode* BST<T>::get_right_BSTnode() const {
   return root->right;
 }
 
@@ -141,7 +158,7 @@ int BST<T>::size() const {
 }
 
 template <typename T>
-BST<T>::BSTnode* BST<T>::find_kth_largest_node(int k) const {
+typename BST<T>::BSTnode* BST<T>::find_kth_largest_node(int k) const {
   try {
     if (k > size())
       throw std::invalid_argument("k should not be larger than the size of BST!");
@@ -172,7 +189,7 @@ BST<T>::BSTnode* BST<T>::find_kth_largest_node(int k) const {
 }
 
 template <typename T>
-BST<T>::BSTnode* BST<T>::find_kth_smallest_node(int k) const {
+typename BST<T>::BSTnode* BST<T>::find_kth_smallest_node(int k) const {
   try {
     if (k > size())
       throw std::invalid_argument("k should not be larger than the size of BST!");
@@ -203,20 +220,20 @@ BST<T>::BSTnode* BST<T>::find_kth_smallest_node(int k) const {
 }
 
 template <typename T>
-BST<T>::BSTnode* BST<T>::find_BSTnode(const T& other) const {
+typename BST<T>::BSTnode* BST<T>::find_BSTnode(const T& other) const {
   if (is_empty())
     return nullptr;
 
   if (root->data == other)
     return root;
-  else if (root->data < other)
-    return root->left.find_BST_node(other);
+  else if (other < root->data)
+    return root->left.find_BSTnode(other);
   else
-    return root->right.find_BST_node(other);
+    return root->right.find_BSTnode(other);
 }
 
 template <typename T>
-void insert(const T& other) {
+void BST<T>::insert(const T& other) {
   if (is_empty())
     root = new BSTnode(other);
   else if (root->data > other)
@@ -226,7 +243,7 @@ void insert(const T& other) {
 }
 
 template <typename T>
-void remove(const T& other) {
+void BST<T>::remove(const T& other) {
   if (is_empty())
     return;
   
@@ -235,7 +252,7 @@ void remove(const T& other) {
   else if (root->data < other)
     root->right.remove(other);
   else if (root->left.root && root->right.root) {
-    root->data = root->right.find_min();
+    root->data = root->right.find_min_data();
     root->right.remove(root->data);
   } else {
     BSTnode* temp = root;
