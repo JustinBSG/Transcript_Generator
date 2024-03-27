@@ -6,6 +6,7 @@
   - [x] bst.cpp and bst.hpp
   - [x] course.cpp and course.hpp
   - [x] semester.cpp and semester.hpp
+  - [x] program.cpp and program.hpp
   - [ ] person.cpp and person.hpp
   - [ ] generator.cpp and generator.hpp
   - [ ] transcript.cpp and transcript.hpp
