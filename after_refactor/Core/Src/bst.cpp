@@ -31,6 +31,7 @@ typename BST<T>::BSTnode* BST<T>::copy_BSTnode(const BSTnode* other) {
   try {
     if (other == nullptr)
       throw std::invalid_argument("Pointer should not be nullptr!");
+
     BSTnode* temp = new BSTnode{other->data};
     temp->left.root = copy_BSTnode(other->left.root);
     temp->right.root = copy_BSTnode(other->right.root);
@@ -38,7 +39,8 @@ typename BST<T>::BSTnode* BST<T>::copy_BSTnode(const BSTnode* other) {
   } catch (const std::exception& e) {
     std::cerr << "Exception: " << e.what() << std::endl;
     std::cerr << "Function: BST<T>::BSTnode* BST<T>::copy_BSTnode()" << std::endl;
-    std::cerr << "Parameter: other = " << (other == nullptr ? "nullptr" : static_cast<const void*>(other)) << std::endl;
+    std::cerr << "Parameter: other = "
+              << (other == nullptr ? "nullptr" : static_cast<const void*>(other)) << std::endl;
     throw;
   }
 }
@@ -179,11 +181,14 @@ typename BST<T>::BSTnode* BST<T>::find_kth_largest_node(int k) const {
       return this->root;
   } catch (const std::exception& e) {
     std::cerr << "Exception: " << e.what() << std::endl;
-    std::cerr << "Function: BST<T>::BSTnode* BST<T>::find_kth_largest_node(int k) const" << std::endl;
+    std::cerr << "Function: BST<T>::BSTnode* BST<T>::find_kth_largest_node(int k) const"
+              << std::endl;
     std::cerr << "Parameter: k = " << k << std::endl;
-    std::cerr << "Internal variable:  root = " << (root == nullptr ? "nullptr" : static_cast<const void*>(root)) << std::endl;
+    std::cerr << "Internal variable:  root = "
+              << (root == nullptr ? "nullptr" : static_cast<const void*>(root)) << std::endl;
     std::cerr << "                    size of BST = " << size() << std::endl;
-    std::cerr << "                    leftSize = " << (root->right.is_empty() ? 0 : root->right.size()) << std::endl;
+    std::cerr << "                    leftSize = "
+              << (root->right.is_empty() ? 0 : root->right.size()) << std::endl;
     throw;
   }
 }
@@ -210,11 +215,14 @@ typename BST<T>::BSTnode* BST<T>::find_kth_smallest_node(int k) const {
       return this->root;
   } catch (const std::exception& e) {
     std::cerr << "Exception: " << e.what() << std::endl;
-    std::cerr << "Function: BST<T>::BSTnode* BST<T>::find_kth_smallest_node(int k) const" << std::endl;
+    std::cerr << "Function: BST<T>::BSTnode* BST<T>::find_kth_smallest_node(int k) const"
+              << std::endl;
     std::cerr << "Parameter: k = " << k << std::endl;
-    std::cerr << "Internal variable:  root = " << (root == nullptr ? "nullptr" : static_cast<const void*>(root)) << std::endl;
+    std::cerr << "Internal variable:  root = "
+              << (root == nullptr ? "nullptr" : static_cast<const void*>(root)) << std::endl;
     std::cerr << "                    size of BST = " << size() << std::endl;
-    std::cerr << "                    leftSize = " << (root->left.is_empty() ? 0 : root->left.size()) << std::endl;
+    std::cerr << "                    leftSize = "
+              << (root->left.is_empty() ? 0 : root->left.size()) << std::endl;
     throw;
   }
 }
@@ -246,7 +254,7 @@ template <typename T>
 void BST<T>::remove(const T& other) {
   if (is_empty())
     return;
-  
+
   if (root->data > other)
     root->left.remove(other);
   else if (root->data < other)
@@ -259,7 +267,7 @@ void BST<T>::remove(const T& other) {
     root = (root->left.is_empty()) ? root->right.root : root->left.root;
     temp->left.root = temp->right.root = nullptr;
     delete temp;
-  }  
+  }
 }
 
 template <typename T>

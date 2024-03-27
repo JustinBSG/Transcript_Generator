@@ -8,8 +8,8 @@
   - [x] semester.cpp and semester.hpp
   - [x] program.cpp and program.hpp
   - [x] person.cpp and person.hpp
-  - [ ] generator.cpp and generator.hpp
   - [ ] transcript.cpp and transcript.hpp
+  - [ ] generator.cpp and generator.hpp
 3. [ ] Rewrite messy codes
   - Use AVLTree instead of using BST
 4. [ ] Add comments
@@ -18,8 +18,8 @@
   - [x] semester.hpp
   - [ ] program.hpp
   - [ ] person.hpp
-  - [ ] generator.hpp
   - [ ] transcript.hpp
+  - [ ] generator.hpp
 5. [ ] Rebuild the Makefile
 6. [ ] Rewrite README.md
 7. [ ] Create testcase for current procedure
