@@ -5,7 +5,7 @@
 2. [ ] Implement all .cpp and .hpp
   - [x] bst.cpp and bst.hpp
   - [x] course.cpp and course.hpp
-  - [ ] semester.cpp and semester.hpp
+  - [x] semester.cpp and semester.hpp
   - [ ] person.cpp and person.hpp
   - [ ] generator.cpp and generator.hpp
   - [ ] transcript.cpp and transcript.hpp

@@ -1,5 +1,7 @@
 #include "../Inc/course.hpp"
 
+#include <iostream>
+
 Course::Course(std::string code, std::string title, std::string grade, int credits)
     : code{code}, title{title}, grade{grade}, credits{credits} {}
 
@@ -53,22 +55,20 @@ void Course::change_grade(const std::string& other_grade) { grade = other_grade;
 
 void Course::change_credits(const int& other_credits) { credits = other_credits; }
 
-bool Course::operator<(const Course& other) {
-  return code < other.code;
-}
+bool Course::operator<(const Course& other) { return code < other.code; }
 
-bool Course::operator>(const Course& other) {
-  return code > other.code;
-}
+bool Course::operator>(const Course& other) { return code > other.code; }
 
-bool Course::operator<=(const Course& other) {
-  return code <= other.code;
-}
+bool Course::operator<=(const Course& other) { return code <= other.code; }
 
-bool Course::operator>=(const Course& other) {
-  return code >= other.code;
-}
+bool Course::operator>=(const Course& other) { return code >= other.code; }
 
-bool Course::operator==(const Course& other) {
-  return code == other.code;
+bool Course::operator==(const Course& other) { return code == other.code; }
+
+void Course::print_test() const {
+  std::cout << "Course class object:" << std::endl;
+  std::cout << "std::string code: " << code << std::endl;
+  std::cout << "std::string titel: " << title << std::endl;
+  std::cout << "std::string grade: " << grade << std::endl;
+  std::cout << "int credits: " << credits << std::endl;
 }

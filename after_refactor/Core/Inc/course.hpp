@@ -81,6 +81,12 @@ class Course {
     bool operator<=(const Course& other);
     bool operator>=(const Course& other);
     bool operator==(const Course& other);
+
+    /**
+     * @brief Print content of all member variables in testing purpose
+     * 
+     */
+    void print_test() const;
 };
 
 #endif  // COURSE_HPP
