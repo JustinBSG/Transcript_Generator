@@ -68,6 +68,7 @@ class Student : public Person {
     Status_Program status;
     BST<Major> majors;
     BST<Minor> minors;
+    // It is controlled by Transcript
     BST<Semester>* semesters;
 
   public:
@@ -94,6 +95,8 @@ class Student : public Person {
      *
      */
     ~Student() = default;
+    Student(const Student& other);
+    Student(Student&& other);
 
     int get_year() const;
     double get_cga() const;
@@ -110,9 +113,20 @@ class Student : public Person {
     void remove_major(const std::string& other_major_name);
     void insert_minor(const Minor& other_minor);
     void remove_minor(const std::string& other_minor_name);
-    void insert_semester(BST<Semester>* other_semesters);
+
+    /**
+     * @brief Change the pointer address of semesters to that of other_semesters \
+     * @brief If you want to modify content inside BST<Semester*> semesters, please use Transcript::change_semesters()
+     * 
+     * @param other_semesters 
+     */
+    void change_semesters(BST<Semester>* other_semesters);
 
     bool check_semesters_nullptr() const;
+    void print_test() const;
+
+    Student& operator=(const Student& other);
+    Student& operator=(Student&& other);
 };
 
 #endif  // PERSON_HPP

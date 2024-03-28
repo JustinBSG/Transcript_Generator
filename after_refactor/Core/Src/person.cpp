@@ -40,6 +40,12 @@ Student::Student(std::string name, std::string admit_date, std::string departmen
       status{status},
       semesters{semesters} {}
 
+// TODO:
+Student::Student(const Student& other) {}
+
+// TODO:
+Student::Student(Student&& other) {}
+
 int Student::get_year() const { return year; }
 
 double Student::get_cga() const { return cga; }
@@ -123,21 +129,17 @@ void Student::remove_minor(const std::string& other_minor_name) {
   minors.remove(minors.find_BSTnode(other_minor_name)->data);
 }
 
-void Student::insert_semester(BST<Semester>* other_semesters) {
-  try {
-    if (!check_semesters_nullptr())
-      throw std::invalid_argument("semesters should be nullptr!");
-
-    semesters = other_semesters;
-  } catch (const std::exception& e) {
-    std::cerr << "Exception: " << e.what() << std::endl;
-    std::cerr << "Function: void Student::insert_semester(BST<Semester>* other_semesters)"
-              << std::endl;
-    std::cerr << "Parameter: semesters = "
-              << (semesters == nullptr ? "nullptr" : static_cast<const void*>(semesters))
-              << std::endl;
-    throw;
-  }
+void Student::change_semesters(BST<Semester>* other_semesters) {
+  semesters = other_semesters;
 }
 
 bool Student::check_semesters_nullptr() const { return semesters == nullptr; }
+
+// TODO:
+void Student::print_test() const {}
+
+// TODO:
+Student& Student::operator=(const Student& other) {}
+
+// TODO:
+Student& Student::operator=(Student&& other) {}
