@@ -58,6 +58,8 @@ class Professor : public Person {
   public:
     Professor(std::string name = "", std::string admit_date = "", std::string department = "",
               int ust_card_num = 0);
+
+    void print_test() const;
 };
 
 class Student : public Person {

@@ -31,6 +31,14 @@ Professor::Professor(std::string name, std::string admit_date, std::string depar
                      int ust_card_num)
     : Person{name, admit_date, department, ust_card_num} {}
 
+void Professor::print_test() const {
+  std::cout << "Professor class object:" << std::endl;
+  std::cout << "std::string name: " << name << std::endl;
+  std::cout << "std::string admit_date: " << admit_date << std::endl;
+  std::cout << "std::string department: " << department << std::endl;
+  std::cout << "int ust_card_num: " << ust_card_num << std::endl;
+}
+
 Student::Student(std::string name, std::string admit_date, std::string department, int ust_card_num,
                  int year, Status_Program status)
     : Person{name, admit_date, department, ust_card_num}, year{year}, status{status} {}

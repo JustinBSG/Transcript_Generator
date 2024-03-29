@@ -145,11 +145,10 @@ void Transcript::change_semesters(BST<Semester>* other_semesters) {
 }
 
 void Transcript::update_CGAs() {
+  CGAs.clear();
+
   if (semesters == nullptr)
     return;
-
-  if (CGAs.size() != 0)
-    CGAs.clear();
 
   double cga_result = 0.;
   int credit_result = 0;
@@ -183,26 +182,110 @@ void Transcript::update_print_date() {
   print_date = buffer;
 }
 
-// TODO
-bool Transcript::operator<(const Transcript& other) {}
+bool Transcript::operator<(const Transcript& other) { return print_date < other.print_date; }
 
-// TODO
-bool Transcript::operator>(const Transcript& other) {}
+bool Transcript::operator>(const Transcript& other) { return print_date > other.print_date; }
 
-// TODO
-bool Transcript::operator<=(const Transcript& other) {}
+bool Transcript::operator<=(const Transcript& other) { return print_date <= other.print_date; }
 
-// TODO
-bool Transcript::operator>=(const Transcript& other) {}
+bool Transcript::operator>=(const Transcript& other) { return print_date >= other.print_date; }
 
-// TODO
-bool Transcript::operator==(const Transcript& other) {}
+bool Transcript::operator==(const Transcript& other) { return print_date == other.print_date; }
 
-// TODO
-Transcript& Transcript::operator=(const Transcript& other) {}
+Transcript& Transcript::operator=(const Transcript& other) {
+  if (this != &other) {
+    if (user != nullptr) {
+      delete user;
+      user = nullptr;
+    }
+    if (other.user != nullptr)
+      user = new Student{*other.user};
+    else
+      user = nullptr;
 
-// TODO
-Transcript& Transcript::operator=(Transcript&& other) {}
+    if (advisor != nullptr) {
+      delete advisor;
+      advisor = nullptr;
+    }
+    if (other.advisor != nullptr)
+      advisor = new Professor{*other.advisor};
+    else
+      advisor = nullptr;
 
-// TODO
-void Transcript::print_test() const {}
+    if (semesters != nullptr) {
+      delete semesters;
+      semesters = nullptr;
+    }
+    if (other.semesters != nullptr)
+      semesters = new BST<Semester>{*other.semesters};
+    else
+      semesters = nullptr;
+
+    update_CGAs();
+    print_date = other.print_date;
+  }
+  return *this;
+}
+
+Transcript& Transcript::operator=(Transcript&& other) {
+  if (this != &other) {
+    if (user != nullptr) {
+      delete user;
+      user = nullptr;
+    }
+    if (advisor != nullptr) {
+      delete advisor;
+      advisor = nullptr;
+    }
+    if (semesters != nullptr) {
+      delete semesters;
+      semesters = nullptr;
+    }
+    print_date = std::move(other.print_date);
+    user = other.user;
+    advisor = other.advisor;
+    semesters = other.semesters;
+    CGAs = std::move(other.CGAs);
+    other.user = nullptr;
+    other.advisor = nullptr;
+    other.semesters = nullptr;
+    other.print_date = "";
+  }
+  return *this;
+}
+
+void Transcript::print_test() const {
+  std::cout << "Transcript class object:" << std::endl;
+  std::cout << "Student* user: " << (user == nullptr ? "nullptr" : static_cast<const void*>(user))
+            << std::endl;
+  if (user != nullptr) {
+    user->print_test();
+    std::cout << std::endl;
+  }
+  std::cout << "Professor* advisor: "
+            << (advisor == nullptr ? "nullptr" : static_cast<const void*>(advisor)) << std::endl;
+  if (advisor != nullptr) {
+    advisor->print_test();
+    std::cout << std::endl;
+  }
+  std::cout << "BST<Semester>* semesters: "
+            << (semesters == nullptr ? "nullptr" : static_cast<const void*>(semesters))
+            << std::endl;
+  if (semesters != nullptr) {
+    std::cout << "the number of semesters: " << semesters->size() << std::endl;
+    for (int i = 1; i <= semesters->size(); i++) {
+      std::cout << "This is " << i << "th largest node." << std::endl;
+      Semester* temp = &(semesters->find_kth_largest_node(i)->data);
+      temp->print_test();
+      if (i != semesters->size())
+        std::cout << std::endl;
+    }
+  }
+  std::cout << "std::vector<CGA_semester> CGAs: " << std::endl;
+  std::cout << "the number of CGAs: " << CGAs.size() << std::endl;
+  for (int i = 0; i < CGAs.size(); i++) {
+    std::cout << "In semester " << CGAs[i].represent_semester->get_period() << ":" << std::endl;
+    std::cout << "CGA: " << CGAs[i].cga << std::endl;
+  }
+  std::cout << "std::string print_date: " << print_date << std::endl;
+}
