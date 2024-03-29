@@ -38,8 +38,13 @@ void Semester::update_total_num_credits() {
 
 void Semester::update_total_num_courses() { total_num_courses = courses.size(); }
 
-void Semester::change_courses(const BST<Course>& other_courses) {
-  courses = std::move(other_courses);
+void Semester::copy_courses(const BST<Course>& other_courses) {
+  while (courses.size() != 0)
+    courses.remove(courses.get_data());
+  courses = other_courses;
+  update_total_num_courses();
+  update_total_num_credits();
+  calculate_tga();
 }
 
 void Semester::insert_course(const Course& other_course) {
@@ -76,7 +81,7 @@ void Semester::print_test() const {
   std::cout << "the number of courses: " << courses.size() << std::endl;
   for (int i = 1; i <= courses.size(); i++) {
     std::cout << "This is " << i << "th largest node." << std::endl;
-    Course* temp = &(courses.find_kth_largest_node(1)->data);
+    Course* temp = &(courses.find_kth_largest_node(i)->data);
     temp->print_test();
     if (i != courses.size())
       std::cout << std::endl;

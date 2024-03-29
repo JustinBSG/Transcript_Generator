@@ -79,11 +79,11 @@ class Semester {
     void update_total_num_courses();
 
     /**
-     * @brief Change courses to other_courses
+     * @brief Copy other_courses to courses
      *
      * @param other_courses
      */
-    void change_courses(const BST<Course>& other_courses);
+    void copy_courses(const BST<Course>& other_courses);
 
     /**
      * @brief Insert other_course into courses
