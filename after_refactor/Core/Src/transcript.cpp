@@ -13,20 +13,24 @@ Transcript::Transcript(const Transcript& other)
   if (other.user == nullptr && other.advisor == nullptr && other.semesters == nullptr)
     return;
 
-  user = new Student{*other.user};
-  advisor = new Professor{*other.advisor};
-  semesters = new BST<Semester>{*other.semesters};
+  if (other.user != nullptr)
+    user = new Student{*other.user};
+  if (other.advisor != nullptr)
+    advisor = new Professor{*other.advisor};
+  if (other.semesters != nullptr)
+    semesters = new BST<Semester>{*other.semesters};
   print_date = other.print_date;
 }
 
-Transcript::Transcript(Transcript&& other) {
-  user = other.user;
-  advisor = other.advisor;
-  semesters = other.semesters;
-  print_date = std::move(print_date);
+Transcript::Transcript(Transcript&& other)
+    : user{other.user},
+      advisor{other.advisor},
+      semesters{other.semesters},
+      print_date{std::move(other.print_date)} {
   other.user = nullptr;
   other.advisor = nullptr;
   other.semesters = nullptr;
+  other.print_date = "";
 }
 
 Transcript::~Transcript() {
@@ -57,7 +61,11 @@ void Transcript::change_user(Student* other_user) {
     delete user;
     user = nullptr;
   }
-  user = new Student{*other_user};
+
+  if (other_user == nullptr)
+    user = nullptr;
+  else
+    user = new Student{*other_user};
 }
 
 void Transcript::change_advisor(Professor* other_advisor) {
@@ -65,41 +73,18 @@ void Transcript::change_advisor(Professor* other_advisor) {
     delete advisor;
     advisor = nullptr;
   }
-  advisor = new Professor{*other_advisor};
+
+  if (other_advisor == nullptr)
+    advisor = nullptr;
+  else
+    advisor = new Professor{*other_advisor};
 }
 
-// TODO: need to test it
-void Transcript::change_semesters(BST<Semester>* other_semesters) {
-  try {
-    if (user == nullptr)
-      throw std::invalid_argument("user should not be nullptr!");
-    if (semesters != nullptr) {
-      delete semesters;
-      semesters = nullptr;
-    }
-    if (other_semesters != nullptr)
-      semesters = new BST<Semester>{*other_semesters};
-    user->change_semesters(semesters);
-  } catch (const std::exception& e) {
-    std::cerr << "Exception: " << e.what() << std::endl;
-    std::cerr << "Function: void Transcript::change_semesters(BST<Semester>* other_semesters)"
-              << std::endl;
-    std::cerr << "Parameter: other_semesters = "
-              << (other_semesters == nullptr ? "nullptr"
-                                             : static_cast<const void*>(other_semesters))
-              << std::endl;
-    std::cerr << "Internal variable:  semesters = "
-              << (semesters == nullptr ? "nullptr" : static_cast<const void*>(semesters))
-              << std::endl;
-    std::cerr << "                    user = "
-              << (user == nullptr ? "nullptr" : static_cast<const void*>(user)) << std::endl;
-    throw;
-  }
-}
+void Transcript::change_semesters(BST<Semester>* other_semesters) {}
 
 void Transcript::update_print_date() {
   time_t rawtime;
-  struct tm *timeinfo;
+  struct tm* timeinfo;
   std::string buffer;
   char temp[100];
 

@@ -10,12 +10,13 @@ class Semester {
   private:
     std::string period;
     double tga;
+    double cga;
     int total_num_credits;
     int total_num_courses;
     BST<Course> courses;
 
   public:
-    Semester(std::string period = "", double tga = 0., int total_num_credits = 0,
+    Semester(std::string period = "", double tga = 0., double cga = 0., int total_num_credits = 0,
              int total_num_courses = 0);
 
     /**
@@ -31,6 +32,13 @@ class Semester {
      * @return double
      */
     double get_tga() const;
+
+    /**
+     * @brief Get the cga object
+     *
+     * @return double
+     */
+    double get_cga() const;
 
     /**
      * @brief Get the total number of credits object
@@ -65,6 +73,12 @@ class Semester {
      *
      */
     void calculate_tga();
+
+    /**
+     * @brief Calculate CGA and update cga object
+     * 
+     */
+    void calculate_cga();
 
     /**
      * @brief Update total number of credits

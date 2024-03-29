@@ -2,15 +2,19 @@
 
 #include <iostream>
 
-Semester::Semester(std::string period, double tga, int total_num_credits, int total_num_courses)
+Semester::Semester(std::string period, double tga, double cga, int total_num_credits,
+                   int total_num_courses)
     : period{period},
       tga{tga},
+      cga{cga},
       total_num_credits{total_num_credits},
       total_num_courses{total_num_courses} {}
 
 std::string Semester::get_period() const { return period; }
 
 double Semester::get_tga() const { return tga; }
+
+double Semester::get_cga() const { return cga; }
 
 int Semester::get_total_num_credits() const { return total_num_credits; }
 
@@ -29,6 +33,8 @@ void Semester::calculate_tga() {
   update_total_num_credits();
   tga /= total_num_credits;
 }
+
+void Semester::calculate_cga() {}
 
 void Semester::update_total_num_credits() {
   total_num_credits = 0;
@@ -66,7 +72,7 @@ void Semester::print_test() const {
   std::cout << "the number of courses: " << courses.size() << std::endl;
   for (int i = 1; i <= courses.size(); i++) {
     std::cout << "This is " << i << "th largest node." << std::endl;
-    Course *temp = &(courses.find_kth_largest_node(1)->data);
+    Course* temp = &(courses.find_kth_largest_node(1)->data);
     temp->print_test();
     if (i != courses.size())
       std::cout << std::endl;
