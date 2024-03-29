@@ -39,8 +39,6 @@ void Semester::update_total_num_credits() {
 void Semester::update_total_num_courses() { total_num_courses = courses.size(); }
 
 void Semester::copy_courses(const BST<Course>& other_courses) {
-  while (courses.size() != 0)
-    courses.remove(courses.get_data());
   courses = other_courses;
   update_total_num_courses();
   update_total_num_credits();
