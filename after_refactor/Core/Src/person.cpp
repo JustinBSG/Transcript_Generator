@@ -70,5 +70,29 @@ void Student::remove_minor(const std::string& other_minor_name) {
   minors.remove(minors.find_BSTnode(other_minor_name)->data);
 }
 
-// TODO:
-void Student::print_test() const {}
+void Student::print_test() const {
+  std::cout << "Student class object:" << std::endl;
+  std::cout << "std::string name: " << name << std::endl;
+  std::cout << "std::string admit_date: " << admit_date << std::endl;
+  std::cout << "std::string department: " << department << std::endl;
+  std::cout << "int ust_card_num: " << ust_card_num << std::endl;
+  std::cout << "int year: " << year << std::endl;
+  std::cout << "Status_Program: " << get_status() << std::endl;
+  std::cout << "BST<Major> majors: " << std::endl;
+  std::cout << "the number of majors: " << majors.size() << std::endl;
+  for (int i = 1; i <= majors.size(); i++) {
+    std::cout << "This is " << i << "th largest node." << std::endl;
+    Major* temp = &(majors.find_kth_largest_node(i)->data);
+    temp->print_test();
+    std::cout << std::endl;
+  }
+  std::cout << "BST<Minor> minors: " << std::endl;
+  std::cout << "the number of minors: " << minors.size() << std::endl;
+  for (int i = 1; i <= minors.size(); i++) {
+    std::cout << "This is " << i << "th largest node." << std::endl;
+    Minor* temp = &(minors.find_kth_largest_node(i)->data);
+    temp->print_test();
+    if (i != minors.size())
+      std::cout << std::endl;
+  }
+}
