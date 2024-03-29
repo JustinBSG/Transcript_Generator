@@ -6,13 +6,12 @@
 CGA_semester::CGA_semester(double cga, Semester* represent_semester)
     : cga{cga}, represent_semester{represent_semester} {}
 
-// TODO
 Transcript::Transcript(Student* user, Professor* advisor, BST<Semester>* semesters)
     : user{user}, advisor{advisor}, semesters{semesters} {
+  update_CGAs();
   update_print_date();
 }
 
-// TODO
 Transcript::Transcript(const Transcript& other)
     : user{nullptr}, advisor{nullptr}, semesters{nullptr} {
   if (other.user == nullptr && other.advisor == nullptr && other.semesters == nullptr)
@@ -24,14 +23,15 @@ Transcript::Transcript(const Transcript& other)
     advisor = new Professor{*other.advisor};
   if (other.semesters != nullptr)
     semesters = new BST<Semester>{*other.semesters};
+  update_CGAs();
   print_date = other.print_date;
 }
 
-// TODO
 Transcript::Transcript(Transcript&& other)
     : user{other.user},
       advisor{other.advisor},
       semesters{other.semesters},
+      CGAs{std::move(other.CGAs)},
       print_date{std::move(other.print_date)} {
   other.user = nullptr;
   other.advisor = nullptr;
@@ -60,11 +60,50 @@ Professor* Transcript::get_advisor() const { return advisor; }
 
 BST<Semester>* Transcript::get_semesters() const { return semesters; }
 
-// TODO
-double Transcript::get_CGA(const int& index) const {}
+double Transcript::get_CGA(const int& index) const {
+  try {
+    if (index < 0 || index >= CGAs.size())
+      throw std::invalid_argument("index should be 0 <= index < CGAs.size()!");
 
-// TODO
-std::vector<CGA_semester>& Transcript::get_CGAs() const {}
+    return CGAs[index].cga;
+  } catch (const std::exception& e) {
+    std::cout << "Exception: " << e.what() << std::endl;
+    std::cout << "Function: double Transcript::get_CGA(const int& index) const" << std::endl;
+    std::cout << "Parameter:  index = " << index << std::endl;
+    std::cout << "Internal variable:  CGAs.size() = " << CGAs.size() << std::endl;
+    throw;
+  }
+}
+
+double Transcript::get_CGA(const Semester* const target_semester) const {
+  try {
+    if (target_semester == nullptr)
+      throw std::invalid_argument("target_semester should not be nullptr!");
+
+    if (CGAs.size() == 0)
+      throw std::logic_error("CGAs is empty!");
+
+    for (int i = 0; i < CGAs.size(); i++)
+      if (CGAs[i].represent_semester == target_semester)
+        return CGAs[i].cga;
+    throw std::logic_error("Cannot find that target_semester!");
+  } catch (const std::exception& e) {
+    std::cerr << "Exception: " << e.what() << std::endl;
+    std::cerr << "Function: double Transcript::get_CGA(const Semester* const target_semester) const"
+              << std::endl;
+    std::cerr << "Parameter:  targe_semester = "
+              << (target_semester == nullptr ? "nullptr"
+                                             : static_cast<const void*>(target_semester))
+              << std::endl;
+    std::cerr << "Internal variable:  CGAs.size() = " << CGAs.size() << std::endl;
+    for (int i = 0; i < CGAs.size(); i++)
+      std::cerr << "                    CGAs[" << i
+                << "].represent_semester = " << CGAs[i].represent_semester << std::endl;
+    throw;
+  }
+}
+
+std::vector<CGA_semester>& Transcript::get_CGAs() { return CGAs; }
 
 std::string Transcript::get_print_date() const { return print_date; }
 
@@ -92,11 +131,40 @@ void Transcript::change_advisor(Professor* other_advisor) {
     advisor = new Professor{*other_advisor};
 }
 
-// TODO
-void Transcript::change_semesters(BST<Semester>* other_semesters) {}
+void Transcript::change_semesters(BST<Semester>* other_semesters) {
+  if (semesters != nullptr) {
+    delete semesters;
+    semesters = nullptr;
+  }
 
-// TODO
-void Transcript::update_CGAs() {}
+  if (other_semesters == nullptr)
+    semesters = nullptr;
+  else
+    semesters = new BST<Semester>{*other_semesters};
+  update_CGAs();
+}
+
+void Transcript::update_CGAs() {
+  if (semesters == nullptr)
+    return;
+
+  if (CGAs.size() != 0)
+    CGAs.clear();
+
+  double cga_result = 0.;
+  int credit_result = 0;
+  for (int i = 1; i <= semesters->size(); i++) {
+    Semester* temp_sem = &(semesters->find_kth_smallest_node(i)->data);
+    temp_sem->update_total_num_courses();
+    temp_sem->update_total_num_credits();
+    credit_result += temp_sem->get_total_num_credits();
+    for (int j = 1; j <= temp_sem->get_total_num_courses(); j++) {
+      Course temp_course = temp_sem->get_courses().find_kth_smallest_node(j)->data;
+      cga_result += temp_course.get_grade_num() * temp_course.get_credits();
+    }
+    CGAs.push_back(CGA_semester{cga_result / credit_result, temp_sem});
+  }
+}
 
 void Transcript::update_print_date() {
   time_t rawtime;

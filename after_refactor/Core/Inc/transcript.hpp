@@ -34,7 +34,8 @@ class Transcript {
     Professor* get_advisor() const;
     BST<Semester>* get_semesters() const;
     double get_CGA(const int& index) const;
-    std::vector<CGA_semester>& get_CGAs() const;
+    double get_CGA(const Semester* const target_semester) const;
+    std::vector<CGA_semester>& get_CGAs();
     std::string get_print_date() const;
     void change_user(Student* other_user);
     void change_advisor(Professor* other_advisor);

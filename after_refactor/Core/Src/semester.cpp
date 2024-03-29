@@ -59,14 +59,19 @@ void Semester::remove_course(const Course& other_course) {
   calculate_tga();
 }
 
+// TODO
 bool Semester::operator<(const Semester& other) { return period < other.period; }
 
+// TODO
 bool Semester::operator>(const Semester& other) { return period > other.period; }
 
+// TODO
 bool Semester::operator<=(const Semester& other) { return period <= other.period; }
 
+// TODO
 bool Semester::operator>=(const Semester& other) { return period >= other.period; }
 
+// TODO
 bool Semester::operator==(const Semester& other) { return period == other.period; }
 
 void Semester::print_test() const {
