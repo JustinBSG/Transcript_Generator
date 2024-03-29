@@ -28,21 +28,13 @@ const BST<T>& BST<T>::get_left_subtree() const {
 
 template <typename T>
 typename BST<T>::BSTnode* BST<T>::copy_BSTnode(const BSTnode* other) {
-  try {
-    if (other == nullptr)
-      throw std::invalid_argument("Pointer should not be nullptr!");
+  if (other == nullptr)
+    return nullptr;
 
-    BSTnode* temp = new BSTnode{other->data};
-    temp->left.root = copy_BSTnode(other->left.root);
-    temp->right.root = copy_BSTnode(other->right.root);
-    return temp;
-  } catch (const std::exception& e) {
-    std::cerr << "Exception: " << e.what() << std::endl;
-    std::cerr << "Function: BST<T>::BSTnode* BST<T>::copy_BSTnode()" << std::endl;
-    std::cerr << "Parameter: other = "
-              << (other == nullptr ? "nullptr" : static_cast<const void*>(other)) << std::endl;
-    throw;
-  }
+  BSTnode* temp = new BSTnode{other->data};
+  temp->left.root = copy_BSTnode(other->left.root);
+  temp->right.root = copy_BSTnode(other->right.root);
+  return temp;
 }
 
 template <typename T>
