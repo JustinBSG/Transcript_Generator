@@ -59,20 +59,93 @@ void Semester::remove_course(const Course& other_course) {
   calculate_tga();
 }
 
-// TODO
-bool Semester::operator<(const Semester& other) { return period < other.period; }
+bool Semester::operator<(const Semester& other) {
+  std::vector<std::string> self_seg = separate_string_period();
+  std::vector<std::string> other_seg = other.separate_string_period();
 
-// TODO
-bool Semester::operator>(const Semester& other) { return period > other.period; }
+  if (self_seg.size() < 2 && other_seg.size() < 2)  // "" < ""
+    return false;
 
-// TODO
-bool Semester::operator<=(const Semester& other) { return period <= other.period; }
+  if (self_seg.size() < 2)  // "" < "something something"
+    return true;
+  else if (other_seg.size() < 2)  // "something something" < ""
+    return false;
 
-// TODO
-bool Semester::operator>=(const Semester& other) { return period >= other.period; }
+  if (self_seg[0] < other_seg[0])  // "2023-24" < "2024-25"
+    return true;
+  else if (self_seg[0] == other_seg[0])  // "2023-24" == "2023-24"
+    // Fall < Winter < Spring < Summer
+    return compare_semester_period(self_seg[1]) < compare_semester_period(other_seg[1]);
+  else
+    return false;
+}
 
-// TODO
-bool Semester::operator==(const Semester& other) { return period == other.period; }
+bool Semester::operator>(const Semester& other) {
+  std::vector<std::string> self_seg = separate_string_period();
+  std::vector<std::string> other_seg = other.separate_string_period();
+
+  if (self_seg.size() < 2 && other_seg.size() < 2)  // "" > ""
+    return false;
+
+  if (self_seg.size() < 2)  // "" > "something something"
+    return false;
+  else if (other_seg.size() < 2)  // "something something" > ""
+    return true;
+
+  if (self_seg[0] > other_seg[0])  // "2025-26" > "2024-25"
+    return true;
+  else if (self_seg[0] == other_seg[0])  // "2023-24" == "2023-24"
+    // Fall < Winter < Spring < Summer
+    return compare_semester_period(self_seg[1]) > compare_semester_period(other_seg[1]);
+  else
+    return false;
+}
+
+bool Semester::operator<=(const Semester& other) {
+  std::vector<std::string> self_seg = separate_string_period();
+  std::vector<std::string> other_seg = other.separate_string_period();
+
+  if (self_seg.size() < 2 && other_seg.size() < 2) // "" < ""
+    return false;
+
+  if (self_seg.size() < 2) // "" < "something something"
+    return true;
+  else if (other_seg.size() < 2) // "something something" < ""
+    return false;
+
+  if (self_seg[0] < other_seg[0]) // "2023-24" < "2024-25"
+    return true;
+  else if (self_seg[0] == other_seg[0]) // "2023-24" == "2023-24"
+    // Fall < Winter < Spring < Summer
+    return compare_semester_period(self_seg[1]) <= compare_semester_period(other_seg[1]);
+  else
+    return false;
+}
+
+bool Semester::operator>=(const Semester& other) {
+  std::vector<std::string> self_seg = separate_string_period();
+  std::vector<std::string> other_seg = other.separate_string_period();
+
+  if (self_seg.size() < 2 && other_seg.size() < 2)  // "" > ""
+    return false;
+
+  if (self_seg.size() < 2)  // "" > "something something"
+    return false;
+  else if (other_seg.size() < 2)  // "something something" > ""
+    return true;
+
+  if (self_seg[0] > other_seg[0])  // "2025-26" > "2024-25"
+    return true;
+  else if (self_seg[0] == other_seg[0])  // "2023-24" == "2023-24"
+    // Fall < Winter < Spring < Summer
+    return compare_semester_period(self_seg[1]) >= compare_semester_period(other_seg[1]);
+  else
+    return false;
+}
+
+bool Semester::operator==(const Semester& other) {
+  return period == other.period;
+}
 
 void Semester::print_test() const {
   std::cout << "Semester class object:" << std::endl;
@@ -89,4 +162,39 @@ void Semester::print_test() const {
     if (i != courses.size())
       std::cout << std::endl;
   }
+}
+
+std::vector<std::string> Semester::separate_string_period() const {
+  try {
+    std::vector<std::string> result;
+    std::string temp;
+    std::istringstream iss{period};
+
+    while (std::getline(iss, temp, ' '))
+      result.push_back(temp);
+
+    if (result.size() > 2)
+      throw std::invalid_argument("There are more than 2 segments of string in period!");
+
+    return result;
+  } catch (const std::exception& e) {
+    std::cerr << "Exception: " << e.what() << std::endl;
+    std::cerr << "Function: std::vector<std::string> Semester::separate_string_period() const"
+              << std::endl;
+    std::cerr << "Internal variable: std::string period = " << period << std::endl;
+    throw;
+  }
+}
+
+int Semester::compare_semester_period(const std::string& semester_period) const {
+  if (semester_period == "Fall")
+    return 0;
+  else if (semester_period == "Winter")
+    return 1;
+  else if (semester_period == "Spring")
+    return 2;
+  else if (semester_period == "Summer")
+    return 3;
+  else
+    return -1;
 }

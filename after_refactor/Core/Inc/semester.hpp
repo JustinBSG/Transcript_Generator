@@ -1,7 +1,9 @@
 #ifndef SEMESTER_HPP
 #define SEMESTER_HPP
 
+#include <sstream>
 #include <string>
+#include <vector>
 
 #include "bst.hpp"
 #include "course.hpp"
@@ -110,6 +112,9 @@ class Semester {
      *
      */
     void print_test() const;
+
+    std::vector<std::string> separate_string_period() const;
+    int compare_semester_period(const std::string& semester_period) const;
 };
 
 #endif  // SEMESTER_HPP
