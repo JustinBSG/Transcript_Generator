@@ -20,6 +20,6 @@
   - [ ] person.hpp
   - [ ] transcript.hpp
   - [ ] generator.hpp
-5. [ ] Rebuild the Makefile
+5. [x] Rebuild the Makefile
 6. [ ] Rewrite README.md
 7. [ ] Create testcase for current procedure
