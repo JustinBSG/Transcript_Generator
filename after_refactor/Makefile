@@ -10,7 +10,7 @@ INC_DIR := $(CORE_DIR)/Inc
 SRC_DIR := $(CORE_DIR)/Src
 
 # Source files
-CPP_FILES := $(wildcard $(SRC_DIR)/*.cpp)
+CPP_FILES := $(filter-out $(SRC_DIR)/bst.cpp $(SRC_DIR)/avltree.cpp, $(wildcard $(SRC_DIR)/*.cpp))
 
 # Object files
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(CPP_FILES))

@@ -36,15 +36,15 @@ void Major::change_major_name(const std::string& other_major_name) {
   major_name = other_major_name;
 }
 
-bool Major::operator<(const Major& other) { return Program::operator<(other); }
+bool Major::operator<(const Major& other) { return this->Program::operator<(other); }
 
-bool Major::operator>(const Major& other) { return Program::operator>(other); }
+bool Major::operator>(const Major& other) { return this->Program::operator>(other); }
 
-bool Major::operator<=(const Major& other) { return Program::operator<=(other); }
+bool Major::operator<=(const Major& other) { return this->Program::operator<=(other); }
 
-bool Major::operator>=(const Major& other) { return Program::operator>=(other); }
+bool Major::operator>=(const Major& other) { return this->Program::operator>=(other); }
 
-bool Major::operator==(const Major& other) { return Program::operator==(other); }
+bool Major::operator==(const Major& other) { return this->Program::operator==(other); }
 
 void Major::print_test() const {
   std::cout << "Major class object:" << std::endl;
@@ -62,15 +62,15 @@ void Minor::change_minor_name(const std::string& other_minor_name) {
   minor_name = other_minor_name;
 }
 
-bool Minor::operator<(const Minor& other) { return Program::operator<(other); }
+bool Minor::operator<(const Minor& other) { return this->Program::operator<(other); }
 
-bool Minor::operator>(const Minor& other) { return Program::operator>(other); }
+bool Minor::operator>(const Minor& other) { return this->Program::operator>(other); }
 
-bool Minor::operator<=(const Minor& other) { return Program::operator<=(other); }
+bool Minor::operator<=(const Minor& other) { return this->Program::operator<=(other); }
 
-bool Minor::operator<=(const Minor& other) { return Program::operator>=(other); }
+bool Minor::operator>=(const Minor& other) { return this->Program::operator>=(other); }
 
-bool Minor::operator==(const Minor& other) { return Program::operator==(other); }
+bool Minor::operator==(const Minor& other) { return this->Program::operator==(other); }
 
 void Minor::print_test() const {
   std::cout << "Minor class object:" << std::endl;

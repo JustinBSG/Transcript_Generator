@@ -8,7 +8,7 @@
   - [x] semester.cpp and semester.hpp
   - [x] program.cpp and program.hpp
   - [x] person.cpp and person.hpp
-  - [ ] transcript.cpp and transcript.hpp
+  - [x] transcript.cpp and transcript.hpp
   - [ ] generator.cpp and generator.hpp
 3. [ ] Rewrite messy codes
   - Use AVLTree instead of using BST

@@ -226,7 +226,7 @@ typename BST<T>::BSTnode* BST<T>::find_BSTnode(const T& other) const {
 
   if (root->data == other)
     return root;
-  else if (other < root->data)
+  else if (root->data > other)
     return root->left.find_BSTnode(other);
   else
     return root->right.find_BSTnode(other);
