@@ -202,7 +202,7 @@ typename BST<T>::BSTnode* BST<T>::find_kth_smallest_node(int k) const {
     if (k <= leftSize)
       return root->left.find_kth_smallest_node(k);
     else if (k > leftSize + 1)
-      return root->right.find_kth_largest_node(k - leftSize - 1);
+      return root->right.find_kth_smallest_node(k - leftSize - 1);
     else
       return this->root;
   } catch (const std::exception& e) {

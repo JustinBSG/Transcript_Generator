@@ -210,7 +210,49 @@ void Generator::insert_data(Transcript*& current) {
     temp_student.insert_minor(temp_minor);
   }
 
+  // Input data of advisor
   std::cout << "Next, please input the information about your advisor." << std::endl;
+  std::cout << "Please input the name of your advisor(e.g. CHAN Da Man): ";
+  std::string advisor_name;
+  getline(std::cin, advisor_name);
+  Professor temp_advisor{advisor_name, "NA", temp_student.get_department()};
+
+  // Input data of semester
+  BST<Semester> temp_semesters;
+  auto_input_period_semesters(temp_semesters, temp_student.get_year(),
+                              temp_student.get_admit_date());
+  std::cout << "After that, please input the information of each semester." << std::endl;
+  if (temp_semesters.size() != 0) {
+    for (int i = 1; i <= temp_student.get_year() * 4; i++) {
+      Semester* temp_semester = &(temp_semesters.find_kth_smallest_node(i)->data);
+      std::cout << "Please input the course code of one course that you have enrolled in "
+                << temp_semester->get_period()
+                << "(you can type NA if there is no remaining course left): ";
+      std::string temp_course_code;
+      getline(std::cin, temp_course_code);
+      if (temp_course_code == "NA")
+        continue;
+      std::cout << "Please input the course title of this course: ";
+      std::string temp_course_title;
+      getline(std::cin, temp_course_title);
+      std::cout << "Please input the number of credits of this course: ";
+      int temp_course_num_credit;
+      std::cin >> temp_course_num_credit;
+      std::cin.ignore();
+      std::cout << "Please input the grade that you got in this course: ";
+      std::string temp_course_grade;
+      getline(std::cin, temp_course_grade);
+
+      Course temp_course{temp_course_code, temp_course_title, temp_course_grade,
+                         temp_course_num_credit};
+      temp_semester->insert_course(temp_course);
+      std::cout << std::endl;
+    }
+  }
+  current = new Transcript{};
+  current->change_user(&temp_student);
+  current->change_advisor(&temp_advisor);
+  current->change_semesters(&temp_semesters);
 }
 
 void Generator::read_csv(Transcript*& current) {}
@@ -228,3 +270,38 @@ void Generator::restart(Transcript*& current) {}
 void Generator::switch_transcript(Transcript*& current) {}
 
 void Generator::end(Transcript*& current) {}
+
+void Generator::auto_input_period_semesters(BST<Semester>& semesters, int num_year,
+                                            std::string admit_date) {
+  std::vector<std::string> result;
+  std::string temp;
+  std::istringstream iss{admit_date};
+  while (getline(iss, temp, ' '))
+    result.push_back(temp);
+  int year = stoi(result[2]);
+  for (int i = 0; i < num_year * 4; i++) {
+    std::string temp_period;
+    if (i > 3 && i % 4 == 0)
+      year++;
+    temp_period += std::to_string(year);
+    temp_period += "-";
+    temp_period += std::to_string(year % 1000 % 100 + 1);
+    temp_period += " ";
+    switch (i % 4) {
+      case 0:
+        temp_period += "Fall";
+        break;
+      case 1:
+        temp_period += "Winter";
+        break;
+      case 2:
+        temp_period += "Spring";
+        break;
+      case 3:
+        temp_period += "Summer";
+        break;
+    }
+    Semester temp_semester{temp_period};
+    semesters.insert(temp_semester);
+  }
+}
