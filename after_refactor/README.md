@@ -22,4 +22,4 @@
   - [ ] generator.hpp
 5. [x] Rebuild the Makefile
 6. [ ] Rewrite README.md
-7. [ ] Create testcase for current procedure
+7. [x] Create testcase for current procedure

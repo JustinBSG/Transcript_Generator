@@ -48,7 +48,9 @@ void Generator::start() {
         std::cout << std::endl;
         break;
       case 2:
-        std::cout << option << std::endl;
+        std::cout << std::endl;
+        read_csv(current);
+        std::cout << std::endl;
         break;
       case 3:
         std::cout << std::endl;
@@ -283,9 +285,64 @@ void Generator::insert_data(Transcript*& current) {
   current->change_semesters(&temp_semesters);
 }
 
-void Generator::read_csv(Transcript*& current) {}
+void Generator::read_csv(Transcript*& current) {
+  if (current != nullptr) {
+    std::cout << "Please save the current transcript and make a new transcript before inserting "
+                 "data from CSV file."
+              << std::endl;
+    return;
+  }
+
+  std::cout << "Please input the file path of the CSV file: ";
+  std::string file_path;
+  getline(std::cin, file_path);
+  std::ifstream csv_file{file_path};
+  while (!csv_file.is_open()) {
+    std::cout << "Failed to open CSV file." << std::endl;
+    return;
+  }
+
+  std::vector<std::vector<std::string>> data;
+  std::string line;
+  while (getline(csv_file, line)) {
+    std::istringstream each_line{line};
+    std::vector<std::string> fields;
+    std::string field;
+    while (getline(each_line, field, ',')) 
+      fields.push_back(field);
+    data.push_back(fields);
+  }
+  csv_file.close();
+
+  Student* temp_student = new Student;
+  Professor* temp_advisor = new Professor;
+  BST<Semester>* temp_semester = new BST<Semester>;
+  current = new Transcript{temp_student, temp_advisor, temp_semester};
+
+  for (int i = 0; i < data.size(); i++)
+    if (data[i][0] == "transcript") {
+
+    } else if (data[i][0] == "student") {
+
+    } else if (data[i][0] == "advisor") {
+
+    } else if (data[i][0] == "major") {
+
+    } else if (data[i][0] == "minor") {
+
+    } else if (data[i][0] == "course") {
+
+    }else if (data[i][0] == "semester") {
+
+    }
+}
 
 void Generator::generate_csv(Transcript*& current) {
+  if (current == nullptr) {
+    std::cout << "Please input data to current transcript first before generating CSV file."
+              << std::endl;
+    return;
+  }
   if (current == nullptr) {
     std::cout << "Please input data to current transcript first before generating CSV file."
               << std::endl;
@@ -332,7 +389,7 @@ void Generator::generate_csv(Transcript*& current) {
   // input data of major
   for (int i = 0; i < temp_student->get_majors().size(); i++) {
     std::vector<std::string> vector_major;
-    Major* temp_major = &(temp_student->get_majors().find_kth_smallest_node(i+1)->data);
+    Major* temp_major = &(temp_student->get_majors().find_kth_smallest_node(i + 1)->data);
     vector_major.push_back("major");
     vector_major.push_back(temp_major->get_program_name());
     vector_major.push_back(temp_major->get_change_date());
@@ -340,10 +397,10 @@ void Generator::generate_csv(Transcript*& current) {
     data.push_back(vector_major);
   }
 
-  // input data of minor 
+  // input data of minor
   for (int i = 0; i < temp_student->get_minors().size(); i++) {
     std::vector<std::string> vector_minor;
-    Minor* temp_minor = &(temp_student->get_minors().find_kth_smallest_node(i+1)->data);
+    Minor* temp_minor = &(temp_student->get_minors().find_kth_smallest_node(i + 1)->data);
     vector_minor.push_back("minor");
     vector_minor.push_back(temp_minor->get_program_name());
     vector_minor.push_back(temp_minor->get_change_date());
@@ -361,7 +418,7 @@ void Generator::generate_csv(Transcript*& current) {
 
   // input data of semesters
   for (int i = 0; i < current->get_semesters()->size(); i++) {
-    Semester* temp_semester = &(current->get_semesters()->find_kth_smallest_node(i+1)->data);
+    Semester* temp_semester = &(current->get_semesters()->find_kth_smallest_node(i + 1)->data);
     std::vector<std::string> vector_semester;
     vector_semester.push_back("semester");
     vector_semester.push_back(temp_semester->get_period());
@@ -369,7 +426,7 @@ void Generator::generate_csv(Transcript*& current) {
 
     // input data of courses in this semester
     for (int i = 0; i < temp_semester->get_courses().size(); i++) {
-      Course* temp_course = &(temp_semester->get_courses().find_kth_smallest_node(i+1)->data);
+      Course* temp_course = &(temp_semester->get_courses().find_kth_smallest_node(i + 1)->data);
       std::vector<std::string> vector_course;
       vector_course.push_back("course");
       vector_course.push_back(temp_course->get_code());
@@ -386,7 +443,7 @@ void Generator::generate_csv(Transcript*& current) {
       output_file << field << ',';
     output_file << "\n";
   }
-  
+
   output_file.close();
   std::cout << "Generated~" << std::endl;
 }
