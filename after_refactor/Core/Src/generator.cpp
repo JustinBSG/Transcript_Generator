@@ -122,21 +122,23 @@ void Generator::insert_data(Transcript*& current) {
     return;
   }
 
+  // Input data of user
   std::cout << "First, please input the information about you." << std::endl;
-  std::cout << "Please input your full name: ";
+  std::cout << "Please input your full name(e.g. CHAN Da Man): ";
   std::string student_name;
   getline(std::cin, student_name);
   std::cout << "Please input your admit date(e.g. 1 September 2020): ";
   std::string student_admit_date;
   getline(std::cin, student_admit_date);
   std::cout << "Please input which department that you belong to(e.g. CSE)" << std::endl;
-  std::cout << "If you haven't had a major yet, please input the school that you belongs to(e.g. SENG): ";
+  std::cout
+    << "If you haven't had a major yet, please input the school that you belongs to(e.g. SENG): ";
   std::string student_department;
   getline(std::cin, student_department);
-  std::cout << "Please input your student ID card number: ";
+  std::cout << "Please input your student ID card number(e.g. 12345678): ";
   int student_id;
   std::cin >> student_id;
-  std::cout << "Please input your years of study: ";
+  std::cout << "Please input your years of study(e.g. 3): ";
   int student_year;
   std::cin >> student_year;
   std::cout << "Please choose your status of study:" << std::endl;
@@ -151,8 +153,64 @@ void Generator::insert_data(Transcript*& current) {
     std::cin >> student_status;
   }
   std::cin.ignore();
-  Student* temp_student;
-  temp_student = new Student{student_name, student_admit_date, student_department, student_id, student_year, static_cast<Status_Program>(student_status)};
+  Student temp_student{student_name,       student_admit_date,
+                       student_department, student_id,
+                       student_year,       static_cast<Status_Program>(student_status)};
+
+  // Input data of Major and Minor
+  std::cout << "Then, please input the information about your academic program." << std::endl;
+  std::cout << "Please input the information about your first major program." << std::endl;
+  std::cout
+    << "Please input the name of first program(e.g. Bachelor Degree in School of Engineering): ";
+  std::string first_program_name;
+  getline(std::cin, first_program_name);
+  std::cout << "Please input the name of major(e.g. Computer Science)(if you haven't had major "
+               "yet, please input NA): ";
+  std::string first_major_name;
+  getline(std::cin, first_major_name);
+  Major first_major{first_program_name, "NA", first_major_name};
+  while (1) {
+    std::cout << "Do you still have another Major Program?(yes/no): ";
+    std::string input_choice;
+    getline(std::cin, input_choice);
+    while (input_choice != "yes" && input_choice != "no") {
+      std::cout << "Please valid choice(yes/no): ";
+      getline(std::cin, input_choice);
+    }
+    if (input_choice == "no")
+      break;
+    std::cout << "Please input the name of program(e.g. Bachelor Degree of Engineering): ";
+    std::string temp_program_name;
+    std::cout << "Please input the name of Major Program(e.g. Computer Science): ";
+    std::string temp_major_name;
+    getline(std::cin, temp_major_name);
+    std::cout << "Please input the semester that you change program(e.g. 2022-23 Fall): ";
+    std::string temp_change_date;
+    getline(std::cin, temp_change_date);
+    Major temp_major{temp_program_name, temp_change_date, temp_major_name};
+    temp_student.insert_major(temp_major);
+  }
+  while (1) {
+    std::cout << "Do you declare any Minor Program?(yes/no): ";
+    std::string input_choice;
+    while (input_choice != "yes" && input_choice != "no") {
+      std::cout << "Please valid choice(yes/no): ";
+      getline(std::cin, input_choice);
+    }
+    if (input_choice == "no")
+      break;
+    std::cout << "Please the name of Minor Program(e.g. Smart City): ";
+    std::string temp_minor_name;
+    getline(std::cin, temp_minor_name);
+    std::cout
+      << "Please input the semester that you declare this Minor program(e.g. 2022-23 Fall): ";
+    std::string temp_change_period;
+    getline(std::cin, temp_change_period);
+    Minor temp_minor{"NA", temp_change_period, temp_minor_name};
+    temp_student.insert_minor(temp_minor);
+  }
+
+  std::cout << "Next, please input the information about your advisor." << std::endl;
 }
 
 void Generator::read_csv(Transcript*& current) {}
