@@ -174,7 +174,7 @@ void Transcript::update_print_date() {
   time(&rawtime);
   timeinfo = localtime(&rawtime);
 
-  strftime(temp, 100, "%d %B %Y\n", timeinfo);
+  strftime(temp, 100, "%d_%B_%Y_", timeinfo);
   buffer.append(temp);
   strftime(temp, 100, "%X", timeinfo);
   buffer.append(temp);

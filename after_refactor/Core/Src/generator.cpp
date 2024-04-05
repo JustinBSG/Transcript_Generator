@@ -20,7 +20,7 @@ void Generator::start() {
     std::cout << "Here are 8 operations that you can choose:" << std::endl;
     std::cout << "1.\tInput data by yourself" << std::endl;
     std::cout << "2.\tInput data from CSV file" << std::endl;
-    std::cout << "3.\tGenerate CSV file" << std::endl;
+    std::cout << "3.\tGenerate CSV file by using current transcript" << std::endl;
     std::cout << "4.\tModify data that inside CSV file" << std::endl;
     std::cout << "5.\tGenerate transcript into terminal" << std::endl;
     std::cout << "6.\tSave the current transcript" << std::endl;
@@ -46,7 +46,9 @@ void Generator::start() {
         std::cout << option << std::endl;
         break;
       case 3:
-        std::cout << option << std::endl;
+        std::cout << std::endl;
+        generate_csv(current);
+        std::cout << std::endl;
         break;
       case 4:
         std::cout << option << std::endl;
@@ -278,7 +280,16 @@ void Generator::insert_data(Transcript*& current) {
 
 void Generator::read_csv(Transcript*& current) {}
 
-void Generator::generate_csv(Transcript*& current) {}
+void Generator::generate_csv(Transcript*& current) {
+  if (current == nullptr) {
+    std::cout << "Please input data to current transcript first before generating CSV file."
+              << std::endl;
+    return;
+  }
+
+  
+  std::cout << "Generated~" << std::endl;
+}
 
 void Generator::modify_csv(Transcript*& current) {}
 
