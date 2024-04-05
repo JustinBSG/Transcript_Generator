@@ -11,6 +11,14 @@ class Course {
     int credits;
 
   public:
+    /**
+     * @brief Construct a new Course object
+     * 
+     * @param code 
+     * @param title 
+     * @param grade 
+     * @param credits 
+     */
     Course(std::string code = "", std::string title = "", std::string grade = "F", int credits = 0);
 
     /**
@@ -76,10 +84,49 @@ class Course {
      */
     void change_credits(const int& other_credits);
     
+    /**
+     * @brief Comparing by using std::string code
+     * 
+     * @param other 
+     * @return true 
+     * @return false 
+     */
     bool operator<(const Course& other);
+
+    /**
+     * @brief Comparing by using std::string code
+     * 
+     * @param other 
+     * @return true 
+     * @return false 
+     */
     bool operator>(const Course& other);
+
+    /**
+     * @brief Comparing by using std::string code
+     * 
+     * @param other 
+     * @return true 
+     * @return false 
+     */
     bool operator<=(const Course& other);
+
+    /**
+     * @brief Comparing by using std::string code
+     * 
+     * @param other 
+     * @return true 
+     * @return false 
+     */
     bool operator>=(const Course& other);
+
+    /**
+     * @brief Comparing by using std::string code
+     * 
+     * @param other 
+     * @return true 
+     * @return false 
+     */
     bool operator==(const Course& other);
 
     /**

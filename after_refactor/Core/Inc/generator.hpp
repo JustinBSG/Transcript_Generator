@@ -18,7 +18,16 @@ class Generator {
     std::vector<Transcript*> transcripts;
 
   public:
+    /**
+     * @brief Construct a new Generator object, default constructor
+     * 
+     */
     Generator() = default;
+
+    /**
+     * @brief Destroy the Generator object
+     * 
+     */
     ~Generator();
 
     void start();

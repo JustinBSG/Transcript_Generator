@@ -52,15 +52,30 @@ class BST {
     BSTnode* copy_BSTnode(const BSTnode* other);
 
   public:
+    /**
+     * @brief Construct a new BST object
+     * 
+     */
     BST();
     
-    // copy constructor
+    /**
+     * @brief Construct a new BST object, copy constructor
+     * 
+     * @param other 
+     */
     BST(const BST& other);
     
-    // move constructor
+    /**
+     * @brief Construct a new BST object, move constructor
+     * 
+     * @param other 
+     */
     BST(BST&& other);
 
-    // destructor
+    /**
+     * @brief Destroy the BST object
+     * 
+     */
     ~BST();
 
     /**
@@ -171,10 +186,20 @@ class BST {
      */
     void remove(const T& other);
 
-    // copy operator
+    /**
+     * @brief copy operator
+     * 
+     * @param other 
+     * @return BST<T>& 
+     */
     BST<T>& operator=(const BST<T>& other);
 
-    // move operator
+    /**
+     * @brief move operator
+     * 
+     * @param other 
+     * @return BST<T>& 
+     */
     BST<T>& operator=(BST<T>&& other);
 };
 

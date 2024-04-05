@@ -17,6 +17,14 @@ class Semester {
     BST<Course> courses;
 
   public:
+    /**
+     * @brief Construct a new Semester object, default constructor
+     * 
+     * @param period 
+     * @param tga 
+     * @param total_num_credits 
+     * @param total_num_courses 
+     */
     Semester(std::string period = "", double tga = 0., int total_num_credits = 0,
              int total_num_courses = 0);
 
@@ -101,10 +109,49 @@ class Semester {
      */
     void remove_course(const Course& other_course);
 
+    /**
+     * @brief Comparing by using std::string period
+     * 
+     * @param other 
+     * @return true 
+     * @return false 
+     */
     bool operator<(const Semester& other);
+
+    /**
+     * @brief Comparing by using std::string period
+     * 
+     * @param other 
+     * @return true 
+     * @return false 
+     */
     bool operator>(const Semester& other);
+    
+    /**
+     * @brief Comparing by using std::string period
+     * 
+     * @param other 
+     * @return true 
+     * @return false 
+     */
     bool operator<=(const Semester& other);
+    
+    /**
+     * @brief Comparing by using std::string period
+     * 
+     * @param other 
+     * @return true 
+     * @return false 
+     */
     bool operator>=(const Semester& other);
+    
+    /**
+     * @brief Comparing by using std::string period
+     * 
+     * @param other 
+     * @return true 
+     * @return false 
+     */
     bool operator==(const Semester& other);
 
     /**
