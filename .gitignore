@@ -4,5 +4,6 @@ testcase
 old_version
 make
 
+*.csv
 *.exe
 *.o
