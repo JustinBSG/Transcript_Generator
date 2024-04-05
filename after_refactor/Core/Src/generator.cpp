@@ -1,7 +1,12 @@
 #include "../Inc/generator.hpp"
 
+#include <filesystem>
+#include <fstream>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
+
+namespace fs = std::__fs::filesystem;
 
 Generator::~Generator() {
   for (Transcript* ptr : transcripts)
@@ -286,8 +291,103 @@ void Generator::generate_csv(Transcript*& current) {
               << std::endl;
     return;
   }
+  std::string file_path = "Output/output";
+  std::string format = "output";
+  int count = 0;
+  for (const auto& entry : fs::directory_iterator("Output")) {
+    if (fs::is_regular_file(entry) &&
+        entry.path().filename().string().find(format) != std::string::npos) {
+      count++;
+    }
+  }
+  file_path += std::to_string(count);
+  file_path += ".csv";
 
+  std::ofstream output_file{file_path};
+  if (!output_file.is_open()) {
+    std::cout << "Failed to open output file." << std::endl;
+    std::cout << output_file.rdstate() << std::endl;
+    return;
+  }
+
+  std::vector<std::vector<std::string>> data;
+  // input data of transcript
+  std::vector<std::string> vector_transcript;
+  vector_transcript.push_back("transcript");
+  vector_transcript.push_back(current->get_print_date());
+  data.push_back(vector_transcript);
+
+  // input data of student
+  std::vector<std::string> vector_student;
+  Student* temp_student = current->get_user();
+  vector_student.push_back("student");
+  vector_student.push_back(temp_student->get_name());
+  vector_student.push_back(temp_student->get_admit_date());
+  vector_student.push_back(temp_student->get_department());
+  vector_student.push_back(std::to_string(temp_student->get_ust_card_num()));
+  vector_student.push_back(std::to_string(temp_student->get_year()));
+  vector_student.push_back(temp_student->get_status());
+  data.push_back(vector_student);
+
+  // input data of major
+  for (int i = 0; i < temp_student->get_majors().size(); i++) {
+    std::vector<std::string> vector_major;
+    Major* temp_major = &(temp_student->get_majors().find_kth_smallest_node(i+1)->data);
+    vector_major.push_back("major");
+    vector_major.push_back(temp_major->get_program_name());
+    vector_major.push_back(temp_major->get_change_date());
+    vector_major.push_back(temp_major->get_major_name());
+    data.push_back(vector_major);
+  }
+
+  // input data of minor 
+  for (int i = 0; i < temp_student->get_minors().size(); i++) {
+    std::vector<std::string> vector_minor;
+    Minor* temp_minor = &(temp_student->get_minors().find_kth_smallest_node(i+1)->data);
+    vector_minor.push_back("minor");
+    vector_minor.push_back(temp_minor->get_program_name());
+    vector_minor.push_back(temp_minor->get_change_date());
+    vector_minor.push_back(temp_minor->get_minor_name());
+    data.push_back(vector_minor);
+  }
+
+  // input data of advisor
+  std::vector<std::string> vector_advisor;
+  Professor* temp_advisor = current->get_advisor();
+  vector_advisor.push_back("advisor");
+  vector_advisor.push_back(temp_advisor->get_name());
+  vector_advisor.push_back(temp_advisor->get_department());
+  data.push_back(vector_advisor);
+
+  // input data of semesters
+  for (int i = 0; i < current->get_semesters()->size(); i++) {
+    Semester* temp_semester = &(current->get_semesters()->find_kth_smallest_node(i+1)->data);
+    std::vector<std::string> vector_semester;
+    vector_semester.push_back("semester");
+    vector_semester.push_back(temp_semester->get_period());
+    data.push_back(vector_semester);
+
+    // input data of courses in this semester
+    for (int i = 0; i < temp_semester->get_courses().size(); i++) {
+      Course* temp_course = &(temp_semester->get_courses().find_kth_smallest_node(i+1)->data);
+      std::vector<std::string> vector_course;
+      vector_course.push_back("course");
+      vector_course.push_back(temp_course->get_code());
+      vector_course.push_back(temp_course->get_title());
+      vector_course.push_back(temp_course->get_grade_str());
+      vector_course.push_back(std::to_string(temp_course->get_credits()));
+      data.push_back(vector_course);
+    }
+  }
+
+  // write data into the CSV file
+  for (const std::vector<std::string>& row : data) {
+    for (const std::string& field : row)
+      output_file << field << ',';
+    output_file << "\n";
+  }
   
+  output_file.close();
   std::cout << "Generated~" << std::endl;
 }
 
