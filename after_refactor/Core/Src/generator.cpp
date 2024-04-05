@@ -74,7 +74,8 @@ void Generator::start() {
         std::cout << std::endl << SPLIT_LINE << std::endl;
         return;
       case 10:
-        std::cout << option << std::endl;
+        std::cout << std::endl;
+        print_test(current);
         break;
     }
   }
@@ -293,7 +294,7 @@ void Generator::save_transcript(Transcript*& current) {
   transcripts.push_back(current);
 }
 
-void Generator::restart(Transcript*& current) { 
+void Generator::restart(Transcript*& current) {
   if (current != nullptr && !contain(current)) {
     std::cout << "Make sure you have saved the current transcript first before switching to "
                  "another transcript."
@@ -301,7 +302,7 @@ void Generator::restart(Transcript*& current) {
     return;
   }
 
-  current = nullptr; 
+  current = nullptr;
 }
 
 void Generator::switch_transcript(Transcript*& current) {
@@ -414,4 +415,19 @@ bool Generator::contain(Transcript* current) {
   std::vector<Transcript*>::iterator check_saved =
     std::find(transcripts.begin(), transcripts.end(), current);
   return (check_saved != transcripts.end());
+}
+
+void Generator::print_test(const Transcript* const current) const {
+  std::cout << "Generator class object:" << std::endl;
+  if (current != nullptr) {
+    current->print_test();
+    std::cout << std::endl;
+  } else
+    std::cout << "Transcript* current: nullptr" << std::endl;
+  std::cout << "There " << (transcripts.size() == 1 ? "is " : "are ") << transcripts.size() << " "
+            << (transcripts.size() == 1 ? "transcript" : "transcripts") << "." << std::endl;
+  for (int i = 0; i < transcripts.size(); i++) {
+    transcripts[i]->print_test();
+    std::cout << std::endl;
+  }
 }
