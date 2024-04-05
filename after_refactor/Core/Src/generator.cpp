@@ -1,6 +1,7 @@
 #include "../Inc/generator.hpp"
 
 #include <iostream>
+#include <stdexcept>
 
 Generator::~Generator() {
   for (Transcript* ptr : transcripts)
@@ -58,7 +59,7 @@ void Generator::start() {
         break;
       case 8:
         std::cout << option << std::endl;
-        break;
+        return;
       case 9:
         std::cout << option << std::endl;
         break;
@@ -269,7 +270,44 @@ void Generator::restart(Transcript*& current) {}
 
 void Generator::switch_transcript(Transcript*& current) {}
 
-void Generator::end(Transcript*& current) {}
+void Generator::end(Transcript*& current) {
+  std::cout << "BYE~" << std::endl << SPLIT_LINE << std::endl;
+
+  /**
+   * x Case 1: current == nullptr && transcript is empty
+   * x Case 2: current == nullptr && transcript is not empty
+   * x Case 3: current != nullptr && transcript is empty
+   * x Case 4: current != nullptr && transcript is not empty && transcript does not contain current
+   * x Case 5: current != nullptr && transcript is not empty && transcript contains current
+   * 
+   */
+
+  bool current_exist = false;
+  if (current != nullptr) {
+    delete current;
+    current_exist = true;
+    if (transcripts.size() == 0)
+      return;
+  }
+
+  while (transcripts.size() != 0) {
+    if (current_exist && transcripts[0] == current)
+      transcripts.erase(transcripts.begin());
+    else 
+      remove_transcript(0);
+  }
+}
+
+void Generator::remove_transcript(int index) {
+  if (transcripts.size() >= index) {
+    std::cout << "Index = " << index << " is not found." << std::endl;
+    return;
+  }
+
+  delete transcripts[index];
+  transcripts[index] = nullptr;
+  transcripts.erase(transcripts.begin() + index);
+}
 
 void Generator::auto_input_period_semesters(BST<Semester>& semesters, int num_year,
                                             std::string admit_date) {
