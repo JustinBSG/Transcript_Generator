@@ -27,12 +27,13 @@ void Generator::start() {
     std::cout << "7.\tMake a new transcript" << std::endl;
     std::cout << "8.\tSwitch to another transcript" << std::endl;
     std::cout << "9.\tLeave" << std::endl;
-    std::cout << "Which operation that you want to choose(1-8): ";
+    std::cout << "Which operation that you want to choose(1-9): ";
     std::cin >> option;
     while (option > 11 || option < 1) {
       std::cout << "Please input valid choice(1-8): ";
       std::cin >> option;
     }
+    std::cin.ignore();
     std::cout << std::endl << SPLIT_LINE << std::endl;
 
     switch (option) {
@@ -76,6 +77,7 @@ void Generator::start() {
       case 10:
         std::cout << std::endl;
         print_test(current);
+        std::cout << std::endl;
         break;
     }
   }
@@ -133,7 +135,8 @@ void Generator::insert_data(Transcript*& current) {
    */
 
   if (current != nullptr) {
-    std::cout << "You should save the current transcript first before inputting data." << std::endl;
+    std::cout << "You should switch to the another transcript first before inputting data."
+              << std::endl;
     return;
   }
 
@@ -196,6 +199,7 @@ void Generator::insert_data(Transcript*& current) {
       break;
     std::cout << "Please input the name of program(e.g. Bachelor Degree of Engineering): ";
     std::string temp_program_name;
+    getline(std::cin, temp_program_name);
     std::cout << "Please input the name of Major Program(e.g. Computer Science): ";
     std::string temp_major_name;
     getline(std::cin, temp_major_name);
@@ -208,6 +212,7 @@ void Generator::insert_data(Transcript*& current) {
   while (1) {
     std::cout << "Do you declare any Minor Program?(yes/no): ";
     std::string input_choice;
+    getline(std::cin, input_choice);
     while (input_choice != "yes" && input_choice != "no") {
       std::cout << "Please valid choice(yes/no): ";
       getline(std::cin, input_choice);
@@ -248,6 +253,7 @@ void Generator::insert_data(Transcript*& current) {
       getline(std::cin, temp_course_code);
       if (temp_course_code == "NA")
         continue;
+      i--;
       std::cout << "Please input the course title of this course: ";
       std::string temp_course_title;
       getline(std::cin, temp_course_title);
@@ -302,6 +308,7 @@ void Generator::restart(Transcript*& current) {
     return;
   }
 
+  std::cout << "Made~" << std::endl;
   current = nullptr;
 }
 
@@ -335,6 +342,7 @@ void Generator::switch_transcript(Transcript*& current) {
   }
   std::cin.ignore();
   current = transcripts[index];
+  std::cout << std::endl;
 }
 
 void Generator::end(Transcript*& current) {
@@ -366,7 +374,7 @@ void Generator::end(Transcript*& current) {
 }
 
 void Generator::remove_transcript(int index) {
-  if (transcripts.size() >= index) {
+  if (index >= transcripts.size() || index < 0) {
     std::cout << "Index = " << index << " is not found." << std::endl;
     return;
   }
@@ -428,6 +436,7 @@ void Generator::print_test(const Transcript* const current) const {
             << (transcripts.size() == 1 ? "transcript" : "transcripts") << "." << std::endl;
   for (int i = 0; i < transcripts.size(); i++) {
     transcripts[i]->print_test();
-    std::cout << std::endl;
+    if (i != transcripts.size() - 1)
+      std::cout << std::endl;
   }
 }
