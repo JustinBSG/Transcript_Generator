@@ -34,6 +34,7 @@ class Generator {
     void remove_transcript(int index);
 
     void auto_input_period_semesters(BST<Semester>& semesters, int num_year, std::string admit_date);
+    bool contain(Transcript* current);
 };
 
 #endif  // GENERATOR_HPP

@@ -15,21 +15,21 @@ void Generator::start() {
   Transcript* current = nullptr;
 
   while (1) {
-    std::cout << SPLIT_LINE << std::endl;
+    std::cout << SPLIT_LINE << std::endl << std::endl;
     int option;
-    std::cout << std::endl;
     std::cout << "Here are 8 operations that you can choose:" << std::endl;
     std::cout << "1.\tInput data by yourself" << std::endl;
     std::cout << "2.\tInput data from CSV file" << std::endl;
     std::cout << "3.\tGenerate CSV file" << std::endl;
     std::cout << "4.\tModify data that inside CSV file" << std::endl;
     std::cout << "5.\tGenerate transcript into terminal" << std::endl;
-    std::cout << "6.\tSave and make a new transcript" << std::endl;
-    std::cout << "7.\tSave and switch to another transcript" << std::endl;
-    std::cout << "8.\tLeave" << std::endl;
+    std::cout << "6.\tSave the current transcript" << std::endl;
+    std::cout << "7.\tMake a new transcript" << std::endl;
+    std::cout << "8.\tSwitch to another transcript" << std::endl;
+    std::cout << "9.\tLeave" << std::endl;
     std::cout << "Which operation that you want to choose(1-8): ";
     std::cin >> option;
-    while (option > 10 || option < 1) {
+    while (option > 11 || option < 1) {
       std::cout << "Please input valid choice(1-8): ";
       std::cin >> option;
     }
@@ -37,7 +37,9 @@ void Generator::start() {
 
     switch (option) {
       case 1:
-        std::cout << option << std::endl;
+        std::cout << std::endl;
+        insert_data(current);
+        std::cout << std::endl;
         break;
       case 2:
         std::cout << option << std::endl;
@@ -52,15 +54,26 @@ void Generator::start() {
         std::cout << option << std::endl;
         break;
       case 6:
-        std::cout << option << std::endl;
+        std::cout << std::endl;
+        save_transcript(current);
+        std::cout << std::endl;
         break;
       case 7:
-        std::cout << option << std::endl;
+        std::cout << std::endl;
+        restart(current);
+        std::cout << std::endl;
         break;
       case 8:
-        std::cout << option << std::endl;
-        return;
+        std::cout << std::endl;
+        switch_transcript(current);
+        std::cout << std::endl;
+        break;
       case 9:
+        std::cout << std::endl;
+        end(current);
+        std::cout << std::endl << SPLIT_LINE << std::endl;
+        return;
+      case 10:
         std::cout << option << std::endl;
         break;
     }
@@ -225,6 +238,7 @@ void Generator::insert_data(Transcript*& current) {
   std::cout << "After that, please input the information of each semester." << std::endl;
   if (temp_semesters.size() != 0) {
     for (int i = 1; i <= temp_student.get_year() * 4; i++) {
+      std::cout << std::endl;
       Semester* temp_semester = &(temp_semesters.find_kth_smallest_node(i)->data);
       std::cout << "Please input the course code of one course that you have enrolled in "
                 << temp_semester->get_period()
@@ -247,7 +261,6 @@ void Generator::insert_data(Transcript*& current) {
       Course temp_course{temp_course_code, temp_course_title, temp_course_grade,
                          temp_course_num_credit};
       temp_semester->insert_course(temp_course);
-      std::cout << std::endl;
     }
   }
   current = new Transcript{};
@@ -264,14 +277,67 @@ void Generator::modify_csv(Transcript*& current) {}
 
 void Generator::print_terminal(Transcript*& current) {}
 
-void Generator::save_transcript(Transcript*& current) {}
+void Generator::save_transcript(Transcript*& current) {
+  if (current == nullptr) {
+    std::cout << "Make sure you have created a new transcript and input data into the system."
+              << std::endl;
+    return;
+  }
 
-void Generator::restart(Transcript*& current) {}
+  std::cout << "Saved~" << std::endl;
+  for (int i = 0; i < transcripts.size(); i++) {
+    if (transcripts[i] == current)
+      return;
+  }
 
-void Generator::switch_transcript(Transcript*& current) {}
+  transcripts.push_back(current);
+}
+
+void Generator::restart(Transcript*& current) { 
+  if (current != nullptr && !contain(current)) {
+    std::cout << "Make sure you have saved the current transcript first before switching to "
+                 "another transcript."
+              << std::endl;
+    return;
+  }
+
+  current = nullptr; 
+}
+
+void Generator::switch_transcript(Transcript*& current) {
+  if (transcripts.size() == 0) {
+    std::cout << "There is no saved transcript." << std::endl;
+    std::cout << "Make sure you have created and saved a new transcript before switching to "
+                 "another transcript."
+              << std::endl;
+    return;
+  }
+
+  if (current != nullptr && !contain(current)) {
+    std::cout << "Make sure you have saved the current transcript first before switching to "
+                 "another transcript."
+              << std::endl;
+    return;
+  }
+
+  std::cout << "There " << (transcripts.size() == 1 ? "is " : "are ") << transcripts.size() << " "
+            << (transcripts.size() == 1 ? "transcript" : "transcripts") << "." << std::endl;
+  for (int i = 0; i < transcripts.size(); i++)
+    std::cout << i + 1 << ": " << transcripts[i]->get_print_date() << std::endl;
+  std::cout << "Which transcript that you want to switch to?" << std::endl;
+  std::cout << "Please input the index number(e.g. 1): ";
+  int index;
+  std::cin >> index;
+  while (index <= 0 || index > transcripts.size()) {
+    std::cout << "Please input a valid index number in range of 1 - " << transcripts.size() << ": ";
+    std::cin >> index;
+  }
+  std::cin.ignore();
+  current = transcripts[index];
+}
 
 void Generator::end(Transcript*& current) {
-  std::cout << "BYE~" << std::endl << SPLIT_LINE << std::endl;
+  std::cout << "BYE~" << std::endl;
 
   /**
    * x Case 1: current == nullptr && transcript is empty
@@ -279,7 +345,7 @@ void Generator::end(Transcript*& current) {
    * x Case 3: current != nullptr && transcript is empty
    * x Case 4: current != nullptr && transcript is not empty && transcript does not contain current
    * x Case 5: current != nullptr && transcript is not empty && transcript contains current
-   * 
+   *
    */
 
   bool current_exist = false;
@@ -293,7 +359,7 @@ void Generator::end(Transcript*& current) {
   while (transcripts.size() != 0) {
     if (current_exist && transcripts[0] == current)
       transcripts.erase(transcripts.begin());
-    else 
+    else
       remove_transcript(0);
   }
 }
@@ -342,4 +408,10 @@ void Generator::auto_input_period_semesters(BST<Semester>& semesters, int num_ye
     Semester temp_semester{temp_period};
     semesters.insert(temp_semester);
   }
+}
+
+bool Generator::contain(Transcript* current) {
+  std::vector<Transcript*>::iterator check_saved =
+    std::find(transcripts.begin(), transcripts.end(), current);
+  return (check_saved != transcripts.end());
 }
