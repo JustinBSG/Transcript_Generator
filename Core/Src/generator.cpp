@@ -316,25 +316,43 @@ void Generator::read_csv(Transcript*& current) {
 
   Student* temp_student = new Student;
   Professor* temp_advisor = new Professor;
-  BST<Semester>* temp_semester = new BST<Semester>;
-  current = new Transcript{temp_student, temp_advisor, temp_semester};
+  BST<Semester>* temp_semesters = new BST<Semester>;
+  current = new Transcript{temp_student, temp_advisor, temp_semesters};
 
-  for (int i = 0; i < data.size(); i++)
-    if (data[i][0] == "transcript") {
-
-    } else if (data[i][0] == "student") {
-
+  for (int i = 0; i < data.size(); i++) {
+    std::cout << i << std::endl;
+    if (data[i][0] == "transcript") 
+      current->change_print_date(data[i][1]);
+    else if (data[i][0] == "student") {
+      temp_student->change_name(data[i][1]);
+      temp_student->change_admit_date(data[i][2]);
+      temp_student->change_department(data[i][3]);
+      temp_student->change_ust_card_num(std::stoi(data[i][4]));
+      temp_student->change_year(std::stoi(data[i][5]));
+      temp_student->change_status(temp_student->convert_string_status(data[i][6]));
     } else if (data[i][0] == "advisor") {
-
+      temp_advisor->change_name(data[i][1]);
+      temp_advisor->change_department(data[i][2]);
     } else if (data[i][0] == "major") {
-
+      Major temp_major{data[i][1], data[i][2], data[i][3]};
+      temp_student->insert_major(temp_major);
     } else if (data[i][0] == "minor") {
-
+      Minor temp_minor{data[i][1], data[i][2], data[i][3]};
+      temp_student->insert_minor(temp_minor);
     } else if (data[i][0] == "course") {
-
-    }else if (data[i][0] == "semester") {
-
+      Semester *temp_semester = nullptr;
+      for (int j = 1; j <= temp_semesters->size(); j++) 
+        if (temp_semesters->find_kth_smallest_node(j)->data.get_period() == data[i][5])
+          temp_semester = &(temp_semesters->find_kth_smallest_node(j)->data);
+      Course temp_course{data[i][1], data[i][2], data[i][3], std::stoi(data[i][4])};
+      temp_semester->insert_course(temp_course);
+    } else if (data[i][0] == "semester") {
+      Semester temp_semester{data[i][1]};
+      temp_semesters->insert(temp_semester);
     }
+  }
+
+  std::cout << "Read~" << std::endl;
 }
 
 void Generator::generate_csv(Transcript*& current) {
@@ -433,6 +451,7 @@ void Generator::generate_csv(Transcript*& current) {
       vector_course.push_back(temp_course->get_title());
       vector_course.push_back(temp_course->get_grade_str());
       vector_course.push_back(std::to_string(temp_course->get_credits()));
+      vector_course.push_back(temp_semester->get_period());
       data.push_back(vector_course);
     }
   }

@@ -208,6 +208,14 @@ class Student : public Person {
      * 
      */
     void print_test() const;
+
+    /**
+     * @brief Converting std::string to Status_Program
+     * 
+     * @param status_string 
+     * @return Status_Program 
+     */
+    Status_Program convert_string_status(const std::string& status_string) const;
 };
 
 #endif  // PERSON_HPP

@@ -104,3 +104,21 @@ void Student::print_test() const {
       std::cout << std::endl;
   }
 }
+
+Status_Program Student::convert_string_status(const std::string& status_string) const {
+  try {
+    if (status_string == "Active In Program")
+      return Active_In_Program;
+    else if (status_string == "Withdraw Program")
+      return Withdraw_Program;
+    else if (status_string == "Suspend Program")
+      return Suspend_Program;
+    else
+      throw std::invalid_argument("Content of status_string does not match to Status_Program!");
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << std::endl;
+    std::cerr << "Function: Status_Program Student::convert_string_status(const std::string& status_string) const" << std::endl;
+    std::cerr << "Parameter: const std::string& status_string = " << status_string << std::endl;
+    throw;
+  }
+}

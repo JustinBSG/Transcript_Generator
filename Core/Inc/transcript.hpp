@@ -93,118 +93,125 @@ class Transcript {
 
     /**
      * @brief Get the CGAs object
-     * 
-     * @return std::vector<CGA_semester>& 
+     *
+     * @return std::vector<CGA_semester>&
      */
     std::vector<CGA_semester>& get_CGAs();
 
     /**
      * @brief Get the print date object
-     * 
-     * @return std::string 
+     *
+     * @return std::string
      */
     std::string get_print_date() const;
 
     /**
      * @brief Change user object to other_user \
      * @brief Using copy constructor
-     * 
-     * @param other_user 
+     *
+     * @param other_user
      */
     void change_user(Student* other_user);
 
     /**
      * @brief Change advisor object to other_advisor \
      * @brief Using copy constructor
-     * 
-     * @param other_advisor 
+     *
+     * @param other_advisor
      */
     void change_advisor(Professor* other_advisor);
 
     /**
      * @brief Change semesters object to other_semesters \
      * @brief Using copy constructor
-     * 
-     * @param other_semesters 
+     *
+     * @param other_semesters
      */
     void change_semesters(BST<Semester>* other_semesters);
 
     /**
+     * @brief Change print_date object to other_print_date
+     *
+     * @param other_print_date
+     */
+    void change_print_date(const std::string& other_print_date);
+
+    /**
      * @brief Update CGAs object
-     * 
+     *
      */
     void update_CGAs();
 
     /**
      * @brief Update print_data object
-     * 
+     *
      */
     void update_print_date();
 
     /**
      * @brief Comparing by using std::string print_date
-     * 
-     * @param other 
-     * @return true 
-     * @return false 
+     *
+     * @param other
+     * @return true
+     * @return false
      */
     bool operator<(const Transcript& other);
 
     /**
      * @brief Comparing by using std::string print_date
-     * 
-     * @param other 
-     * @return true 
-     * @return false 
+     *
+     * @param other
+     * @return true
+     * @return false
      */
     bool operator>(const Transcript& other);
-    
+
     /**
      * @brief Comparing by using std::string print_date
-     * 
-     * @param other 
-     * @return true 
-     * @return false 
+     *
+     * @param other
+     * @return true
+     * @return false
      */
     bool operator<=(const Transcript& other);
-    
+
     /**
      * @brief Comparing by using std::string print_date
-     * 
-     * @param other 
-     * @return true 
-     * @return false 
+     *
+     * @param other
+     * @return true
+     * @return false
      */
     bool operator>=(const Transcript& other);
-    
+
     /**
      * @brief Comparing by using std::string print_date
-     * 
-     * @param other 
-     * @return true 
-     * @return false 
+     *
+     * @param other
+     * @return true
+     * @return false
      */
     bool operator==(const Transcript& other);
 
     /**
      * @brief Copy operator
-     * 
-     * @param other 
-     * @return Transcript& 
+     *
+     * @param other
+     * @return Transcript&
      */
     Transcript& operator=(const Transcript& other);
 
     /**
      * @brief Move operator
-     * 
-     * @param other 
-     * @return Transcript& 
+     *
+     * @param other
+     * @return Transcript&
      */
     Transcript& operator=(Transcript&& other);
 
     /**
      * @brief Print content of all member variables in testing purpose
-     * 
+     *
      */
     void print_test() const;
 };

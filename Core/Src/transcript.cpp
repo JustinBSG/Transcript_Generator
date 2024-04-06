@@ -144,6 +144,10 @@ void Transcript::change_semesters(BST<Semester>* other_semesters) {
   update_CGAs();
 }
 
+void Transcript::change_print_date(const std::string& other_print_date) {
+  print_date = other_print_date;
+}
+
 void Transcript::update_CGAs() {
   CGAs.clear();
 
