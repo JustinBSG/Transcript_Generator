@@ -228,7 +228,7 @@ void Generator::insert_data(Transcript*& current) {
     }
     if (input_choice == "no")
       break;
-    std::cout << "Please the name of Minor Program(e.g. Smart City): ";
+    std::cout << "Please input the name of Minor Program(e.g. Smart City): ";
     std::string temp_minor_name;
     getline(std::cin, temp_minor_name);
     std::cout
@@ -308,7 +308,7 @@ void Generator::read_csv(Transcript*& current) {
     std::istringstream each_line{line};
     std::vector<std::string> fields;
     std::string field;
-    while (getline(each_line, field, ',')) 
+    while (getline(each_line, field, ','))
       fields.push_back(field);
     data.push_back(fields);
   }
@@ -321,7 +321,7 @@ void Generator::read_csv(Transcript*& current) {
 
   for (int i = 0; i < data.size(); i++) {
     std::cout << i << std::endl;
-    if (data[i][0] == "transcript") 
+    if (data[i][0] == "transcript")
       current->change_print_date(data[i][1]);
     else if (data[i][0] == "student") {
       temp_student->change_name(data[i][1]);
@@ -340,8 +340,8 @@ void Generator::read_csv(Transcript*& current) {
       Minor temp_minor{data[i][1], data[i][2], data[i][3]};
       temp_student->insert_minor(temp_minor);
     } else if (data[i][0] == "course") {
-      Semester *temp_semester = nullptr;
-      for (int j = 1; j <= temp_semesters->size(); j++) 
+      Semester* temp_semester = nullptr;
+      for (int j = 1; j <= temp_semesters->size(); j++)
         if (temp_semesters->find_kth_smallest_node(j)->data.get_period() == data[i][5])
           temp_semester = &(temp_semesters->find_kth_smallest_node(j)->data);
       Course temp_course{data[i][1], data[i][2], data[i][3], std::stoi(data[i][4])};
@@ -467,7 +467,487 @@ void Generator::generate_csv(Transcript*& current) {
   std::cout << "Generated~" << std::endl;
 }
 
-void Generator::modify_csv(Transcript*& current) {}
+void Generator::modify_csv(Transcript*& current) {
+  if (current != nullptr) {
+    std::cout << "Please save the current transcript first before modifying the CSV file."
+              << std::endl;
+    return;
+  }
+
+  read_csv(current);
+  std::cout << std::endl;
+
+  std::cout << "Which operation that you want to perform?" << std::endl;
+  std::cout << "1.\tAdding new data" << std::endl;
+  std::cout << "2.\tRemoving existing data" << std::endl;
+  std::cout << "3.\tEditing existing data" << std::endl;
+  std::cout << "Please input the index number of the choice: ";
+  int choice;
+  std::cin >> choice;
+  std::cin.ignore();
+  while (choice < 1 || choice > 3) {
+    std::cout << "Please input valid choice: ";
+    std::cin >> choice;
+    std::cin.ignore();
+  }
+  std::cout << std::endl;
+
+  switch (choice) {
+    // add
+    case 1: {
+      std::cout << "Which data that you want to add?" << std::endl;
+      std::cout << "1.\tStudent" << std::endl;
+      std::cout << "2.\tSemester" << std::endl;
+      std::cout << "3.\tCourse" << std::endl;
+      std::cout << "Please input the index number of the choice: ";
+      std::cin >> choice;
+      std::cin.ignore();
+      while (choice < 1 || choice > 3) {
+        std::cout << "Please input valid choice: ";
+        std::cin >> choice;
+        std::cin.ignore();
+      }
+      std::cout << std::endl;
+
+      switch (choice) {
+        // student
+        case 1: {
+          std::cout << "Which data that you want to add?" << std::endl;
+          std::cout << "1.\tMajor" << std::endl;
+          std::cout << "2.\tMinor" << std::endl;
+          std::cout << "Please input the index number of the choice: ";
+          std::cin >> choice;
+          std::cin.ignore();
+          while (choice < 1 || choice > 2) {
+            std::cout << "Please input valid choice: ";
+            std::cin >> choice;
+            std::cin.ignore();
+          }
+          std::cout << std::endl;
+
+          switch (choice) {
+            // major
+            case 1: {
+              std::cout
+                << "Please input the name of program(e.g. Bachelor Degree of Engineering): ";
+              std::string temp_program_name;
+              getline(std::cin, temp_program_name);
+              std::cout << "Please input the name of Major Program(e.g. Computer Science): ";
+              std::string temp_major_name;
+              getline(std::cin, temp_major_name);
+              std::cout << "Please input the semester that you change program(e.g. 2022-23 Fall): ";
+              std::string temp_change_date;
+              getline(std::cin, temp_change_date);
+              Major temp_major{temp_program_name, temp_change_date, temp_major_name};
+              current->get_user()->insert_major(temp_major);
+              break;
+            }
+            // minor
+            case 2: {
+              std::cout << "Please input the name of Minor Program(e.g. Smart City): ";
+              std::string temp_minor_name;
+              getline(std::cin, temp_minor_name);
+              std::cout << "Please input the semester that you declare this Minor program(e.g. "
+                           "2022-23 Fall): ";
+              std::string temp_change_period;
+              getline(std::cin, temp_change_period);
+              Minor temp_minor{"NA", temp_change_period, temp_minor_name};
+              current->get_user()->insert_minor(temp_minor);
+              break;
+            }
+          }
+          break;
+        }
+        // semester
+        case 2: {
+          std::cout << "Please input the period of semester(e.g. 2022-23 Fall: ";
+          std::string temp_period;
+          getline(std::cin, temp_period);
+          while (current->get_semesters()->contain(Semester{temp_period})) {
+            std::cout << "semester of " << temp_period << "has already existed." << std::endl;
+            std::cout << "Please input the period of semester again(e.g. 2022-23 Fall): ";
+            std::string temp_period;
+            getline(std::cin, temp_period);
+          }
+          current->get_semesters()->insert(Semester{temp_period});
+          break;
+        }
+        // course
+        case 3: {
+          std::cout << "Which semester that the new course belongs to?" << std::endl;
+          for (int i = 1; i <= current->get_semesters()->size(); i++)
+            std::cout << i << ".\t"
+                      << current->get_semesters()->find_kth_smallest_node(i)->data.get_period()
+                      << std::endl;
+          std::cout << current->get_semesters()->size() + 1 << ".\tOther" << std::endl;
+          std::cin >> choice;
+          std::cin.ignore();
+          while (choice < 1 || choice > current->get_semesters()->size() + 1) {
+            std::cout << "Please input valid choice: ";
+            std::cin >> choice;
+            std::cin.ignore();
+          }
+          std::cout << std::endl;
+
+          if (choice == current->get_semesters()->size() + 1) {
+            std::cout << "Please add that semester first." << std::endl;
+            return;
+          }
+          Semester* temp_semester =
+            &(current->get_semesters()->find_kth_smallest_node(choice)->data);
+          std::cout << "Please input the Course Code(e.g. COMP1021): ";
+          std::string temp_code;
+          getline(std::cin, temp_code);
+          while (temp_semester->get_courses().contain(Course{temp_code})) {
+            std::cout << "That Course Code has already existed." << std::endl;
+            std::cout << "Please enter another one: ";
+            getline(std::cin, temp_code);
+          }
+          std::cout << "Please input the Course Title of this course: ";
+          std::string temp_course_title;
+          getline(std::cin, temp_course_title);
+          std::cout << "Please input the Number of Credits of this course: ";
+          int temp_course_num_credit;
+          std::cin >> temp_course_num_credit;
+          std::cin.ignore();
+          std::cout << "Please input the Grade that you got in this course: ";
+          std::string temp_course_grade;
+          getline(std::cin, temp_course_grade);
+          temp_semester->get_courses().insert(
+            Course{temp_code, temp_course_title, temp_course_grade, temp_course_num_credit});
+          break;
+        }
+      }
+      break;
+    }
+    // remove
+    case 2: {
+      break;
+    }
+    // edit
+    case 3: {
+      std::cout << "Which data that you want to edit?" << std::endl;
+      std::cout << "1.\tStudent" << std::endl;
+      std::cout << "2.\tAdvisor" << std::endl;
+      std::cout << "3.\tSemester" << std::endl;
+      std::cout << "4.\tCourse" << std::endl;
+      std::cout << "Please input the index number of the choice: ";
+      std::cin >> choice;
+      std::cin.ignore();
+      while (choice < 1 || choice > 4) {
+        std::cout << "Please input valid choice: ";
+        std::cin >> choice;
+        std::cin.ignore();
+      }
+      std::cout << std::endl;
+
+      switch (choice) {
+        // student
+        case 1: {
+          Student* temp_student = current->get_user();
+          if (temp_student == nullptr) {
+            std::cout << "There is no any data of student." << std::endl;
+            std::cout << "Please add a new data of student first." << std::endl;
+            return;
+          }
+
+          std::cout << "Which data in Student that you want to edit?" << std::endl;
+          std::cout << "1.\tName" << std::endl;
+          std::cout << "2.\tAdmit Date" << std::endl;
+          std::cout << "3.\tDepartment" << std::endl;
+          std::cout << "4.\tUST ID Card Number" << std::endl;
+          std::cout << "5.\tYear of Study" << std::endl;
+          std::cout << "6.\tStatus of Study" << std::endl;
+          std::cin >> choice;
+          std::cin.ignore();
+          while (choice < 1 || choice > 6) {
+            std::cout << "Please input valid choice: ";
+            std::cin >> choice;
+            std::cin.ignore();
+          }
+          std::cout << std::endl;
+
+          switch (choice) {
+            // name
+            case 1: {
+              std::cout << "The original value of Name is " << temp_student->get_name()
+                        << std::endl;
+              std::cout << "Please input new value of Name: ";
+              std::string new_name;
+              getline(std::cin, new_name);
+              temp_student->change_name(new_name);
+              break;
+            }
+            // admit data
+            case 2: {
+              std::cout << "The original value of Admit Date is " << temp_student->get_admit_date()
+                        << std::endl;
+              std::cout << "Please input new value of Admit Date: ";
+              std::string new_admit_date;
+              getline(std::cin, new_admit_date);
+              temp_student->change_admit_date(new_admit_date);
+              break;
+            }
+            // department
+            case 3: {
+              std::cout << "The original value of Department is " << temp_student->get_department()
+                        << std::endl;
+              std::cout << "Please input new value of Department: ";
+              std::string new_department;
+              getline(std::cin, new_department);
+              temp_student->change_department(new_department);
+              break;
+            }
+            // use id card number
+            case 4: {
+              std::cout << "The original value of UST ID Card Number is "
+                        << temp_student->get_ust_card_num() << std::endl;
+              std::cout << "Please input new value of UST ID Card Number: ";
+              int new_ust_id_num;
+              std::cin >> new_ust_id_num;
+              std::cin.ignore();
+              temp_student->change_ust_card_num(new_ust_id_num);
+              break;
+            }
+            // year of study
+            case 5: {
+              std::cout << "The original value of Year of Study is " << temp_student->get_year()
+                        << std::endl;
+              std::cout << "Please input new value of Year of Study: ";
+              int new_year;
+              std::cin >> new_year;
+              std::cin.ignore();
+              temp_student->change_year(new_year);
+              break;
+            }
+            // status of study
+            case 6: {
+              std::cout << "The original value of Status of Study is " << temp_student->get_status()
+                        << std::endl;
+              std::cout << "Please choose the new valule of Status of Study:" << std::endl;
+              std::cout << "1.\tActive in Program" << std::endl;
+              std::cout << "2.\tWithdraw Program" << std::endl;
+              std::cout << "3.\tSuspend Program" << std::endl;
+              std::cout << "Please input your choose in number: ";
+              int new_status;
+              std::cin >> new_status;
+              std::cin.ignore();
+              while (new_status < 1 || new_status > 3) {
+                std::cout << "Please input a valid choice: ";
+                std::cin >> new_status;
+                std::cin.ignore();
+              }
+              temp_student->change_status(static_cast<Status_Program>(new_status));
+              break;
+            }
+          }
+          break;
+        }
+        // advisor
+        case 2: {
+          Professor* temp_advisor = current->get_advisor();
+          if (temp_advisor == nullptr) {
+            std::cout << "There is no any data of advisor." << std::endl;
+            std::cout << "Please add a data of advisor first." << std::endl;
+            return;
+          }
+          std::cout << "Which data in Advisor that you want to edit?" << std::endl;
+          std::cout << "1.\tName" << std::endl;
+          std::cout << "2.\tDepartment" << std::endl;
+          std::cout << "Please input your choose in number: ";
+          std::cin >> choice;
+          std::cin.ignore();
+          while (choice < 1 || choice > 2) {
+            std::cout << "Please input valid choice: ";
+            std::cin >> choice;
+            std::cin.ignore();
+          }
+          std::cout << std::endl;
+
+          switch (choice) {
+            // name
+            case 1: {
+              std::cout << "The original value of Name is " << temp_advisor->get_name()
+                        << std::endl;
+              std::cout << "Please input new value of Name: ";
+              std::string new_name;
+              getline(std::cin, new_name);
+              temp_advisor->change_name(new_name);
+              break;
+            }
+            // department
+            case 2: {
+              std::cout << "The original value of Department is " << temp_advisor->get_department()
+                        << std::endl;
+              std::cout << "Please input new value of Department: ";
+              std::string new_department;
+              getline(std::cin, new_department);
+              temp_advisor->change_department(new_department);
+              break;
+            }
+          }
+          break;
+        }
+        // semester
+        case 3: {
+          BST<Semester>* temp_semesters = current->get_semesters();
+          if (temp_semesters == nullptr || temp_semesters->size() == 0) {
+            std::cout << "There is no any semester." << std::endl;
+            std::cout << "Please add a new semester first." << std::endl;
+            return;
+          }
+
+          std::cout << "There " << (temp_semesters->size() == 1 ? "is " : "are ")
+                    << temp_semesters->size() << " "
+                    << (temp_semesters->size() == 1 ? "semester" : "semesters") << "." << std::endl;
+          for (int i = 1; i <= temp_semesters->size(); i++)
+            std::cout << i << ".\t" << temp_semesters->find_kth_smallest_node(i)->data.get_period()
+                      << std::endl;
+          std::cout << "Which semester that you want to edit?" << std::endl;
+          std::cout << "Please input your choice in number: ";
+          std::cin >> choice;
+          std::cin.ignore();
+          while (choice < 1 || choice > temp_semesters->size()) {
+            std::cout << "Please input a valid choice: ";
+            std::cin >> choice;
+            std::cin.ignore();
+          }
+
+          Semester* temp_semester = &(temp_semesters->find_kth_smallest_node(choice)->data);
+          std::cout << "You can only edit Period in Semester." << std::endl;
+          std::cout << "The origin value fo Period is" << temp_semester->get_period() << std::endl;
+          std::cout << "Please input new value of Period: ";
+          std::string new_period;
+          getline(std::cin, new_period);
+
+          Semester new_semester{new_period};
+          for (int i = 1; i <= temp_semester->get_courses().size(); i++)
+            new_semester.insert_course(
+              temp_semester->get_courses().find_kth_smallest_node(i)->data);
+          temp_semesters->remove(*temp_semester);
+          temp_semesters->insert(new_semester);
+          break;
+        }
+        // course
+        case 4: {
+          if (current->get_semesters() == nullptr || current->get_semesters()->size() == 0) {
+            std::cout << "There is no any semester and course." << std::endl;
+            std::cout << "Please add a new semester and course first." << std::endl;
+            return;
+          }
+
+          std::cout << "Please choose the semester that the course belongs to." << std::endl;
+          for (int i = 1; i <= current->get_semesters()->size(); i++)
+            std::cout << i << ".\t"
+                      << current->get_semesters()->find_kth_smallest_node(i)->data.get_period()
+                      << std::endl;
+          std::cout << "Please input your choice in number: ";
+          std::cin >> choice;
+          std::cin.ignore();
+          while (choice < 1 || choice > current->get_semesters()->size()) {
+            std::cout << "Please input a valid choice: ";
+            std::cin >> choice;
+            std::cin.ignore();
+          }
+
+          Semester* temp_semester =
+            &(current->get_semesters()->find_kth_smallest_node(choice)->data);
+          if (temp_semester->get_courses().size() == 0) {
+            std::cout << "There is no any course in this semester." << std::endl;
+            std::cout << "Please add a new course into this semester first." << std::endl;
+            return;
+          }
+
+          std::cout << "Please choose the course that you want to edit." << std::endl;
+          for (int i = 1; i <= temp_semester->get_courses().size(); i++)
+            std::cout << i << ".\t"
+                      << temp_semester->get_courses().find_kth_smallest_node(i)->data.get_code()
+                      << std::endl;
+          std::cout << "Please input your choice in number: ";
+          std::cin >> choice;
+          std::cin.ignore();
+          while (choice < 1 || choice > temp_semester->get_courses().size()) {
+            std::cout << "Please input a valid choice: ";
+            std::cin >> choice;
+            std::cin.ignore();
+          }
+
+          Course* temp_course =
+            &(temp_semester->get_courses().find_kth_smallest_node(choice)->data);
+          std::cout << "Which data that you want to edit?" << std::endl;
+          std::cout << "1.\tCourse Code" << std::endl;
+          std::cout << "2.\tCourse Title" << std::endl;
+          std::cout << "3.\tGrade" << std::endl;
+          std::cout << "4.\tNumber of Credits" << std::endl;
+          std::cout << "Please input your choice in number: ";
+          std::cin >> choice;
+          std::cin.ignore();
+          while (choice < 1 || choice > 4) {
+            std::cout << "Please input a valid choice: ";
+            std::cin >> choice;
+            std::cin.ignore();
+          }
+
+          switch (choice) {
+            // course code
+            case 1: {
+              std::cout << "The original value of Course Code is " << temp_course->get_code()
+                        << std::endl;
+              std::cout << "Please input new value of Course Code: ";
+              std::string new_code;
+              getline(std::cin, new_code);
+              temp_course->change_code(new_code);
+              break;
+            }
+            // course title
+            case 2: {
+              std::cout << "The original value of Course Title is " << temp_course->get_title()
+                        << std::endl;
+              std::cout << "Please input new value of Course Title: ";
+              std::string new_title;
+              getline(std::cin, new_title);
+              temp_course->change_title(new_title);
+              break;
+            }
+            // grade
+            case 3: {
+              std::cout << "The original value of Grade is " << temp_course->get_grade_str()
+                        << std::endl;
+              std::cout << "Please input new value of Grade: ";
+              std::string new_grade;
+              getline(std::cin, new_grade);
+              temp_course->change_grade(new_grade);
+              break;
+            }
+            // number of credits
+            case 4: {
+              std::cout << "The original value of Number of Credits is "
+                        << temp_course->get_credits() << std::endl;
+              std::cout << "Please input new value of Number of Credits: ";
+              int new_credits;
+              std::cin >> new_credits;
+              std::cin.ignore();
+              while (new_credits < 0) {
+                std::cout << "Number of Credits should not be negative number." << std::endl;
+                std::cout << "Please input again: ";
+                std::cin >> new_credits;
+                std::cin.ignore();
+              }
+              temp_course->change_credits(new_credits);
+              break;
+            }
+          }
+          break;
+        }
+      }
+      break;
+    }
+  }
+
+  // create csv file with same name
+
+  std::cout << "Modified~" << std::endl;
+}
 
 void Generator::print_terminal(Transcript*& current) {}
 
