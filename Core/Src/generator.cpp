@@ -58,7 +58,9 @@ void Generator::start() {
         std::cout << std::endl;
         break;
       case 4:
-        std::cout << option << std::endl;
+        std::cout << std::endl;
+        modify_csv(current);
+        std::cout << std::endl;
         break;
       case 5:
         std::cout << option << std::endl;
@@ -285,7 +287,7 @@ void Generator::insert_data(Transcript*& current) {
   current->change_semesters(&temp_semesters);
 }
 
-void Generator::read_csv(Transcript*& current) {
+void Generator::read_csv(Transcript*& current, std::string file_path) {
   if (current != nullptr) {
     std::cout << "Please save the current transcript and make a new transcript before inserting "
                  "data from CSV file."
@@ -293,9 +295,11 @@ void Generator::read_csv(Transcript*& current) {
     return;
   }
 
-  std::cout << "Please input the file path of the CSV file: ";
-  std::string file_path;
-  getline(std::cin, file_path);
+  if (file_path.size() == 0) {
+    std::cout << "Please input the file path of the CSV file: ";
+    getline(std::cin, file_path);
+  }
+
   std::ifstream csv_file{file_path};
   while (!csv_file.is_open()) {
     std::cout << "Failed to open CSV file." << std::endl;
@@ -320,7 +324,6 @@ void Generator::read_csv(Transcript*& current) {
   current = new Transcript{temp_student, temp_advisor, temp_semesters};
 
   for (int i = 0; i < data.size(); i++) {
-    std::cout << i << std::endl;
     if (data[i][0] == "transcript")
       current->change_print_date(data[i][1]);
     else if (data[i][0] == "student") {
@@ -355,7 +358,7 @@ void Generator::read_csv(Transcript*& current) {
   std::cout << "Read~" << std::endl;
 }
 
-void Generator::generate_csv(Transcript*& current) {
+void Generator::generate_csv(Transcript*& current, std::string file_path) {
   if (current == nullptr) {
     std::cout << "Please input data to current transcript first before generating CSV file."
               << std::endl;
@@ -366,17 +369,20 @@ void Generator::generate_csv(Transcript*& current) {
               << std::endl;
     return;
   }
-  std::string file_path = "Output/output";
-  std::string format = "output";
-  int count = 0;
-  for (const auto& entry : fs::directory_iterator("Output")) {
-    if (fs::is_regular_file(entry) &&
-        entry.path().filename().string().find(format) != std::string::npos) {
-      count++;
+
+  if (file_path.size() == 0) {
+    file_path = "Output/output";
+    std::string format = "output";
+    int count = 0;
+    for (const auto& entry : fs::directory_iterator("Output")) {
+      if (fs::is_regular_file(entry) &&
+          entry.path().filename().string().find(format) != std::string::npos) {
+        count++;
+      }
     }
+    file_path += std::to_string(count);
+    file_path += ".csv";
   }
-  file_path += std::to_string(count);
-  file_path += ".csv";
 
   std::ofstream output_file{file_path};
   if (!output_file.is_open()) {
@@ -468,14 +474,23 @@ void Generator::generate_csv(Transcript*& current) {
 }
 
 // TODO: Check for empty data before performing any operation
-void Generator::modify_csv(Transcript*& current) {
+void Generator::modify_csv(Transcript*& current, std::string file_path) {
   if (current != nullptr) {
     std::cout << "Please save the current transcript first before modifying the CSV file."
               << std::endl;
     return;
   }
 
-  read_csv(current);
+  if (file_path.size() == 0) {
+    if (file_path.size() == 0) {
+      std::cout << "Please input the file path of the CSV file: ";
+      getline(std::cin, file_path);
+    }
+  }
+  std::cout << std::endl;
+  read_csv(current, file_path);
+  if (current == nullptr)
+    return;
   std::cout << std::endl;
 
   std::cout << "Which operation that you want to perform?" << std::endl;
@@ -501,16 +516,17 @@ void Generator::modify_csv(Transcript*& current) {
       std::cout << "2.\tSemester" << std::endl;
       std::cout << "3.\tCourse" << std::endl;
       std::cout << "Please input the index number of the choice: ";
-      std::cin >> choice;
+      int choice_data;
+      std::cin >> choice_data;
       std::cin.ignore();
-      while (choice < 1 || choice > 3) {
+      while (choice_data < 1 || choice_data > 3) {
         std::cout << "Please input valid choice: ";
-        std::cin >> choice;
+        std::cin >> choice_data;
         std::cin.ignore();
       }
       std::cout << std::endl;
 
-      switch (choice) {
+      switch (choice_data) {
         // student
         case 1: {
           std::cout << "Which data that you want to add?" << std::endl;
@@ -565,7 +581,7 @@ void Generator::modify_csv(Transcript*& current) {
           std::string temp_period;
           getline(std::cin, temp_period);
           if (current->get_semesters() == nullptr) {
-            BST<Semester> *temp_semesters = new BST<Semester>;
+            BST<Semester>* temp_semesters = new BST<Semester>;
             temp_semesters->insert(Semester{temp_period});
             return;
           }
@@ -592,6 +608,7 @@ void Generator::modify_csv(Transcript*& current) {
                       << current->get_semesters()->find_kth_smallest_node(i)->data.get_period()
                       << std::endl;
           std::cout << current->get_semesters()->size() + 1 << ".\tOther" << std::endl;
+          std::cout << "Please input the index number of your choice: ";
           std::cin >> choice;
           std::cin.ignore();
           while (choice < 1 || choice > current->get_semesters()->size() + 1) {
@@ -625,8 +642,9 @@ void Generator::modify_csv(Transcript*& current) {
           std::cout << "Please input the Grade that you got in this course: ";
           std::string temp_course_grade;
           getline(std::cin, temp_course_grade);
-          temp_semester->get_courses().insert(
+          temp_semester->insert_course(
             Course{temp_code, temp_course_title, temp_course_grade, temp_course_num_credit});
+          current->update_CGAs();
           break;
         }
       }
@@ -680,10 +698,13 @@ void Generator::modify_csv(Transcript*& current) {
               }
 
               BST<Major>* temp_majors = &(current->get_user()->get_majors());
-              std::cout << "There is " << temp_majors->size() << "Major in that CSV file." << std::endl;
+              std::cout << "There is " << temp_majors->size() << "Major in that CSV file."
+                        << std::endl;
               std::cout << "Which Major that you want to remove?" << std::endl;
               for (int i = 1; i <= temp_majors->size(); i++)
-                std::cout << i << ".\t" << temp_majors->find_kth_smallest_node(1)->data.get_major_name() << std::endl;
+                std::cout << i << ".\t"
+                          << temp_majors->find_kth_smallest_node(1)->data.get_major_name()
+                          << std::endl;
               std::cout << "Please input the index nubmer of the choice: ";
               std::cin >> choice;
               std::cin.ignore();
@@ -706,10 +727,13 @@ void Generator::modify_csv(Transcript*& current) {
               }
 
               BST<Minor>* temp_minors = &(current->get_user()->get_minors());
-              std::cout << "There is " << temp_minors->size() << "Minor in that CSV file." << std::endl;
+              std::cout << "There is " << temp_minors->size() << "Minor in that CSV file."
+                        << std::endl;
               std::cout << "Which Minor that you want to remove?" << std::endl;
               for (int i = 1; i <= temp_minors->size(); i++)
-                std::cout << i << ".\t" << temp_minors->find_kth_smallest_node(1)->data.get_minor_name() << std::endl;
+                std::cout << i << ".\t"
+                          << temp_minors->find_kth_smallest_node(1)->data.get_minor_name()
+                          << std::endl;
               std::cout << "Please input the index nubmer of the choice: ";
               std::cin >> choice;
               std::cin.ignore();
@@ -734,10 +758,12 @@ void Generator::modify_csv(Transcript*& current) {
             std::cout << "Please input a semester before removing it." << std::endl;
             return;
           }
-          std::cout << "There is " << temp_semesters->size() << "Semesters in the CSV file." << std::endl;
+          std::cout << "There is " << temp_semesters->size() << "Semesters in the CSV file."
+                    << std::endl;
           std::cout << "Which Semester that you want to remove?" << std::endl;
           for (int i = 1; i <= temp_semesters->size(); i++)
-            std::cout << i << ".\t" << temp_semesters->find_kth_smallest_node(i)->data.get_period() << std::endl;
+            std::cout << i << ".\t" << temp_semesters->find_kth_smallest_node(i)->data.get_period()
+                      << std::endl;
           std::cout << "Please input the index nubmer of the choice: ";
           std::cin >> choice;
           std::cin.ignore();
@@ -755,7 +781,8 @@ void Generator::modify_csv(Transcript*& current) {
         case 3: {
           if (current->get_semesters() == nullptr || current->get_semesters()->size() == 0) {
             std::cout << "There is no any semester and course in the CSV file." << std::endl;
-            std::cout << "Please add a new semester and course before removing course." << std::endl;
+            std::cout << "Please add a new semester and course before removing course."
+                      << std::endl;
             return;
           }
 
@@ -777,7 +804,8 @@ void Generator::modify_csv(Transcript*& current) {
             &(current->get_semesters()->find_kth_smallest_node(choice)->data);
           if (temp_semester->get_courses().size() == 0) {
             std::cout << "There is no any course in this semester." << std::endl;
-            std::cout << "Please add a new course into this semester before removing course." << std::endl;
+            std::cout << "Please add a new course into this semester before removing course."
+                      << std::endl;
             return;
           }
 
@@ -795,7 +823,8 @@ void Generator::modify_csv(Transcript*& current) {
             std::cin.ignore();
           }
 
-          temp_semester->remove_course(temp_semester->get_courses().find_kth_smallest_node(choice)->data);
+          temp_semester->remove_course(
+            temp_semester->get_courses().find_kth_smallest_node(choice)->data);
           break;
         }
       }
@@ -1120,9 +1149,11 @@ void Generator::modify_csv(Transcript*& current) {
       break;
     }
   }
-
   // create csv file with same name
 
+  std::cout << std::endl;
+  generate_csv(current, file_path);
+  std::cout << std::endl;
   std::cout << "Modified~" << std::endl;
 }
 

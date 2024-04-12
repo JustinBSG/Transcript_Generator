@@ -32,9 +32,9 @@ class Generator {
 
     void start();
     void insert_data(Transcript*& current);
-    void read_csv(Transcript*& current);
-    void generate_csv(Transcript*& current);
-    void modify_csv(Transcript*& current);
+    void read_csv(Transcript*& current, std::string file_path = "");
+    void generate_csv(Transcript*& current, std::string file_path = "");
+    void modify_csv(Transcript*& current, std::string file_path = "");
     void print_terminal(Transcript*& current);
     void save_transcript(Transcript*& current);
     void restart(Transcript*& current);

@@ -278,8 +278,8 @@ void Transcript::print_test() const {
   if (semesters != nullptr) {
     std::cout << "the number of semesters: " << semesters->size() << std::endl;
     for (int i = 1; i <= semesters->size(); i++) {
-      std::cout << "This is " << i << "th largest node." << std::endl;
-      Semester* temp = &(semesters->find_kth_largest_node(i)->data);
+      std::cout << "This is " << i << "th smallest node." << std::endl;
+      Semester* temp = &(semesters->find_kth_smallest_node(i)->data);
       temp->print_test();
       if (i != semesters->size())
         std::cout << std::endl;

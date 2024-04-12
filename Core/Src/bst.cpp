@@ -71,7 +71,7 @@ bool BST<T>::contain(const T& other) const {
 
   if (root->data == other)
     return true;
-  else if (other < root->data)
+  else if (root->data > other)
     return root->left.contain(other);
   else
     return root->right.contain(other);
