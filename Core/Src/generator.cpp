@@ -467,6 +467,7 @@ void Generator::generate_csv(Transcript*& current) {
   std::cout << "Generated~" << std::endl;
 }
 
+// TODO: Check for empty data before performing any operation
 void Generator::modify_csv(Transcript*& current) {
   if (current != nullptr) {
     std::cout << "Please save the current transcript first before modifying the CSV file."
@@ -563,6 +564,12 @@ void Generator::modify_csv(Transcript*& current) {
           std::cout << "Please input the period of semester(e.g. 2022-23 Fall: ";
           std::string temp_period;
           getline(std::cin, temp_period);
+          if (current->get_semesters() == nullptr) {
+            BST<Semester> *temp_semesters = new BST<Semester>;
+            temp_semesters->insert(Semester{temp_period});
+            return;
+          }
+
           while (current->get_semesters()->contain(Semester{temp_period})) {
             std::cout << "semester of " << temp_period << "has already existed." << std::endl;
             std::cout << "Please input the period of semester again(e.g. 2022-23 Fall): ";
@@ -574,6 +581,11 @@ void Generator::modify_csv(Transcript*& current) {
         }
         // course
         case 3: {
+          if (current->get_semesters() == nullptr || current->get_semesters()->size() == 0) {
+            std::cout << "There is no semester in the CSV file." << std::endl;
+            std::cout << "Please input a new semester before adding a new course." << std::endl;
+            return;
+          }
           std::cout << "Which semester that the new course belongs to?" << std::endl;
           for (int i = 1; i <= current->get_semesters()->size(); i++)
             std::cout << i << ".\t"
@@ -622,6 +634,171 @@ void Generator::modify_csv(Transcript*& current) {
     }
     // remove
     case 2: {
+      std::cout << "Which data that you want to remove?" << std::endl;
+      std::cout << "1.\tStudent" << std::endl;
+      std::cout << "2.\tSemester" << std::endl;
+      std::cout << "3.\tCourse" << std::endl;
+      std::cout << "Please input the index number of the choice: ";
+      std::cin >> choice;
+      std::cin.ignore();
+      while (choice < 1 || choice > 3) {
+        std::cout << "Please input valid choice: ";
+        std::cin >> choice;
+        std::cin.ignore();
+      }
+      std::cout << std::endl;
+
+      switch (choice) {
+        // student
+        case 1: {
+          if (current->get_user() == nullptr) {
+            std::cout << "There is no any data about Student in the CSV file." << std::endl;
+            std::cout << "Please input a new Student before removing data in Student." << std::endl;
+            return;
+          }
+
+          std::cout << "Which data in Student that you want to remove?" << std::endl;
+          std::cout << "1.\tMajor" << std::endl;
+          std::cout << "2.\tMinor" << std::endl;
+          std::cout << "Please input the index number of the choice: ";
+          std::cin >> choice;
+          std::cin.ignore();
+          while (choice < 1 || choice > 2) {
+            std::cout << "Please input valid choice: ";
+            std::cin >> choice;
+            std::cin.ignore();
+          }
+          std::cout << std::endl;
+
+          switch (choice) {
+            // major
+            case 1: {
+              if (current->get_user()->get_majors().size() == 0) {
+                std::cout << "There is no taken Major." << std::endl;
+                std::cout << "Please make sure there is a Major before removing it." << std::endl;
+                return;
+              }
+
+              BST<Major>* temp_majors = &(current->get_user()->get_majors());
+              std::cout << "There is " << temp_majors->size() << "Major in that CSV file." << std::endl;
+              std::cout << "Which Major that you want to remove?" << std::endl;
+              for (int i = 1; i <= temp_majors->size(); i++)
+                std::cout << i << ".\t" << temp_majors->find_kth_smallest_node(1)->data.get_major_name() << std::endl;
+              std::cout << "Please input the index nubmer of the choice: ";
+              std::cin >> choice;
+              std::cin.ignore();
+              while (choice < 1 || choice > temp_majors->size()) {
+                std::cout << "Please input valid choice: ";
+                std::cin >> choice;
+                std::cin.ignore();
+              }
+              std::cout << std::endl;
+
+              temp_majors->remove(temp_majors->find_kth_smallest_node(choice)->data);
+              break;
+            }
+            // minor
+            case 2: {
+              if (current->get_user()->get_minors().size() == 0) {
+                std::cout << "There is no taken Minor." << std::endl;
+                std::cout << "Please make sure there is a Minor before removing it." << std::endl;
+                return;
+              }
+
+              BST<Minor>* temp_minors = &(current->get_user()->get_minors());
+              std::cout << "There is " << temp_minors->size() << "Minor in that CSV file." << std::endl;
+              std::cout << "Which Minor that you want to remove?" << std::endl;
+              for (int i = 1; i <= temp_minors->size(); i++)
+                std::cout << i << ".\t" << temp_minors->find_kth_smallest_node(1)->data.get_minor_name() << std::endl;
+              std::cout << "Please input the index nubmer of the choice: ";
+              std::cin >> choice;
+              std::cin.ignore();
+              while (choice < 1 || choice > temp_minors->size()) {
+                std::cout << "Please input valid choice: ";
+                std::cin >> choice;
+                std::cin.ignore();
+              }
+              std::cout << std::endl;
+
+              temp_minors->remove(temp_minors->find_kth_smallest_node(choice)->data);
+              break;
+            }
+          }
+          break;
+        }
+        // semester
+        case 2: {
+          BST<Semester>* temp_semesters = current->get_semesters();
+          if (temp_semesters == nullptr || temp_semesters->size() == 0) {
+            std::cout << "There is no any semester in the CSV file." << std::endl;
+            std::cout << "Please input a semester before removing it." << std::endl;
+            return;
+          }
+          std::cout << "There is " << temp_semesters->size() << "Semesters in the CSV file." << std::endl;
+          std::cout << "Which Semester that you want to remove?" << std::endl;
+          for (int i = 1; i <= temp_semesters->size(); i++)
+            std::cout << i << ".\t" << temp_semesters->find_kth_smallest_node(i)->data.get_period() << std::endl;
+          std::cout << "Please input the index nubmer of the choice: ";
+          std::cin >> choice;
+          std::cin.ignore();
+          while (choice < 1 || choice > temp_semesters->size()) {
+            std::cout << "Please input valid choice: ";
+            std::cin >> choice;
+            std::cin.ignore();
+          }
+          std::cout << std::endl;
+
+          temp_semesters->remove(temp_semesters->find_kth_smallest_node(choice)->data.get_period());
+          break;
+        }
+        // course
+        case 3: {
+          if (current->get_semesters() == nullptr || current->get_semesters()->size() == 0) {
+            std::cout << "There is no any semester and course in the CSV file." << std::endl;
+            std::cout << "Please add a new semester and course before removing course." << std::endl;
+            return;
+          }
+
+          std::cout << "Please choose the semester that the course belongs to." << std::endl;
+          for (int i = 1; i <= current->get_semesters()->size(); i++)
+            std::cout << i << ".\t"
+                      << current->get_semesters()->find_kth_smallest_node(i)->data.get_period()
+                      << std::endl;
+          std::cout << "Please input your choice in number: ";
+          std::cin >> choice;
+          std::cin.ignore();
+          while (choice < 1 || choice > current->get_semesters()->size()) {
+            std::cout << "Please input a valid choice: ";
+            std::cin >> choice;
+            std::cin.ignore();
+          }
+
+          Semester* temp_semester =
+            &(current->get_semesters()->find_kth_smallest_node(choice)->data);
+          if (temp_semester->get_courses().size() == 0) {
+            std::cout << "There is no any course in this semester." << std::endl;
+            std::cout << "Please add a new course into this semester before removing course." << std::endl;
+            return;
+          }
+
+          std::cout << "Please choose the course that you want to remove." << std::endl;
+          for (int i = 1; i <= temp_semester->get_courses().size(); i++)
+            std::cout << i << ".\t"
+                      << temp_semester->get_courses().find_kth_smallest_node(i)->data.get_code()
+                      << std::endl;
+          std::cout << "Please input your choice in number: ";
+          std::cin >> choice;
+          std::cin.ignore();
+          while (choice < 1 || choice > temp_semester->get_courses().size()) {
+            std::cout << "Please input a valid choice: ";
+            std::cin >> choice;
+            std::cin.ignore();
+          }
+
+          temp_semester->remove_course(temp_semester->get_courses().find_kth_smallest_node(choice)->data);
+          break;
+        }
+      }
       break;
     }
     // edit
