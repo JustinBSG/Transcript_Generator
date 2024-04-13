@@ -683,6 +683,7 @@ void Generator::modify_csv(Transcript*& current, std::string file_path) {
           if (current->get_semesters() == nullptr) {
             BST<Semester>* temp_semesters = new BST<Semester>;
             temp_semesters->insert(Semester{temp_period});
+            current->change_semesters(temp_semesters);
             return;
           }
 
