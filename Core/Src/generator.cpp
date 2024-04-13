@@ -473,7 +473,6 @@ void Generator::generate_csv(Transcript*& current, std::string file_path) {
   std::cout << "Generated~" << std::endl;
 }
 
-// TODO: Check for empty data before performing any operation
 void Generator::modify_csv(Transcript*& current, std::string file_path) {
   if (current != nullptr) {
     std::cout << "Please save the current transcript first before modifying the CSV file."
@@ -875,7 +874,7 @@ void Generator::modify_csv(Transcript*& current, std::string file_path) {
           }
           std::cout << std::endl;
 
-          temp_semesters->remove(temp_semesters->find_kth_smallest_node(choice)->data.get_period());
+          temp_semesters->remove(temp_semesters->find_kth_smallest_node(choice)->data);
           break;
         }
         // course
@@ -1127,12 +1126,7 @@ void Generator::modify_csv(Transcript*& current, std::string file_path) {
           std::string new_period;
           getline(std::cin, new_period);
 
-          Semester new_semester{new_period};
-          for (int i = 1; i <= temp_semester->get_courses().size(); i++)
-            new_semester.insert_course(
-              temp_semester->get_courses().find_kth_smallest_node(i)->data);
-          temp_semesters->remove(*temp_semester);
-          temp_semesters->insert(new_semester);
+          temp_semester->change_period(new_period);
           break;
         }
         // course
