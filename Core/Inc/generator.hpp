@@ -9,6 +9,9 @@
 #define SPLIT_LINE                                                                  \
   "===============================================================================" \
   "====="
+#define SPLIT_LINE_TRANSCRIPT_TERMINAL                                              \
+  "-------------------------------------------------------------------------------" \
+  "-----"
 #define TERMINAL_TITLE                                    \
   "******************************* Transcript Generator " \
   "*******************************"
@@ -20,13 +23,13 @@ class Generator {
   public:
     /**
      * @brief Construct a new Generator object, default constructor
-     * 
+     *
      */
     Generator() = default;
 
     /**
      * @brief Destroy the Generator object
-     * 
+     *
      */
     ~Generator();
 
@@ -42,7 +45,8 @@ class Generator {
     void end(Transcript*& current);
     void remove_transcript(int index);
 
-    void auto_input_period_semesters(BST<Semester>& semesters, int num_year, std::string admit_date);
+    void auto_input_period_semesters(BST<Semester>& semesters, int num_year,
+                                     std::string admit_date);
     bool contain(Transcript* current);
 
     void print_test(const Transcript* const current) const;

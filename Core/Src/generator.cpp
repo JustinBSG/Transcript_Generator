@@ -1,10 +1,12 @@
 #include "../Inc/generator.hpp"
 
+#include <cstdio>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <vector>
 
 namespace fs = std::__fs::filesystem;
 
@@ -63,7 +65,9 @@ void Generator::start() {
         std::cout << std::endl;
         break;
       case 5:
-        std::cout << option << std::endl;
+        std::cout << std::endl;
+        print_terminal(current);
+        std::cout << std::endl;
         break;
       case 6:
         std::cout << std::endl;
@@ -1252,7 +1256,141 @@ void Generator::modify_csv(Transcript*& current, std::string file_path) {
   std::cout << "Modified~" << std::endl;
 }
 
-void Generator::print_terminal(Transcript*& current) {}
+void Generator::print_terminal(Transcript*& current) {
+  if (current == nullptr) {
+    std::cout << "Please insert data into current transcript before generating unofficial "
+                 "transcript on terminal."
+              << std::endl;
+    return;
+  }
+
+  if (current->get_user() == nullptr) {
+    std::cout << "There is no data about Student in current transcript." << std::endl;
+    std::cout << "Please insert relative data in current transcript before generating unofficial "
+                 "transcript on terminal."
+              << std::endl;
+    return;
+  }
+
+  if (current->get_advisor() == nullptr) {
+    std::cout << "There is no data about Advisor in current transcript." << std::endl;
+    std::cout << "Please insert relative data in current transcript before generating unofficial "
+                 "transcript on terminal."
+              << std::endl;
+    return;
+  }
+
+  if (current->get_semesters() == nullptr) {
+    std::cout << "There is no data about Semesters in current transcript." << std::endl;
+    std::cout << "Please insert relative data in current transcript before generating unofficial "
+                 "transcript on terminal."
+              << std::endl;
+    return;
+  }
+
+  Student* temp_student = current->get_user();
+  Professor* temp_advisor = current->get_advisor();
+  BST<Major>* temp_majors = &(temp_student->get_majors());
+  BST<Semester>* temp_semesters = current->get_semesters();
+  std::vector<CGA_semester>* temp_CGAs = &(current->get_CGAs());
+  std::cout << "Here is the unofficial transcript." << std::endl << std::endl;
+  std::string transcript_title_content = "Unoffical Transcript of Academic Record";
+  std::string transcript_title;
+  for (int i = 0; i < (TERMINAL_MAX_WIDTH - transcript_title_content.size()) / 2; i++)
+    transcript_title += " ";
+  transcript_title += transcript_title_content;
+  std::cout << transcript_title << std::endl;
+  std::cout << SPLIT_LINE_TRANSCRIPT_TERMINAL << std::endl << std::endl;
+  std::cout << "Personal Information" << std::endl << std::endl;
+  std::cout << "Name:\t\t" << temp_student->get_name() << std::endl;
+  std::cout << "Student ID:\t" << temp_student->get_ust_card_num() << std::endl;
+  std::cout << "Year of Study:\t" << temp_student->get_year() << std::endl;
+  std::cout << "Advisor:\t" << temp_advisor->get_name() << std::endl;
+  std::cout << SPLIT_LINE_TRANSCRIPT_TERMINAL << std::endl << std::endl;
+
+  std::cout << "Academic Program" << std::endl << std::endl;
+  std::cout << "Admit Date:\t" << temp_student->get_admit_date() << std::endl;
+  std::cout << "Program:\t" << temp_majors->find_kth_smallest_node(1)->data.get_program_name()
+            << std::endl;
+  if (temp_majors->find_kth_smallest_node(1)->data.get_major_name() != "NA")
+    std::cout << "Major:\t\t" << temp_majors->find_kth_smallest_node(1)->data.get_major_name()
+              << std::endl
+              << std::endl;
+  else
+    std::cout << std::endl;
+  for (int i = 2; i <= temp_majors->size(); i++) {
+    Major* temp_major = &(temp_majors->find_kth_smallest_node(i)->data);
+    std::cout << "Program Change:\t" << temp_major->get_change_date() << std::endl;
+    std::cout << "Program:\t" << temp_major->get_program_name() << std::endl;
+    std::cout << "Major:\t\t" << temp_major->get_major_name() << std::endl << std::endl;
+  }
+  std::cout << SPLIT_LINE_TRANSCRIPT_TERMINAL << std::endl << std::endl;
+
+  int cce = 0;
+  std::cout << "Academic Records" << std::endl << std::endl;
+  for (int i = 1; i <= temp_semesters->size(); i++) {
+    Semester* temp_semester = &(temp_semesters->find_kth_smallest_node(i)->data);
+    BST<Course>* temp_courses = &(temp_semester->get_courses());
+    std::cout << temp_semester->get_period() << std::endl << std::endl;
+    
+    printf("%-15s%-40s%-13s%-10s%-10s\n", "", "", "Credit", "Credit","");
+    printf("%-15s%-40s%-13s%-10s%-10s\n", "Course Code", "Course Title", "Attempted", "Earned", "Grade");
+    for (int j = 1; j <= temp_courses->size(); j++) {
+      Course *temp_course = &(temp_courses->find_kth_smallest_node(j)->data);
+      std::string temp_code = temp_course->get_code();
+      std::vector<std::string> temp_title;
+      temp_title.push_back(temp_course->get_title());
+      if (temp_title[0].size() > 40) {
+        for (int k = 0; k < temp_title[0].size(); k++) 
+          if (k % 3 == 0)
+            temp_title.push_back(temp_title[0].substr(k, 40));
+      }
+      std::string temp_credit_attempt = std::to_string(temp_course->get_credits());
+      std::string temp_credit_earn = "";
+      if (temp_course->get_credits() < 3)
+        temp_credit_earn = "-";
+      char temp_first_char_grade = temp_course->get_grade_str()[0];
+      switch (temp_first_char_grade) {
+        case 'A':
+        case 'B':
+        case 'C':
+        case 'D':
+        case 'F':
+          temp_credit_earn = std::to_string(temp_course->get_credits());
+          break;
+        default:
+          temp_credit_earn = "-";
+      }
+      std::string temp_grade = temp_course->get_grade_str();
+      
+      if (temp_title[0].size() > 40) {
+        int count = 1;
+        printf("%-15s%-40s%-13s%-10s%-10s\n", temp_code.c_str(), temp_title[count++].c_str(), temp_credit_attempt.c_str(), temp_credit_earn.c_str(), temp_grade.c_str());
+        while (count < temp_title.size())
+          printf("%-15s%-40s%-13s%-10s%-10s\n", "", temp_title[count++].c_str(), "", "", "");
+      } else 
+        printf("%-15s%-40s%-13s%-10s%-10s\n", temp_code.c_str(), temp_title[0].c_str(), temp_credit_attempt.c_str(), temp_credit_earn.c_str(), temp_grade.c_str());
+    }
+    std::cout << std::endl;
+    if (temp_semester->get_total_num_credits() >= 3)
+      printf("TGA:\t%.3f\n", temp_semester->get_tga());
+    else
+      printf("TGA:\t**\n");
+    printf("CGA:\t%.3f\n", (*temp_CGAs)[i].cga);
+    std::cout << std::endl;
+    cce += temp_semester->get_total_num_credits();
+    std::cout << "Cumulative Credits Earned:\t" << cce << std::endl << std::endl;
+    std::cout << SPLIT_LINE_TRANSCRIPT_TERMINAL << std::endl << std::endl;
+  }
+
+  std::cout << std::endl;
+  std::string transcript_ending_content = "- End of Unofficial Transcript -";
+  std::string transcript_ending;
+  for (int i = 0; i < (TERMINAL_MAX_WIDTH - transcript_ending_content.size()) / 2; i++)
+    transcript_title += " ";
+  transcript_ending += transcript_ending_content;
+  std::cout << transcript_ending << std::endl;
+}
 
 void Generator::save_transcript(Transcript*& current) {
   if (current == nullptr) {
