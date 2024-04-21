@@ -30,6 +30,21 @@ Install essential packages if you have not install them before:
 ### Basic Directory Structure
 
 ## Roadmap
+- [ ] Test
+  - [ ] CML version
+    - [ ] insert_data()
+    - [ ] read_csv()
+    - [ ] generate_csv()
+    - [ ] modify_csv()
+    - [ ] print_terminal()
+    - [ ] save_transcript()
+    - [ ] restart()
+    - [ ] switch_transcript()
+    - [ ] end()
+  - [ ] GUI version
+- [x] Finish CML version
+- [ ] Finish GUI version
+- [ ] Implement AVLTree instead of BST
 
 ## Contact
 - Lau Chun Ting, Justin @JustinBSG
